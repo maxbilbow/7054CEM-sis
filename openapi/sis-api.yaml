@@ -110,12 +110,119 @@ paths:
           content: {}
       x-swagger-router-controller: web.controllers.user_controller
       x-codegen-request-body-name: body
+  /message/{message_id}:
+    get:
+      tags:
+      - message
+      summary: Get a message
+      operationId: get_one
+      parameters:
+      - name: message_id
+        in: path
+        description: The id of the message to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successfully retrieved message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        404:
+          description: Message doesn't exist
+          content: {}
+      x-swagger-router-controller: web.controllers.message_controller
+    put:
+      tags:
+      - message
+      summary: Update and replace a message
+      operationId: update_message
+      parameters:
+      - name: message_id
+        in: path
+        description: The id of the message to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+        required: true
+      responses:
+        200:
+          description: Successfully updated message
+          content: {}
+        404:
+          description: Message doesn't exist
+          content: {}
+      x-swagger-router-controller: web.controllers.message_controller
+      x-codegen-request-body-name: Message
+    delete:
+      tags:
+      - message
+      summary: Remove a message
+      operationId: remove_message
+      parameters:
+      - name: message_id
+        in: path
+        description: The id of the message to remove
+        required: true
+        schema:
+          type: string
+      responses:
+        202:
+          description: Successfully deleted message
+          content: {}
+        404:
+          description: Message doesn't exist
+          content: {}
+      x-swagger-router-controller: web.controllers.message_controller
+  /message:
+    get:
+      tags:
+      - message
+      summary: Gets all messages
+      operationId: get_all_messages
+      responses:
+        200:
+          description: Successfully received all messages.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messages'
+      x-swagger-router-controller: controllers.message_controller
+    post:
+      tags:
+      - message
+      summary: Add a new message
+      operationId: add_message
+      requestBody:
+        description: Message to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+        required: true
+      responses:
+        201:
+          description: Message added
+          content: {}
+      x-swagger-router-controller: web.controllers.message_controller
+      x-codegen-request-body-name: body
 components:
   schemas:
     Users:
       type: array
       items:
         $ref: '#/components/schemas/User'
+    Messages:
+      type: array
+      items:
+        $ref: '#/components/schemas/Message'
     User:
       required:
       - username
@@ -133,4 +240,35 @@ components:
       example:
         id: 1
         username: bob
+        email: bob@bob.bob
+    Message:
+      required:
+      - author
+      - title
+      - body
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        author:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        created:
+          type: integer
+        updated:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        thread_id:
+          type: string
+          format: email
+      example:
+        id: 1
+        author: bob
         email: bob@bob.bob
