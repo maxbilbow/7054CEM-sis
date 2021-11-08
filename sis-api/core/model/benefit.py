@@ -1,10 +1,12 @@
 from dataclasses import dataclass, field
+from typing import Optional
+
 from membership_status import MembershipStatus
 
 
-@dataclass
+@dataclass(frozen=True, eq=True)
 class Benefit:
-    id: str = field(metadata={"Key": True})
-    name: str
-    description: str
+    name: str = field(metadata={"Key": True})
     min_status: MembershipStatus
+    max_status: Optional[MembershipStatus] = None
+
