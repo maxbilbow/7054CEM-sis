@@ -5,13 +5,84 @@ info:
 servers:
 - url: /api/v1
 tags:
-- name: user
+- name: user profile
 paths:
   /user/{user_id}:
     get:
       tags:
-      - user
+        - user
       summary: Get a user
+      operationId: get_one
+      parameters:
+        - name: user_id
+          in: path
+          description: The id of the user to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully retrived user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User doesn't exist
+          content: { }
+      x-swagger-router-controller: web.controllers.user_controller
+    put:
+      tags:
+        - user
+      summary: Update and replace a user
+      operationId: update_user
+      parameters:
+        - name: user_id
+          in: path
+          description: The id of the user to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: Successfully updated user
+          content: { }
+        404:
+          description: User doesn't exist
+          content: { }
+      x-swagger-router-controller: web.controllers.user_controller
+      x-codegen-request-body-name: User
+    delete:
+      tags:
+        - user
+      summary: Remove a user
+      operationId: remove_user
+      parameters:
+        - name: user_id
+          in: path
+          description: The id of the user to remove
+          required: true
+          schema:
+            type: string
+      responses:
+        202:
+          description: Successfully deleted user
+          content: { }
+        404:
+          description: User doesn't exist
+          content: { }
+      x-swagger-router-controller: web.controllers.user_controller
+  /user/{user_id}/profile:
+    get:
+      tags:
+      - user
+      summary: Get a user profile
       operationId: get_one
       parameters:
       - name: user_id
@@ -26,15 +97,42 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserProfile'
         404:
           description: User doesn't exist
           content: {}
-      x-swagger-router-controller: web.controllers.user_controller
+      x-swagger-router-controller: web.controllers.profile_controller
+    post:
+      tags:
+        - user
+      summary: Create a user profile
+      operationId: create_profile
+      parameters:
+        - name: user_id
+          in: path
+          description: The id of the user to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+        required: true
+      responses:
+        200:
+          description: Successfully updated user
+          content: { }
+        404:
+          description: User doesn't exist
+          content: { }
+      x-swagger-router-controller: web.controllers.profile_controller
+      x-codegen-request-body-name: UserProfile
     put:
       tags:
       - user
-      summary: Update and replace a user
+      summary: Update and replace a user profile
       operationId: update_user
       parameters:
       - name: user_id
@@ -47,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserProfile'
         required: true
       responses:
         200:
@@ -56,13 +154,11 @@ paths:
         404:
           description: User doesn't exist
           content: {}
-      x-swagger-router-controller: web.controllers.user_controller
+      x-swagger-router-controller: web.controllers.profile_controller
       x-codegen-request-body-name: User
     delete:
-      tags:
-      - user
-      summary: Remove a user
-      operationId: remove_user
+      summary: Remove a user profile
+      operationId: remove_profile
       parameters:
       - name: user_id
         in: path
@@ -77,156 +173,78 @@ paths:
         404:
           description: User doesn't exist
           content: {}
-      x-swagger-router-controller: web.controllers.user_controller
-  /user:
+      x-swagger-router-controller: web.controllers.profile_controller
+  /user/{user_id}/insurance_package/{package_id}:
     get:
-      tags:
-      - user
-      summary: Gets all users
-      operationId: get_all_users
+      summary: Gets all packages for a user
+      operationId: get_all
       responses:
         200:
-          description: Successfully received all users.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Users'
-      x-swagger-router-controller: controllers.user_controller
-    post:
-      tags:
-      - user
-      summary: Add a new user
-      operationId: add_user
-      requestBody:
-        description: User to add
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        201:
-          description: User added
-          content: {}
-      x-swagger-router-controller: web.controllers.user_controller
-      x-codegen-request-body-name: body
-  /message/{message_id}:
-    get:
-      tags:
-      - message
-      summary: Get a message
-      operationId: get_one
-      parameters:
-      - name: message_id
-        in: path
-        description: The id of the message to retrieve
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: Successfully retrieved message
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-        404:
-          description: Message doesn't exist
-          content: {}
-      x-swagger-router-controller: web.controllers.message_controller
-    put:
-      tags:
-      - message
-      summary: Update and replace a message
-      operationId: update_message
-      parameters:
-      - name: message_id
-        in: path
-        description: The id of the message to update
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Message'
-        required: true
-      responses:
-        200:
-          description: Successfully updated message
-          content: {}
-        404:
-          description: Message doesn't exist
-          content: {}
-      x-swagger-router-controller: web.controllers.message_controller
-      x-codegen-request-body-name: Message
+                $ref: '#/components/schemas/InsurancePackage'
+      x-swagger-router-controller: controllers.insurance_package_controller
     delete:
-      tags:
-      - message
-      summary: Remove a message
-      operationId: remove_message
-      parameters:
-      - name: message_id
-        in: path
-        description: The id of the message to remove
-        required: true
-        schema:
-          type: string
-      responses:
-        202:
-          description: Successfully deleted message
-          content: {}
-        404:
-          description: Message doesn't exist
-          content: {}
-      x-swagger-router-controller: web.controllers.message_controller
-  /message:
+      summary: Delete application
+      operation_id: delete_package
+  /user/{user_id}/insurance_package:
     get:
-      tags:
-      - message
-      summary: Gets all messages
-      operationId: get_all_messages
+      summary: Get active packages
+      operationId: get_active
       responses:
         200:
-          description: Successfully received all messages.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Messages'
-      x-swagger-router-controller: controllers.message_controller
+                $ref: '#/components/schemas/InsurancePackages'
     post:
-      tags:
-      - message
-      summary: Add a new message
-      operationId: add_message
+      summary: Create new package
+      operationId: create_package
       requestBody:
-        description: Message to add
+        description: Package to create
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Message'
+              $ref: '#/components/schemas/InsurancePackage'
         required: true
       responses:
         201:
-          description: Message added
-          content: {}
-      x-swagger-router-controller: web.controllers.message_controller
+          description: Package Created
+          content: { }
+      x-swagger-router-controller: web.controllers.insurance_package_controller
       x-codegen-request-body-name: body
 components:
   schemas:
-    Users:
+    UserProfiles:
       type: array
       items:
-        $ref: '#/components/schemas/User'
-    Messages:
+        $ref: '#/components/schemas/UserProfile'
+    InsurancePackages:
       type: array
       items:
-        $ref: '#/components/schemas/Message'
+        $ref: '#/components/schemas/InsurancePackage'
+    Benifits:
+      type: array
+      items:
+        $ref: '#/components/schemas/Benefit'
+    Claims:
+      type: array
+      items:
+        $ref: '#/components/schemas/Claim'
+    ClaimHistory:
+      type: array
+      items:
+        $ref: '#/components/schemas/ClaimEvent'
+    Attachments:
+      type: array
+      items:
+        $ref: '#/components/schemas/Attachment'
+
     User:
       required:
-      - username
-      - email
+        - username
+        - email
       type: object
       properties:
         id:
@@ -241,34 +259,113 @@ components:
         id: 1
         username: bob
         email: bob@bob.bob
-    Message:
-      required:
-      - author
-      - title
-      - body
+    UserProfile:
       type: object
+      properties:
+        user_id:
+          type: integer
+          format: int32
+        role:
+          enum:
+            - Member
+            - Advisor
+        points:
+          type: integer
+          format: int32
+        membership:
+          $ref: '#/components/schemas/Membership'
+        benifits:
+          $ref: '#/components/schemas/Benefits'
+        insurance_packages:
+          $ref: '#/components/schemas/InsurancePackages'
+    Membership:
       properties:
         id:
           type: integer
-          format: int32
-        author:
+        user_id:
+          type: integer
+        start_date:
           type: string
-        title:
+          format: date
+        end_date:
           type: string
-        body:
+          format: date
+        type:
+          enum:
+            - Smart
+            - Silver
+            - Gold
+    InsurancePackage:
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        type:
+          enum:
+            - Home
+            - Motor
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        claims:
+          $ref: '#/components/schemas/Claims'
+    Claim:
+      properties:
+        id:
+          type: integer
+        package_id:
+          type: integer
+        claim_date:
+          type: string
+          format: date-time
+        resolution_date:
+          type: string
+          format: date-time
+        summary:
+          type: string
+        claim_status:
+          $ref: '#/components/schemas/ClaimStatus'
+        claim_history:
+          $ref: '#/components/schemas/ClaimHistory'
+
+    ClaimStatus:
+      enum:
+        - Rejected
+        - Resolved
+        - Submitted
+        - UnderReview
+        - EvidenceRequested
+        - AwaitingCustomerApproval
+        - Accepted
+        - Processing
+    ClaimEvent:
+      properties:
+        id:
+          type: integer
+        claim_id:
+          type: integer
+        comment:
           type: string
         created:
           type: integer
-        updated:
+        claim_status:
+          $ref: '#/components/schemas/ClaimStatus'
+        attachments:
+          $ref: '#/components/schemas/Attachments'
+    Attachment:
+      properties:
+        claim_event_id:
           type: integer
-        tags:
-          type: array
-          items:
-            type: string
-        thread_id:
+        name:
           type: string
-          format: email
-      example:
-        id: 1
-        author: bob
-        email: bob@bob.bob
+        mime_type:
+          type: string
+        data:
+          type: string
+          format: byte
+
+

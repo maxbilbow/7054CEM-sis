@@ -1,20 +1,21 @@
 from dataclasses import dataclass, field
 from typing import Optional, List
 
-from .roles import Role
-from .membership import Membership
-from .membership_status import MembershipStatus, GOLD_POINTS_THRESHOLD, SILVER_POINTS_THRESHOLD
 from .benefit import Benefit
+from .insurance_package import InsurancePackage
+from .membership import Membership
+from .roles import Role
 
 
 @dataclass(frozen=True, eq=True)
 class Profile:
-    # user_id: int = field(metadata={"Key": True})
-    # membership_id: Optional[int]
+    user_id: int = field(metadata={"Key": True})
     points: int
-    membership: Optional[Membership]
-    membership_status: MembershipStatus
-    benefits: List[Benefit]
     role: Role
+
+    # Entities
+    membership: Optional[Membership] = field(default=None)
+    benefits: List[Benefit] = field(default_factory=list)
+    insurance_packages: List[InsurancePackage] = field(default_factory=list)
 
 

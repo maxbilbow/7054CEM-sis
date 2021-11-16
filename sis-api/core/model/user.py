@@ -8,5 +8,9 @@ from .profile import Profile
 class User:
     id: int = field(metadata={"Key": True})
     email: str
-    password: str
-    profile: Optional[Profile] = field(repr=False)
+    password_hash: str
+
+    # Entities
+    profile: Optional[Profile] = field(default=None)
+
+

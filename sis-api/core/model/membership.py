@@ -1,20 +1,15 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from typing import Optional
-from dateutil.relativedelta import relativedelta
+
+from .membership_type import MembershipType
 
 
 @dataclass(frozen=True, eq=True)
 class Membership:
-    # user_id: int = field(metadata={"Key": True})
-    # plan_id: int
-    name: str
-    start_date: Optional[date] = None
-    term_months: int = 0
+    id: int = field(metadata={"Key": True})
+    user_id: int = field(metadata={"ForeignKey": True})
+    start_date: date
+    end_date: date
+    type: MembershipType
 
-    @property
-    def renewal_date(self) -> Optional[date]:
-        if not self.start_date:
-            return None
-
-        return self.start_date + relativedelta(months=self.term_months)

@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
+from datetime import date
 from enum import Enum
+from typing import List
 
-from .roles import Role
+from core.model.claim import Claim
 
 
 class InsuranceType(Enum):
@@ -11,6 +13,10 @@ class InsuranceType(Enum):
 
 @dataclass(frozen=True, eq=True)
 class InsurancePackage:
-    id: int = field(metadata={"Key": True})
-    type: Role = field(repr=False, default=Role.NONE)
+    user_id: int = field(metadata={"Key": True})
+    type: InsuranceType
+    start_date: date
+    end_date: date
+    claims: List[Claim]
+
 

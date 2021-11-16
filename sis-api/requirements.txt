@@ -10,3 +10,4 @@ randomize>=0.13
 behave
 python-dateutil
 pyhamcrest
+encoder
