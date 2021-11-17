@@ -1,12 +1,12 @@
 from dataclasses import field, dataclass
 from typing import Optional, List
 
-from core.model.Attachment import Attachment
+from core.model.attachment import Attachment
 from core.model.claim_status import ClaimStatus
 
 
 @dataclass(frozen=True, eq=True)
-class ClaimEvent:
+class ClaimNote:
     id: int = field(metadata={"Key": True})
     claim_id: int
     comment: str

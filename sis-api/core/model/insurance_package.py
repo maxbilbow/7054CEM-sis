@@ -1,9 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import date
 from enum import Enum
-from typing import List
-
-from core.model.claim import Claim
 
 
 class InsuranceType(Enum):
@@ -17,6 +14,5 @@ class InsurancePackage:
     type: InsuranceType
     start_date: date
     end_date: date
-    claims: List[Claim]
 
 

@@ -1,5 +1,6 @@
 connexion
 flask
+flask-injector
 connexion[swagger-ui]
 flask_testing==0.6.1
 coverage>=4.0.3
@@ -11,3 +12,5 @@ behave
 python-dateutil
 pyhamcrest
 encoder
+passlib
+pyyaml

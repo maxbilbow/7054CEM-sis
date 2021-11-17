@@ -15,7 +15,7 @@ paths:
   /user-id/{email}:
     get:
       tags:
-        - User
+      - User
       summary: Get a user id by email
       operationId: find_by_email
       parameters:
@@ -23,49 +23,28 @@ paths:
         in: path
         description: The email of the user to retrieve
         required: true
+        style: simple
+        explode: false
         schema:
           type: string
           format: email
       responses:
-        200:
+        "200":
           description: Successfully retrived user
           content:
             application/json:
               schema:
                 type: string
-        404:
+                x-content-type: application/json
+        "404":
           description: User doesn't exist for email
-          content: { }
+          content: {}
       x-swagger-router-controller: web.controllers.user_controller
+      x-openapi-router-controller: swagger_server.controllers.user_controller
   /user:
-    post:
-      tags:
-        - User
-      summary: Create a user
-      operationId: create_user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        200:
-          description: Successfully updated user
-          content:
-            application/json:
-              schema:
-                properties:
-                  user_id:
-                    type: integer
-        404:
-          description: User doesn't exist
-          content: { }
-      x-swagger-router-controller: web.controllers.user_controller
-      x-codegen-request-body-name: User
     put:
       tags:
-        - User
+      - User
       summary: Update and replace a user
       operationId: update_user
       requestBody:
@@ -75,62 +54,93 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       responses:
-        200:
+        "200":
           description: Successfully updated user
-          content: { }
-        404:
+          content: {}
+        "404":
           description: User doesn't exist
-          content: { }
+          content: {}
       x-swagger-router-controller: web.controllers.user_controller
       x-codegen-request-body-name: User
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+    post:
+      tags:
+      - User
+      summary: Create a user
+      operationId: create_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Successfully updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "404":
+          description: User doesn't exist
+          content: {}
+      x-swagger-router-controller: web.controllers.user_controller
+      x-codegen-request-body-name: User
+      x-openapi-router-controller: swagger_server.controllers.user_controller
   /user/{user_id}:
     get:
       tags:
-        - User
+      - User
       summary: Get a user
       operationId: get_user
       parameters:
-        - name: user_id
-          in: path
-          description: The id of the user to retrieve
-          required: true
-          schema:
-            type: integer
+      - name: user_id
+        in: path
+        description: The id of the user to retrieve
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrived user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        404:
+        "404":
           description: User doesn't exist
-          content: { }
+          content: {}
       x-swagger-router-controller: web.controllers.user_controller
+      x-openapi-router-controller: swagger_server.controllers.user_controller
     delete:
       tags:
-        - User
+      - User
       summary: Remove a user
       operationId: remove_user
       parameters:
-        - name: user_id
-          in: path
-          description: The id of the user to remove
-          required: true
-          schema:
-            type: integer
+      - name: user_id
+        in: path
+        description: The id of the user to remove
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
-        202:
+        "202":
           description: Successfully deleted user
-          content: { }
-        404:
+          content: {}
+        "404":
           description: User doesn't exist
-          content: { }
+          content: {}
       x-swagger-router-controller: web.controllers.user_controller
+      x-openapi-router-controller: swagger_server.controllers.user_controller
   /user/{user_id}/profile:
     get:
       tags:
-        - User Profile
+      - User Profile
       summary: Get a user profile
       operationId: get_profile
       parameters:
@@ -138,49 +148,25 @@ paths:
         in: path
         description: The id of the user to retrieve
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrived user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserProfile'
-        404:
+        "404":
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.profile_controller
-    post:
-      tags:
-        - User Profile
-      summary: Create a user profile
-      operationId: create_profile
-      parameters:
-        - name: user_id
-          in: path
-          description: The id of the user to update
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserProfile'
-        required: true
-      responses:
-        200:
-          description: Successfully updated user
-          content: { }
-        404:
-          description: User doesn't exist
-          content: { }
-      x-swagger-router-controller: web.controllers.profile_controller
-      x-codegen-request-body-name: UserProfile
+      x-openapi-router-controller: swagger_server.controllers.user_profile_controller
     put:
       tags:
-        - User Profile
+      - User Profile
       summary: Update and replace a user profile
       operationId: update_profile
       parameters:
@@ -188,6 +174,8 @@ paths:
         in: path
         description: The id of the user to update
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       requestBody:
@@ -197,17 +185,48 @@ paths:
               $ref: '#/components/schemas/UserProfile'
         required: true
       responses:
-        200:
+        "200":
           description: Successfully updated user
           content: {}
-        404:
+        "404":
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.profile_controller
       x-codegen-request-body-name: User
+      x-openapi-router-controller: swagger_server.controllers.user_profile_controller
+    post:
+      tags:
+      - User Profile
+      summary: Create a user profile
+      operationId: create_profile
+      parameters:
+      - name: user_id
+        in: path
+        description: The id of the user to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+        required: true
+      responses:
+        "200":
+          description: Successfully updated user
+          content: {}
+        "404":
+          description: User doesn't exist
+          content: {}
+      x-swagger-router-controller: web.controllers.profile_controller
+      x-codegen-request-body-name: UserProfile
+      x-openapi-router-controller: swagger_server.controllers.user_profile_controller
     delete:
       tags:
-        - User Profile
+      - User Profile
       summary: Remove a user profile
       operationId: remove_profile
       parameters:
@@ -215,73 +234,56 @@ paths:
         in: path
         description: The id of the user to remove
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       responses:
-        202:
+        "202":
           description: Successfully deleted user
           content: {}
-        404:
+        "404":
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.profile_controller
+      x-openapi-router-controller: swagger_server.controllers.user_profile_controller
   /user/{user_id}/insurance_package:
     get:
       tags:
-        - Insurance Package
+      - Insurance Package
       summary: Get active packages
       operationId: get_active
       parameters:
-       - name: user_id
-         in: path
-         description: The id of the user
-         required: true
-         schema:
-           type: integer
+      - name: user_id
+        in: path
+        description: The id of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
-        200:
+        "200":
           description: Retrieves all insurance packages for the user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/InsurancePackages'
-    post:
-      tags:
-        - Insurance Package
-      summary: Create new package
-      operationId: create_package
-      parameters:
-       - name: user_id
-         in: path
-         description: The id of the user
-         required: true
-         schema:
-           type: integer
-      requestBody:
-        description: Package to create
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InsurancePackage'
-        required: true
-      responses:
-        201:
-          description: Package Created
-          content: { }
-      x-swagger-router-controller: web.controllers.insurance_package_controller
-      x-codegen-request-body-name: body
+      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
     put:
       tags:
-        - Insurance Package
+      - Insurance Package
       summary: Update package
       operationId: update
       parameters:
-       - name: user_id
-         in: path
-         description: The id of the user
-         required: true
-         schema:
-           type: integer
+      - name: user_id
+        in: path
+        description: The id of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       requestBody:
         description: Package to create
         content:
@@ -290,64 +292,72 @@ paths:
               $ref: '#/components/schemas/InsurancePackage'
         required: true
       responses:
-        201:
+        "201":
           description: Package Created
-          content: { }
+          content: {}
       x-swagger-router-controller: web.controllers.insurance_package_controller
       x-codegen-request-body-name: body
-  /user/{user_id}/insurance_package/{package_id}:
-    get:
+      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+    post:
       tags:
-        - Insurance Package
-      summary: Gets all packages for a user
-      parameters:
-       - name: user_id
-         in: path
-         description: The id of the user
-         required: true
-         schema:
-           type: integer
-       - name: package_id
-         in: path
-         description: The id of the insurance package
-         required: true
-         schema:
-           type: integer
-      operationId: get_all
-      responses:
-        200:
-          description: Package retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InsurancePackage'
-      x-swagger-router-controller: controllers.insurance_package_controller
-    delete:
-      tags:
-        - Insurance Package
-      summary: Delete application
-      operationId: delete_package
+      - Insurance Package
+      summary: Create new package
+      operationId: create_package
       parameters:
       - name: user_id
         in: path
-        description: The id of the user to remove
+        description: The id of the user
         required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        description: Package to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsurancePackage'
+        required: true
+      responses:
+        "201":
+          description: Package Created
+          content: {}
+      x-swagger-router-controller: web.controllers.insurance_package_controller
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+  /user/{user_id}/insurance_package/{package_id}:
+    get:
+      tags:
+      - Insurance Package
+      summary: Gets all packages for a user
+      operationId: get_all
+      parameters:
+      - name: user_id
+        in: path
+        description: The id of the user
+        required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       - name: package_id
         in: path
         description: The id of the insurance package
         required: true
+        style: simple
+        explode: false
         schema:
-         type: integer
+          type: integer
       responses:
-        202:
-          description: Successfully deleted package
-          content: {}
-        404:
-          description: Package doesn't exist
-          content: {}
-      x-swagger-router-controller: web.controllers.insurance_package_controller
+        "200":
+          description: Package retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurancePackage'
+      x-swagger-router-controller: controllers.insurance_package_controller
+      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
     post:
       tags:
       - Claims
@@ -358,12 +368,16 @@ paths:
         in: path
         description: The id of the user
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       - name: package_id
         in: path
         description: The id of the package to claim against
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       requestBody:
@@ -373,16 +387,48 @@ paths:
               $ref: '#/components/schemas/Claim'
         required: true
       responses:
-        200:
+        "200":
           description: Successfully retrived user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Claim'
-        404:
+        "404":
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_controller
+      x-openapi-router-controller: swagger_server.controllers.claims_controller
+    delete:
+      tags:
+      - Insurance Package
+      summary: Delete application
+      operationId: delete_package
+      parameters:
+      - name: user_id
+        in: path
+        description: The id of the user to remove
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: package_id
+        in: path
+        description: The id of the insurance package
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "202":
+          description: Successfully deleted package
+          content: {}
+        "404":
+          description: Package doesn't exist
+          content: {}
+      x-swagger-router-controller: web.controllers.insurance_package_controller
+      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
   /user/{user_id}/claim:
     get:
       tags:
@@ -394,19 +440,22 @@ paths:
         in: path
         description: The id of the user
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrived user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Claims'
-        404:
+        "404":
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_controller
+      x-openapi-router-controller: swagger_server.controllers.claims_controller
   /package/{package_id}/claim:
     get:
       tags:
@@ -418,19 +467,22 @@ paths:
         in: path
         description: The id of the package
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrived user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Claims'
-        404:
+        "404":
           description: Package doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_controller
+      x-openapi-router-controller: swagger_server.controllers.claims_controller
   /claim/{claim_id}:
     get:
       tags:
@@ -442,19 +494,22 @@ paths:
         in: path
         description: The id of the claim
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrived claim
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Claim'
-        404:
+        "404":
           description: Claim doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_controller
+      x-openapi-router-controller: swagger_server.controllers.claims_controller
   /claim/{claim_id}/history:
     get:
       tags:
@@ -466,19 +521,22 @@ paths:
         in: path
         description: The id of the claim
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrived claim
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClaimHistory'
-        404:
+        "404":
           description: Claim doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_history_controller
+      x-openapi-router-controller: swagger_server.controllers.claim_history_controller
     post:
       tags:
       - Claim History
@@ -489,6 +547,8 @@ paths:
         in: path
         description: The id of the claim
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       requestBody:
@@ -498,16 +558,17 @@ paths:
               $ref: '#/components/schemas/ClaimNote'
         required: true
       responses:
-        200:
+        "200":
           description: Successfully added note
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClaimNote'
-        404:
+        "404":
           description: Claim item doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_history_controller
+      x-openapi-router-controller: swagger_server.controllers.claim_history_controller
   /claim-history/{note_id}:
     get:
       tags:
@@ -519,19 +580,22 @@ paths:
         in: path
         description: The id of the history item
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrived claim
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClaimNote'
-        404:
+        "404":
           description: History item doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_history_controller
+      x-openapi-router-controller: swagger_server.controllers.claim_history_controller
   /attachments/{attachment_id}:
     get:
       tags:
@@ -543,20 +607,22 @@ paths:
         in: path
         description: The id of the attachment
         required: true
+        style: simple
+        explode: false
         schema:
           type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrived claim
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Attachment'
-        404:
+        "404":
           description: Attachment item doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.attachment_controller
-
+      x-openapi-router-controller: swagger_server.controllers.attachments_controller
 components:
   schemas:
     InsurancePackages:
@@ -581,7 +647,7 @@ components:
         $ref: '#/components/schemas/Attachment'
     User:
       required:
-        - email
+      - email
       type: object
       properties:
         id:
@@ -613,6 +679,34 @@ components:
           $ref: '#/components/schemas/Benefits'
         insurance_packages:
           $ref: '#/components/schemas/InsurancePackages'
+      example:
+        insurance_packages:
+        - end_date: 2000-01-23
+          user_id: 2
+          id: 5
+          type: Home
+          start_date: 2000-01-23
+        - end_date: 2000-01-23
+          user_id: 2
+          id: 5
+          type: Home
+          start_date: 2000-01-23
+        role: Member
+        user_id: 0
+        benifits:
+        - max_status: null
+          name: name
+          min_status: null
+        - max_status: null
+          name: name
+          min_status: null
+        membership:
+          end_date: 2000-01-23
+          user_id: 5
+          id: 1
+          type: Smart
+          start_date: 2000-01-23
+        points: 6
     Membership:
       properties:
         id:
@@ -627,6 +721,12 @@ components:
           format: date
         type:
           $ref: '#/components/schemas/MembershipType'
+      example:
+        end_date: 2000-01-23
+        user_id: 5
+        id: 1
+        type: Smart
+        start_date: 2000-01-23
     InsurancePackage:
       properties:
         id:
@@ -641,11 +741,17 @@ components:
         end_date:
           type: string
           format: date
+      example:
+        end_date: 2000-01-23
+        user_id: 2
+        id: 5
+        type: Home
+        start_date: 2000-01-23
     Claim:
       required:
-        - incident_date
-        - summary
-        - claim_history
+      - claim_history
+      - incident_date
+      - summary
       properties:
         id:
           type: integer
@@ -664,6 +770,43 @@ components:
           $ref: '#/components/schemas/ClaimStatus'
         claim_history:
           $ref: '#/components/schemas/ClaimHistory'
+      example:
+        summary: summary
+        claim_status: Submitted
+        incident_date: 2000-01-23
+        resolution_date: 5
+        claim_history:
+        - attachments:
+          - data: ""
+            claim_note_id: 9
+            mime_type: mime_type
+            name: name
+          - data: ""
+            claim_note_id: 9
+            mime_type: mime_type
+            name: name
+          claim_status: null
+          created: 7
+          claim_id: 2
+          comment: comment
+          id: 5
+        - attachments:
+          - data: ""
+            claim_note_id: 9
+            mime_type: mime_type
+            name: name
+          - data: ""
+            claim_note_id: 9
+            mime_type: mime_type
+            name: name
+          claim_status: null
+          created: 7
+          claim_id: 2
+          comment: comment
+          id: 5
+        id: 0
+        package_id: 6
+        timestamp: 1
     ClaimNote:
       properties:
         id:
@@ -678,11 +821,26 @@ components:
           $ref: '#/components/schemas/ClaimStatus'
         attachments:
           $ref: '#/components/schemas/Attachments'
+      example:
+        attachments:
+        - data: ""
+          claim_note_id: 9
+          mime_type: mime_type
+          name: name
+        - data: ""
+          claim_note_id: 9
+          mime_type: mime_type
+          name: name
+        claim_status: null
+        created: 7
+        claim_id: 2
+        comment: comment
+        id: 5
     Attachment:
       required:
-        - name
-        - mime-type
-        - data
+      - data
+      - mime-type
+      - name
       properties:
         claim_note_id:
           type: integer
@@ -693,6 +851,11 @@ components:
         data:
           type: string
           format: byte
+      example:
+        data: ""
+        claim_note_id: 9
+        mime_type: mime_type
+        name: name
     Benefit:
       properties:
         name:
@@ -701,30 +864,41 @@ components:
           $ref: '#/components/schemas/MembershipType'
         max_status:
           $ref: '#/components/schemas/MembershipType'
+      example:
+        max_status: null
+        name: name
+        min_status: null
     MembershipType:
       type: string
       enum:
-        - Smart
-        - Silver
-        - Gold
+      - Smart
+      - Silver
+      - Gold
     InsurancePackageType:
       type: string
       enum:
-        - Home
-        - Motor
+      - Home
+      - Motor
     Role:
       type: string
       enum:
-        - Member
-        - Advisor
+      - Member
+      - Advisor
     ClaimStatus:
       type: string
       enum:
-        - Submitted
-        - UnderReview
-        - EvidenceRequested
-        - AwaitingCustomerApproval
-        - Accepted
-        - Processing
-        - Resolved
-        - Rejected
+      - Submitted
+      - UnderReview
+      - EvidenceRequested
+      - AwaitingCustomerApproval
+      - Accepted
+      - Processing
+      - Resolved
+      - Rejected
+    inline_response_200:
+      properties:
+        user_id:
+          type: integer
+      example:
+        user_id: 0
+

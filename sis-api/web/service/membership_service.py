@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 from core.model.membership import Membership
 from core.model.membership_type import MembershipTypeFactory
 from core.model.profile import Profile
-from repository.membership_repository import MembershipRepository
+from web.repository.membership_repository import MembershipRepository
 
 
 class MembershipService:

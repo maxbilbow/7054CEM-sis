@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum
 
 from core.model.roles import Role
 
@@ -6,10 +6,10 @@ SILVER_POINTS_THRESHOLD = 2
 GOLD_POINTS_THRESHOLD = 5
 
 
-class MembershipType(IntEnum):
-    Smart = 0
-    Silver = 1
-    Gold = 2
+class MembershipType(Enum):
+    Smart = "Smart"
+    Silver = "Silver"
+    Gold = "Gold"
 
 
 class MembershipTypeFactory:
