@@ -1,7 +1,7 @@
 import dataclasses as dataclasses
 from flask import jsonify
 
-from core.model.asdict_factory import custom_asdict_factory
+from core.model import custom_asdict_factory
 from web.flask_app import app
 from web.service.user_profile_service import UserProfileService
 

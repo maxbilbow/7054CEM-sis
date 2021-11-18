@@ -12,3 +12,6 @@ class Membership:
     end_date: date
     type: MembershipType
 
+
+    # benefits: List[Benefit] = field(default_factory=list)
+

@@ -10,12 +10,13 @@ from .roles import Role
 @dataclass(frozen=True, eq=True)
 class Profile:
     user_id: int = field(metadata={"Key": True})
-    points: int
-    role: Role
+    name: str = field(default="")
+    points: int = field(default=0)
+    role: Role = field(default=Role.Member)
 
     # Entities
     membership: Optional[Membership] = field(default=None)
-    benefits: List[Benefit] = field(default_factory=list)
-    insurance_packages: List[InsurancePackage] = field(default_factory=list)
+    # insurance_packages: List[InsurancePackage] = field(default_factory=list)
+
 
 
