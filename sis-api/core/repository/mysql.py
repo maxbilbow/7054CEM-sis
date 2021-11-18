@@ -1,8 +1,31 @@
 import dataclasses
 from typing import Any, Optional, List
 
-from swagger_server import db
-from core.model import custom_asdict_factory
+from mysql import connector
+
+import config
+from core.model import to_dict
+
+_db: connector.connection.MySQLConnection = None
+
+
+def _init() -> connector.connection.MySQLConnection:
+    global _db
+    if _db:
+        return _db
+    _db = connector.connect(
+        host=config.get("db.host"),
+        user=config.get("db.user"),
+        password=config.get("db.password"),
+        port=config.get("db.port"),
+        database=config.get("db.name")
+    )
+    return _db
+
+
+def connect() -> connector.connection.MySQLConnection:
+    _init().connect()
+    return _db
 
 
 def insert(table_name: str,
@@ -11,11 +34,11 @@ def insert(table_name: str,
     if exclude_keys is None:
         exclude_keys = list()
 
-    con = db.connect()
+    con = connect()
     cur = con.cursor()
 
     try:
-        o = dataclasses.asdict(entity, dict_factory=custom_asdict_factory)
+        o = to_dict(entity, use_enum_values=True)
         for ex in exclude_keys:
             del o[ex]
 
@@ -39,17 +62,18 @@ def update_by_pk(table_name: str,
     if exclude_keys is None:
         exclude_keys = list()
 
-    con = db.connect()
+    con = connect()
     cur = con.cursor()
 
     def update_value(name: str) -> str:
         return '{name}=%s'.format(name=name)
 
     try:
-        data = dataclasses.asdict(entity, dict_factory=custom_asdict_factory)
+        data = to_dict(entity, use_enum_values=True)
         del data[pk_name]
         for ex in exclude_keys:
-            del data[ex]
+            if ex in data:
+                del data[ex]
 
         update_values = map(update_value, data.keys())
         qry = "UPDATE {table_name} SET {update_values} WHERE {pk_name}={pk_value}" \
@@ -65,7 +89,7 @@ def update_by_pk(table_name: str,
 
 
 def find_by(table_name: str, key_value: Any, key: str = "id"):
-    con = db.connect()
+    con = connect()
     cur = con.cursor()
     try:
         cur.execute(f"SELECT * FROM `{table_name}` WHERE {key} = '{key_value}'")
@@ -78,7 +102,7 @@ def find_by(table_name: str, key_value: Any, key: str = "id"):
 
 
 def delete_by(table_name: str, key_value: Any, key: str = "id"):
-    con = db.connect()
+    con = connect()
     cur = con.cursor()
     try:
         cur.execute(f"DELETE FROM `{table_name}` WHERE {key} = '{key_value}'")

@@ -237,6 +237,28 @@ paths:
           content: {}
       x-swagger-router-controller: web.controllers.profile_controller
   /user/{user_id}/membership:
+    get:
+      tags:
+      - Membership
+      summary: Get current active membership for user
+      operationId: get_current
+      parameters:
+      - name: user_id
+        in: path
+        description: The id of the user
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Successfully retrived user's Membership
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+        404:
+          description: Active membership does not exist
+          content: {}
     post:
       tags:
       - Membership
@@ -721,6 +743,10 @@ components:
         membership:
           $ref: '#/components/schemas/Membership'
     Membership:
+      required:
+        - start_date
+        - end_date
+        - type
       properties:
         id:
           type: integer

@@ -1,11 +1,7 @@
-import dataclasses
-
 import connexion
 
 from core import model
-from core.model import custom_asdict_factory
 from core.model.profile import Profile
-from core.repository import mysql
 from core.repository.user_profile import UserProfileRepository
 
 

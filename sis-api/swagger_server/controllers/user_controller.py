@@ -2,11 +2,10 @@ import dataclasses
 
 import connexion
 
-from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
 # from swagger_server.models.user import User  # noqa: E501
-from core.model import custom_asdict_factory
 from core.model.user import User
 from core.repository.user import UserRepository
+from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
 
 
 def create_user(body):  # noqa: E501

@@ -1,9 +1,18 @@
-import connexion
-import six
+import dataclasses
+import datetime
 
-from swagger_server.models.benefits import Benefits  # noqa: E501
-from swagger_server.models.membership import Membership  # noqa: E501
-from swagger_server import util
+import connexion
+
+from core.model import to_dict
+from core.model.membership import Membership
+from core.repository.membership import MembershipRepository
+
+
+def get_current(user_id):
+    membership = MembershipRepository.find_by_user_id(user_id)
+    if membership is None:
+        return {}, 404
+    return to_dict(membership)
 
 
 def cancel_membership(user_id):  # noqa: E501
@@ -16,7 +25,10 @@ def cancel_membership(user_id):  # noqa: E501
 
     :rtype: Membership
     """
-    return 'do some magic!'
+    membership = MembershipRepository.find_by_user_id(user_id)
+    membership = dataclasses.replace(membership, end_date=datetime.date.today())
+    membership = MembershipRepository.update_current(user_id, membership)
+    return to_dict(membership)
 
 
 def create_membership(body, user_id):  # noqa: E501
@@ -32,8 +44,12 @@ def create_membership(body, user_id):  # noqa: E501
     :rtype: Membership
     """
     if connexion.request.is_json:
-        body = Membership.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        dict = connexion.request.get_json()
+        dict["user_id"] = user_id
+        dict["id"] = -1
+        membership = Membership(**dict)  # noqa: E501
+        return MembershipRepository.create(user_id, membership.type, membership.start_date, membership.end_date)
+    return 'Hmm...'
 
 
 def get_benefits(user_id):  # noqa: E501
@@ -62,5 +78,11 @@ def update_membership(body, user_id):  # noqa: E501
     :rtype: Membership
     """
     if connexion.request.is_json:
-        body = Membership.from_dict(connexion.request.get_json())  # noqa: E501
+        dict = connexion.request.get_json()
+        dict["user_id"] = user_id
+        dict["id"] = -1
+        membership = Membership(**dict)
+        membership = MembershipRepository.update_current(user_id, membership)
+        return to_dict(membership)
+        # noqa: E501
     return 'do some magic!'

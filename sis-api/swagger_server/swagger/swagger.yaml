@@ -261,6 +261,31 @@ paths:
       x-swagger-router-controller: web.controllers.profile_controller
       x-openapi-router-controller: swagger_server.controllers.user_profile_controller
   /user/{user_id}/membership:
+    get:
+      tags:
+        - Membership
+      summary: Get current active membership for user
+      operationId: get_current
+      parameters:
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successfully retrived user's Membership
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+        404:
+          description: Active membership does not exist
+          content: { }
+      x-openapi-router-controller: swagger_server.controllers.membership_controller
     put:
       tags:
       - Membership
@@ -805,13 +830,14 @@ components:
         user_id: 0
         name: name
         membership:
-          end_date: 2000-01-23
-          user_id: 5
-          id: 1
           type: Smart
           start_date: 2000-01-23
         points: 6
     Membership:
+      required:
+        - start_date
+        - end_date
+        - type
       properties:
         id:
           type: integer
