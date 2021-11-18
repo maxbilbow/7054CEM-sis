@@ -1,9 +1,9 @@
 import connexion
 import six
 
-from swagger_server.models.claim import Claim  # noqa: E501
-from swagger_server.models.claims import Claims  # noqa: E501
-from swagger_server import util
+from api_server.models.claim import Claim  # noqa: E501
+from api_server.models.claims import Claims  # noqa: E501
+from api_server import util
 
 
 def get_for_package(package_id):  # noqa: E501

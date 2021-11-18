@@ -1,8 +1,8 @@
 import connexion
 import six
 
-from swagger_server.models.attachment import Attachment  # noqa: E501
-from swagger_server import util
+from api_server.models.attachment import Attachment  # noqa: E501
+from api_server import util
 
 
 def get_attachment(attachment_id):  # noqa: E501

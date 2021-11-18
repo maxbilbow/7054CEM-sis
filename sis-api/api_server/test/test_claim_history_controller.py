@@ -5,9 +5,9 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from swagger_server.models.claim_history import ClaimHistory  # noqa: E501
-from swagger_server.models.claim_note import ClaimNote  # noqa: E501
-from swagger_server.test import BaseTestCase
+from api_server.models.claim_history import ClaimHistory  # noqa: E501
+from api_server.models.claim_note import ClaimNote  # noqa: E501
+from api_server.test import BaseTestCase
 
 
 class TestClaimHistoryController(BaseTestCase):

@@ -40,7 +40,7 @@ paths:
           description: User doesn't exist for email
           content: {}
       x-swagger-router-controller: web.controllers.user_controller
-      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-openapi-router-controller: api_server.controllers.user_controller
   /user:
     put:
       tags:
@@ -62,7 +62,7 @@ paths:
           content: {}
       x-swagger-router-controller: web.controllers.user_controller
       x-codegen-request-body-name: User
-      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-openapi-router-controller: api_server.controllers.user_controller
     post:
       tags:
       - User
@@ -86,7 +86,7 @@ paths:
           content: {}
       x-swagger-router-controller: web.controllers.user_controller
       x-codegen-request-body-name: User
-      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-openapi-router-controller: api_server.controllers.user_controller
   /user/{user_id}:
     get:
       tags:
@@ -113,7 +113,7 @@ paths:
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.user_controller
-      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-openapi-router-controller: api_server.controllers.user_controller
     delete:
       tags:
       - User
@@ -136,7 +136,7 @@ paths:
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.user_controller
-      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-openapi-router-controller: api_server.controllers.user_controller
   /user/{user_id}/profile:
     get:
       tags:
@@ -163,7 +163,7 @@ paths:
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.profile_controller
-      x-openapi-router-controller: swagger_server.controllers.user_profile_controller
+      x-openapi-router-controller: api_server.controllers.user_profile_controller
     put:
       tags:
       - User Profile
@@ -193,7 +193,7 @@ paths:
           content: {}
       x-swagger-router-controller: web.controllers.profile_controller
       x-codegen-request-body-name: User
-      x-openapi-router-controller: swagger_server.controllers.user_profile_controller
+      x-openapi-router-controller: api_server.controllers.user_profile_controller
     post:
       tags:
       - User Profile
@@ -223,7 +223,7 @@ paths:
           content: {}
       x-swagger-router-controller: web.controllers.profile_controller
       x-codegen-request-body-name: UserProfile
-      x-openapi-router-controller: swagger_server.controllers.user_profile_controller
+      x-openapi-router-controller: api_server.controllers.user_profile_controller
     delete:
       tags:
       - User Profile
@@ -246,7 +246,7 @@ paths:
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.profile_controller
-      x-openapi-router-controller: swagger_server.controllers.user_profile_controller
+      x-openapi-router-controller: api_server.controllers.user_profile_controller
   /user/{user_id}/insurance_package:
     get:
       tags:
@@ -269,7 +269,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InsurancePackages'
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+      x-openapi-router-controller: api_server.controllers.insurance_package_controller
     put:
       tags:
       - Insurance Package
@@ -297,7 +297,7 @@ paths:
           content: {}
       x-swagger-router-controller: web.controllers.insurance_package_controller
       x-codegen-request-body-name: body
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+      x-openapi-router-controller: api_server.controllers.insurance_package_controller
     post:
       tags:
       - Insurance Package
@@ -325,7 +325,7 @@ paths:
           content: {}
       x-swagger-router-controller: web.controllers.insurance_package_controller
       x-codegen-request-body-name: body
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+      x-openapi-router-controller: api_server.controllers.insurance_package_controller
   /user/{user_id}/insurance_package/{package_id}:
     get:
       tags:
@@ -357,7 +357,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/InsurancePackage'
       x-swagger-router-controller: controllers.insurance_package_controller
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+      x-openapi-router-controller: api_server.controllers.insurance_package_controller
     post:
       tags:
       - Claims
@@ -397,7 +397,7 @@ paths:
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_controller
-      x-openapi-router-controller: swagger_server.controllers.claims_controller
+      x-openapi-router-controller: api_server.controllers.claims_controller
     delete:
       tags:
       - Insurance Package
@@ -428,7 +428,7 @@ paths:
           description: Package doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.insurance_package_controller
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+      x-openapi-router-controller: api_server.controllers.insurance_package_controller
   /user/{user_id}/claim:
     get:
       tags:
@@ -455,7 +455,7 @@ paths:
           description: User doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_controller
-      x-openapi-router-controller: swagger_server.controllers.claims_controller
+      x-openapi-router-controller: api_server.controllers.claims_controller
   /package/{package_id}/claim:
     get:
       tags:
@@ -482,7 +482,7 @@ paths:
           description: Package doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_controller
-      x-openapi-router-controller: swagger_server.controllers.claims_controller
+      x-openapi-router-controller: api_server.controllers.claims_controller
   /claim/{claim_id}:
     get:
       tags:
@@ -509,7 +509,7 @@ paths:
           description: Claim doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_controller
-      x-openapi-router-controller: swagger_server.controllers.claims_controller
+      x-openapi-router-controller: api_server.controllers.claims_controller
   /claim/{claim_id}/history:
     get:
       tags:
@@ -536,7 +536,7 @@ paths:
           description: Claim doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_history_controller
-      x-openapi-router-controller: swagger_server.controllers.claim_history_controller
+      x-openapi-router-controller: api_server.controllers.claim_history_controller
     post:
       tags:
       - Claim History
@@ -568,7 +568,7 @@ paths:
           description: Claim item doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_history_controller
-      x-openapi-router-controller: swagger_server.controllers.claim_history_controller
+      x-openapi-router-controller: api_server.controllers.claim_history_controller
   /claim-history/{note_id}:
     get:
       tags:
@@ -595,7 +595,7 @@ paths:
           description: History item doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.claim_history_controller
-      x-openapi-router-controller: swagger_server.controllers.claim_history_controller
+      x-openapi-router-controller: api_server.controllers.claim_history_controller
   /attachments/{attachment_id}:
     get:
       tags:
@@ -622,7 +622,7 @@ paths:
           description: Attachment item doesn't exist
           content: {}
       x-swagger-router-controller: web.controllers.attachment_controller
-      x-openapi-router-controller: swagger_server.controllers.attachments_controller
+      x-openapi-router-controller: api_server.controllers.attachments_controller
 components:
   schemas:
     InsurancePackages:
@@ -659,8 +659,7 @@ components:
         password_hash:
           type: string
       example:
-        id: 1
-        username: bob
+        password_hash: bob
         email: bob@bob.bob
     UserProfile:
       type: object
@@ -839,7 +838,7 @@ components:
     Attachment:
       required:
       - data
-      - mime-type
+      - mime_type
       - name
       properties:
         claim_note_id:

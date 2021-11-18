@@ -5,12 +5,12 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from swagger_server.models.base_model_ import Model
-from swagger_server.models.benefits import Benefits  # noqa: F401,E501
-from swagger_server.models.insurance_packages import InsurancePackages  # noqa: F401,E501
-from swagger_server.models.membership import Membership  # noqa: F401,E501
-from swagger_server.models.role import Role  # noqa: F401,E501
-from swagger_server import util
+from api_server.models.base_model_ import Model
+from api_server.models.benefits import Benefits  # noqa: F401,E501
+from api_server.models.insurance_packages import InsurancePackages  # noqa: F401,E501
+from api_server.models.membership import Membership  # noqa: F401,E501
+from api_server.models.role import Role  # noqa: F401,E501
+from api_server import util
 
 
 class UserProfile(Model):

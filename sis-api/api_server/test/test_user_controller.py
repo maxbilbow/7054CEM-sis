@@ -5,9 +5,9 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
-from swagger_server.models.user import User  # noqa: E501
-from swagger_server.test import BaseTestCase
+from api_server.models.inline_response200 import InlineResponse200  # noqa: E501
+from api_server.models.user import User  # noqa: E501
+from api_server.test import BaseTestCase
 
 
 class TestUserController(BaseTestCase):

@@ -2,6 +2,7 @@ from datetime import date
 from typing import Optional
 
 from dateutil.relativedelta import relativedelta
+from injector import singleton, inject
 
 from core.model.membership import Membership
 from core.model.membership_type import MembershipTypeFactory
@@ -9,9 +10,11 @@ from core.model.profile import Profile
 from web.repository.membership_repository import MembershipRepository
 
 
+@singleton
 class MembershipService:
     __repository: MembershipRepository
 
+    @inject
     def __init__(self, repository: MembershipRepository):
         self.__repository = repository
 

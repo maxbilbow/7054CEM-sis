@@ -1,0 +1,1 @@
+import web.rest.user_profile_controller

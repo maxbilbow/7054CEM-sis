@@ -5,8 +5,8 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from swagger_server.models.attachment import Attachment  # noqa: E501
-from swagger_server.test import BaseTestCase
+from api_server.models.attachment import Attachment  # noqa: E501
+from api_server.test import BaseTestCase
 
 
 class TestAttachmentsController(BaseTestCase):

@@ -2,7 +2,7 @@
 
 import connexion
 
-from swagger_server import encoder
+from api_server import encoder, db
 
 
 def main():

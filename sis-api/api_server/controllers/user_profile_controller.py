@@ -1,8 +1,8 @@
 import connexion
 import six
 
-from swagger_server.models.user_profile import UserProfile  # noqa: E501
-from swagger_server import util
+from api_server.models.user_profile import UserProfile  # noqa: E501
+from api_server import util
 
 
 def create_profile(body, user_id):  # noqa: E501

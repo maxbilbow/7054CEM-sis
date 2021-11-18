@@ -1,9 +1,9 @@
 import connexion
 import six
 
-from swagger_server.models.claim_history import ClaimHistory  # noqa: E501
-from swagger_server.models.claim_note import ClaimNote  # noqa: E501
-from swagger_server import util
+from api_server.models.claim_history import ClaimHistory  # noqa: E501
+from api_server.models.claim_note import ClaimNote  # noqa: E501
+from api_server import util
 
 
 def add_note(body, claim_id):  # noqa: E501

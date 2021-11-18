@@ -5,10 +5,10 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from swagger_server.models.base_model_ import Model
-from swagger_server.models.attachments import Attachments  # noqa: F401,E501
-from swagger_server.models.claim_status import ClaimStatus  # noqa: F401,E501
-from swagger_server import util
+from api_server.models.base_model_ import Model
+from api_server.models.attachments import Attachments  # noqa: F401,E501
+from api_server.models.claim_status import ClaimStatus  # noqa: F401,E501
+from api_server import util
 
 
 class ClaimNote(Model):

@@ -593,8 +593,7 @@ components:
         password_hash:
           type: string
       example:
-        id: 1
-        username: bob
+        password_hash: bob
         email: bob@bob.bob
     UserProfile:
       type: object
@@ -681,7 +680,7 @@ components:
     Attachment:
       required:
         - name
-        - mime-type
+        - mime_type
         - data
       properties:
         claim_note_id:

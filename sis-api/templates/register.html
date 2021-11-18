@@ -1,31 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-    <link rel="stylesheet" href="css/login.css">
-</head>
+{% extends "base.html" %}
+{% block header %}
+<link rel="stylesheet" href="/static/login_css/normalize.css">
+<link rel="stylesheet" href="/static/login_css/styles.css">
+{% endblock %}
+{% block content %}
+<div class="card-wrapper">
 
-<body>
-<form action="login" method="post">
-<!--    <div class="imgcontainer">-->
-<!--        <img src="img_avatar2.png" alt="Avatar" class="avatar">-->
-<!--    </div>-->
+    <div class="card">
 
-    <div class="container">
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Username" name="email" required>
+        <h1 class="center">Create an Account</h1>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
+        <form name="signup_form" id="fts-signup">
 
-        <button type="submit">Login</button>
+            <label for="email">Email</label>
+            <input type="email" name="email" class="field" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" class="field" required>
+
+            <p class="error error--hidden"></p>
+
+            <input type="submit" value="Sign Up" class="btn">
+
+        </form>
+        <a href="/login">Log in</a>
+
     </div>
 
-    <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn">Cancel</button>
-        <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
-</form>
-</body>
-</html>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+<script src="/static/login_js/jquery.js"></script>
+<script src="/static/login_js/scripts.js"></script>
+{% endblock %}

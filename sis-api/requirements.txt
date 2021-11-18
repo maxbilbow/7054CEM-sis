@@ -1,8 +1,13 @@
 connexion
-flask
+requests #==2.26.0
+# flask==1.1.4
+flask-api
 flask-injector
+flask-migrate
+flask-script
+flask-mysql
 connexion[swagger-ui]
-flask_testing==0.6.1
+# flask_testing==0.6.1
 coverage>=4.0.3
 nose>=1.3.7
 pluggy>=0.3.1
@@ -14,3 +19,4 @@ pyhamcrest
 encoder
 passlib
 pyyaml
+mysql-connector-python
