@@ -6,7 +6,7 @@ from passlib.hash import pbkdf2_sha256
 
 from core.model.user import User
 from web.repository.user_repository import UserRepository
-from web.app_errors import AuthError
+from web.exceptions import AuthError
 
 
 @singleton

@@ -6,26 +6,26 @@ from mysql import connector
 import config
 from core.model import to_dict
 
-_db: connector.connection.MySQLConnection = None
+# _db: connector.connection.MySQLConnection = None
 
 
 def _init() -> connector.connection.MySQLConnection:
-    global _db
-    if _db:
-        return _db
-    _db = connector.connect(
+    # global _db
+    # if _db:
+    #     return _db
+    return connector.connect(
         host=config.get("db.host"),
         user=config.get("db.user"),
         password=config.get("db.password"),
         port=config.get("db.port"),
         database=config.get("db.name")
     )
-    return _db
 
 
 def connect() -> connector.connection.MySQLConnection:
-    _init().connect()
-    return _db
+    con = _init()
+    con.connect()
+    return con
 
 
 def insert(table_name: str,

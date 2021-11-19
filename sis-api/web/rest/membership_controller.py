@@ -1,10 +1,9 @@
-from flask import jsonify, request
+from flask import jsonify, request, current_app as app
 from flask_api import status
 
 from core.model import to_dict, to_date
-from core.model.membership_type import MembershipTypeFactory, MembershipType
-from web.app_errors import BadRequest
-from web.flask_app import app
+from core.model.membership_type import MembershipType, get_membership_type
+from web.exceptions import BadRequest
 from web.service.membership_service import MembershipService
 from web.service.user_profile_service import UserProfileService
 
@@ -45,7 +44,7 @@ def update_membership(membership_service: MembershipService):
 def cancel_membership(membership_service: MembershipService):
     try:
         membership = membership_service.cancel_membership()
-        return jsonify(to_dict(membership) if membership else {}), status.HTTP_202_ACCEPTED
+        return jsonify(to_dict(membership) if membership else None), status.HTTP_202_ACCEPTED
     except BadRequest as be:
         return str(be), status.HTTP_400_BAD_REQUEST
 
@@ -53,4 +52,4 @@ def cancel_membership(membership_service: MembershipService):
 @app.route("/api/membership/get_eligible_type", methods=["GET"])
 def get_eligible_type(profile_service: UserProfileService):
     profile = profile_service.get_profile()
-    return MembershipTypeFactory.get_membership_type(role=profile.role, points=profile.points).name, status.HTTP_200_OK
+    return get_membership_type(role=profile.role, points=profile.points).name, status.HTTP_200_OK

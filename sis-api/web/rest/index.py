@@ -1,6 +1,5 @@
-from flask import render_template
+from flask import render_template, current_app as app
 
-from web.flask_app import app
 from web.rest.decorators import login_required
 
 

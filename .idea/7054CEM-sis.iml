@@ -15,7 +15,7 @@
     <option name="TEMPLATE_CONFIGURATION" value="Web2Py" />
     <option name="TEMPLATE_FOLDERS">
       <list>
-        <option value="$MODULE_DIR$/sis-api/templates" />
+        <option value="$MODULE_DIR$/sis-api/web/templates" />
       </list>
     </option>
   </component>

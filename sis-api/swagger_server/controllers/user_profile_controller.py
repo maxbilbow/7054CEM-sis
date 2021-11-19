@@ -1,4 +1,5 @@
 import connexion
+from flask_api import status
 
 from core import model
 from core.model.profile import Profile
@@ -39,7 +40,7 @@ def get_profile(user_id):  # noqa: E501
     """
     profile = UserProfileRepository.find_by_user_id(user_id)
     if profile is None:
-        return "Profile not found", 404
+        return "Profile not found", status.HTTP_204_NO_CONTENT
     return model.to_dict(profile)
 
 

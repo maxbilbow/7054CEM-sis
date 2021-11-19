@@ -4,11 +4,11 @@ from behave import given, when, then
 from hamcrest import *
 
 from core.model.membership import Membership
-from core.model.membership_type import MembershipType, MembershipTypeFactory
+from core.model.membership_type import MembershipType, get_membership_type
 from core.model.profile import Profile
 from core.model.roles import Role
-from repository.membership_repository import MembershipRepository
-from service.membership_service import MembershipService
+from core.repository.membership import MembershipRepository
+from web.service.membership_service import MembershipService
 
 
 @given("a start date of {start_date}")
@@ -87,7 +87,7 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    context.membership_status = MembershipTypeFactory.get_membership_type(context.role, context.points)
+    context.membership_status = get_membership_type(context.role, context.points)
 
 
 @then("their membership status will be {membership_type}")

@@ -10,7 +10,7 @@ import {MembershipService} from "./membership.service";
 export class MyMembershipComponent implements OnInit {
 
   membership?: Membership
-  endDate = new Date();
+  endDate = new Date().toISOString().split('T')[0];
   eligibleType = ""
 
   constructor(private readonly membershipService: MembershipService) {

@@ -1,12 +1,13 @@
 # AuthenticationController.py
-from web.flask_app import app
-from flask import request, render_template, jsonify, redirect
+import logging
+
+from flask import request, render_template, jsonify, redirect, current_app as app
 from flask_api import status
 from injector import inject
-from web.service.auth_service import AuthService
-from web.app_errors import AuthError
-import logging
+
+from web.exceptions import AuthError
 from web.rest.decorators import logout_required, login_required
+from web.service.auth_service import AuthService
 
 
 @inject
@@ -30,7 +31,7 @@ def get_login_page():
 
 
 @app.route("/register")
-# @logout_required
+@logout_required
 def get_register_page():
     return render_template("register.html")
 

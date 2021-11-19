@@ -1,3 +1,4 @@
+from flask_api import status
 from injector import singleton
 
 import config
@@ -7,11 +8,12 @@ URL = config.get("api.path")
 
 
 def _json(response):
-    if response.status_code == 404:
+    if response.status_code == status.HTTP_204_NO_CONTENT:
         return None
     if response.status_code < 200 or response.status_code >= 300:
         raise Exception(response.status_code, response.text)
-    return response.json()
+    else:
+        return response.json()
 
 
 @singleton

@@ -2,6 +2,7 @@ import dataclasses
 import datetime
 
 import connexion
+from flask_api import status
 
 from core.model import to_dict
 from core.model.membership import Membership
@@ -11,7 +12,7 @@ from core.repository.membership import MembershipRepository
 def get_current(user_id):
     membership = MembershipRepository.find_by_user_id(user_id)
     if membership is None:
-        return {}, 404
+        return {}, status.HTTP_204_NO_CONTENT
     return to_dict(membership)
 
 
@@ -29,7 +30,7 @@ def cancel_membership(user_id):  # noqa: E501
     membership = dataclasses.replace(membership, end_date=datetime.date.today())
     if membership.start_date == membership.end_date:
         MembershipRepository.delete(membership)
-        return None
+        return {}, status.HTTP_204_NO_CONTENT
     else:
         membership = MembershipRepository.update_current(user_id, membership)
         return to_dict(membership)
@@ -51,7 +52,7 @@ def create_membership(body, user_id):  # noqa: E501
         dict = connexion.request.get_json()
         dict["user_id"] = user_id
         dict["id"] = -1
-        membership = Membership(**dict)  # noqa: E501
+        membership = Membership.from_dict(dict)  # noqa: E501
         return MembershipRepository.create(user_id, membership.type, membership.start_date, membership.end_date)
     return 'Hmm...'
 
@@ -85,8 +86,10 @@ def update_membership(body, user_id):  # noqa: E501
         dict = connexion.request.get_json()
         dict["user_id"] = user_id
         dict["id"] = -1
-        membership = Membership(**dict)
+        membership = Membership.from_dict(dict)
         membership = MembershipRepository.update_current(user_id, membership)
+        if membership is None:
+            return {}, status.HTTP_204_NO_CONTENT
         return to_dict(membership)
         # noqa: E501
     return 'do some magic!'

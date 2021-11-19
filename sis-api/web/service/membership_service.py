@@ -5,9 +5,8 @@ from typing import Optional
 from injector import singleton, inject
 
 from core.model.membership import Membership
-from core.model.membership_type import MembershipType, MembershipTypeFactory
-from core.model.profile import Profile
-from web.app_errors import BadRequest
+from core.model.membership_type import MembershipType, get_membership_type
+from web.exceptions import BadRequest
 from web.repository.membership_repository import MembershipRepository
 from web.repository.profile_repository import ProfileRepository
 from web.service.auth_service import AuthService
@@ -65,4 +64,4 @@ class MembershipService:
     def get_eligible_membership_type(self):
         user_id = AuthService.get_user_id()
         profile = self.__profile.get(user_id)
-        return MembershipTypeFactory.get_membership_type(role=profile.role, points=profile.points)
+        return get_membership_type(role=profile.role, points=profile.points)

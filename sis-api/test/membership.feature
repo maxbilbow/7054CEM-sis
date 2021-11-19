@@ -30,3 +30,12 @@ Feature: Membership model determined properties
       | Member  | 3      | Silver |
       | Member  | 4      | Silver |
       | Member  | 5      | Gold   |
+
+
+  Scenario Outline: Date Formatting
+    Given a membership is created with date <date_string>
+    When a serialized membership is requested
+    Then the dates are converted to ISO date format <date_string>
+    Examples:
+      | date_string |
+      | 2022-11-11  |
