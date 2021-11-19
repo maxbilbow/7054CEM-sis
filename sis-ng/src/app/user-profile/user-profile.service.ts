@@ -7,19 +7,20 @@ import {UserProfile} from "./user-profile";
 })
 export class UserProfileService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   fetchProfile(): Promise<UserProfile> {
     return new Promise<UserProfile>((resolve, reject) =>
       this.httpClient.get<UserProfile>("api/profile")
-        .subscribe(next => resolve(next))
+        .subscribe({next: resolve, error: reject})
     );
   }
 
   updateProfile(profile: UserProfile) {
     return new Promise<UserProfile>((resolve, reject) =>
       this.httpClient.post<UserProfile>("api/profile", profile)
-        .subscribe(next => resolve(next))
+        .subscribe({next: resolve, error: reject})
     );
   }
 }

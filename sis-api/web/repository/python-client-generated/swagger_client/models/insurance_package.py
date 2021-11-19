@@ -44,7 +44,7 @@ class InsurancePackage(object):
     }
 
     def __init__(self, id=None, user_id=None, type=None, start_date=None, end_date=None):  # noqa: E501
-        """InsurancePackage - a model defined in Swagger"""  # noqa: E501
+        """InsurancePolicy - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._user_id = None
         self._type = None
@@ -64,20 +64,20 @@ class InsurancePackage(object):
 
     @property
     def id(self):
-        """Gets the id of this InsurancePackage.  # noqa: E501
+        """Gets the id of this InsurancePolicy.  # noqa: E501
 
 
-        :return: The id of this InsurancePackage.  # noqa: E501
+        :return: The id of this InsurancePolicy.  # noqa: E501
         :rtype: int
         """
         return self._id
 
     @id.setter
     def id(self, id):
-        """Sets the id of this InsurancePackage.
+        """Sets the id of this InsurancePolicy.
 
 
-        :param id: The id of this InsurancePackage.  # noqa: E501
+        :param id: The id of this InsurancePolicy.  # noqa: E501
         :type: int
         """
 
@@ -85,20 +85,20 @@ class InsurancePackage(object):
 
     @property
     def user_id(self):
-        """Gets the user_id of this InsurancePackage.  # noqa: E501
+        """Gets the user_id of this InsurancePolicy.  # noqa: E501
 
 
-        :return: The user_id of this InsurancePackage.  # noqa: E501
+        :return: The user_id of this InsurancePolicy.  # noqa: E501
         :rtype: int
         """
         return self._user_id
 
     @user_id.setter
     def user_id(self, user_id):
-        """Sets the user_id of this InsurancePackage.
+        """Sets the user_id of this InsurancePolicy.
 
 
-        :param user_id: The user_id of this InsurancePackage.  # noqa: E501
+        :param user_id: The user_id of this InsurancePolicy.  # noqa: E501
         :type: int
         """
 
@@ -106,20 +106,20 @@ class InsurancePackage(object):
 
     @property
     def type(self):
-        """Gets the type of this InsurancePackage.  # noqa: E501
+        """Gets the type of this InsurancePolicy.  # noqa: E501
 
 
-        :return: The type of this InsurancePackage.  # noqa: E501
+        :return: The type of this InsurancePolicy.  # noqa: E501
         :rtype: InsurancePackageType
         """
         return self._type
 
     @type.setter
     def type(self, type):
-        """Sets the type of this InsurancePackage.
+        """Sets the type of this InsurancePolicy.
 
 
-        :param type: The type of this InsurancePackage.  # noqa: E501
+        :param type: The type of this InsurancePolicy.  # noqa: E501
         :type: InsurancePackageType
         """
 
@@ -127,20 +127,20 @@ class InsurancePackage(object):
 
     @property
     def start_date(self):
-        """Gets the start_date of this InsurancePackage.  # noqa: E501
+        """Gets the start_date of this InsurancePolicy.  # noqa: E501
 
 
-        :return: The start_date of this InsurancePackage.  # noqa: E501
+        :return: The start_date of this InsurancePolicy.  # noqa: E501
         :rtype: date
         """
         return self._start_date
 
     @start_date.setter
     def start_date(self, start_date):
-        """Sets the start_date of this InsurancePackage.
+        """Sets the start_date of this InsurancePolicy.
 
 
-        :param start_date: The start_date of this InsurancePackage.  # noqa: E501
+        :param start_date: The start_date of this InsurancePolicy.  # noqa: E501
         :type: date
         """
 
@@ -148,20 +148,20 @@ class InsurancePackage(object):
 
     @property
     def end_date(self):
-        """Gets the end_date of this InsurancePackage.  # noqa: E501
+        """Gets the end_date of this InsurancePolicy.  # noqa: E501
 
 
-        :return: The end_date of this InsurancePackage.  # noqa: E501
+        :return: The end_date of this InsurancePolicy.  # noqa: E501
         :rtype: date
         """
         return self._end_date
 
     @end_date.setter
     def end_date(self, end_date):
-        """Sets the end_date of this InsurancePackage.
+        """Sets the end_date of this InsurancePolicy.
 
 
-        :param end_date: The end_date of this InsurancePackage.  # noqa: E501
+        :param end_date: The end_date of this InsurancePolicy.  # noqa: E501
         :type: date
         """
 

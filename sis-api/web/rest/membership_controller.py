@@ -23,7 +23,9 @@ def get_membership(membership_service: MembershipService):
 def create_membership(membership_service: MembershipService):
     try:
         end_date = to_date(request.json["end_date"])
-        membership = membership_service.new_membership(end_date)
+        start_date = to_date(request.json["end_date"])
+        membership_type = MembershipType[request.json["type"]] if "type" in request.json else None
+        membership = membership_service.new_membership(end_date, start_date, membership_type)
         return jsonify(to_dict(membership)), status.HTTP_201_CREATED
     except BadRequest as be:
         return str(be), status.HTTP_400_BAD_REQUEST
@@ -32,9 +34,10 @@ def create_membership(membership_service: MembershipService):
 @app.route("/api/membership", methods=["PUT"])
 def update_membership(membership_service: MembershipService):
     try:
+        start_date = to_date(request.json["start_date"])
         end_date = to_date(request.json["end_date"])
         membership_type = MembershipType[request.json["type"]]
-        membership = membership_service.update_membership(end_date, membership_type)
+        membership = membership_service.update_membership(start_date, end_date, membership_type)
         return jsonify(to_dict(membership)), status.HTTP_202_ACCEPTED
     except BadRequest as be:
         return str(be), status.HTTP_400_BAD_REQUEST

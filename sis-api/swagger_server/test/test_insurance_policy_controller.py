@@ -5,20 +5,20 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from swagger_server.models.insurance_package import InsurancePackage  # noqa: E501
-from swagger_server.models.insurance_packages import InsurancePackages  # noqa: E501
+from swagger_server.models.insurance_policies import InsurancePolicies  # noqa: E501
+from swagger_server.models.insurance_policy import InsurancePolicy  # noqa: E501
 from swagger_server.test import BaseTestCase
 
 
-class TestInsurancePackageController(BaseTestCase):
-    """InsurancePackageController integration test stubs"""
+class TestInsurancePolicyController(BaseTestCase):
+    """InsurancePolicyController integration test stubs"""
 
     def test_create_package(self):
         """Test case for create_package
 
         Create new package
         """
-        body = InsurancePackage()
+        body = InsurancePolicy()
         response = self.client.open(
             '/user/{user_id}/insurance_package'.format(user_id=56),
             method='POST',
@@ -65,7 +65,7 @@ class TestInsurancePackageController(BaseTestCase):
 
         Update package
         """
-        body = InsurancePackage()
+        body = InsurancePolicy()
         response = self.client.open(
             '/user/{user_id}/insurance_package'.format(user_id=56),
             method='PUT',

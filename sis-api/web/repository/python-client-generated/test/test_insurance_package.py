@@ -20,7 +20,7 @@ from swagger_client.rest import ApiException
 
 
 class TestInsurancePackage(unittest.TestCase):
-    """InsurancePackage unit test stubs"""
+    """InsurancePolicy unit test stubs"""
 
     def setUp(self):
         pass
@@ -29,9 +29,9 @@ class TestInsurancePackage(unittest.TestCase):
         pass
 
     def testInsurancePackage(self):
-        """Test InsurancePackage"""
+        """Test InsurancePolicy"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.insurance_package.InsurancePackage()  # noqa: E501
+        # model = swagger_client.models.insurance_package.InsurancePolicy()  # noqa: E501
         pass
 
 

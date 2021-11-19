@@ -9,7 +9,7 @@ tags:
 - name: User
 - name: User Profile
 - name: Membership
-- name: Insurance Package
+- name: Insurance Policy
 - name: Claims
 - name: Claim History
 - name: Attachments
@@ -417,10 +417,10 @@ paths:
           description: User doesn't exist
           content: {}
       x-openapi-router-controller: swagger_server.controllers.membership_controller
-  /user/{user_id}/insurance_package:
+  /user/{user_id}/insurance_policy:
     get:
       tags:
-      - Insurance Package
+      - Insurance Policy
       summary: Get active packages
       operationId: get_active
       parameters:
@@ -434,15 +434,15 @@ paths:
           type: integer
       responses:
         "200":
-          description: Retrieves all insurance packages for the user
+          description: Retrieves all insurance Policys for the user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InsurancePackages'
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+                $ref: '#/components/schemas/InsurancePolicies'
+      x-openapi-router-controller: swagger_server.controllers.insurance_policy_controller
     put:
       tags:
-      - Insurance Package
+      - Insurance Policy
       summary: Update package
       operationId: update
       parameters:
@@ -459,18 +459,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InsurancePackage'
+              $ref: '#/components/schemas/InsurancePolicy'
         required: true
       responses:
         "201":
           description: Package Created
           content: {}
-      x-swagger-router-controller: web.controllers.insurance_package_controller
       x-codegen-request-body-name: body
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+      x-openapi-router-controller: swagger_server.controllers.insurance_policy_controller
     post:
       tags:
-      - Insurance Package
+      - Insurance Policy
       summary: Create new package
       operationId: create_package
       parameters:
@@ -487,19 +486,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InsurancePackage'
+              $ref: '#/components/schemas/InsurancePolicy'
         required: true
       responses:
         "201":
           description: Package Created
           content: {}
-      x-swagger-router-controller: web.controllers.insurance_package_controller
       x-codegen-request-body-name: body
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
-  /user/{user_id}/insurance_package/{package_id}:
+      x-openapi-router-controller: swagger_server.controllers.insurance_policy_controller
+  /user/{user_id}/insurance_policy/{package_id}:
     get:
       tags:
-      - Insurance Package
+      - Insurance Policy
       summary: Gets all packages for a user
       operationId: get_all
       parameters:
@@ -513,7 +511,7 @@ paths:
           type: integer
       - name: package_id
         in: path
-        description: The id of the insurance package
+        description: The id of the insurance Policy
         required: true
         style: simple
         explode: false
@@ -525,9 +523,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InsurancePackage'
-      x-swagger-router-controller: controllers.insurance_package_controller
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+                $ref: '#/components/schemas/InsurancePolicy'
+      x-openapi-router-controller: swagger_server.controllers.insurance_policy_controller
     post:
       tags:
       - Claims
@@ -570,7 +567,7 @@ paths:
       x-openapi-router-controller: swagger_server.controllers.claims_controller
     delete:
       tags:
-      - Insurance Package
+      - Insurance Policy
       summary: Delete application
       operationId: delete_package
       parameters:
@@ -584,7 +581,7 @@ paths:
           type: integer
       - name: package_id
         in: path
-        description: The id of the insurance package
+        description: The id of the insurance Policy
         required: true
         style: simple
         explode: false
@@ -597,8 +594,7 @@ paths:
         "404":
           description: Package doesn't exist
           content: {}
-      x-swagger-router-controller: web.controllers.insurance_package_controller
-      x-openapi-router-controller: swagger_server.controllers.insurance_package_controller
+      x-openapi-router-controller: swagger_server.controllers.insurance_policy_controller
   /user/{user_id}/claim:
     get:
       tags:
@@ -795,10 +791,10 @@ paths:
       x-openapi-router-controller: swagger_server.controllers.attachments_controller
 components:
   schemas:
-    InsurancePackages:
+    InsurancePolicies:
       type: array
       items:
-        $ref: '#/components/schemas/InsurancePackage'
+        $ref: '#/components/schemas/InsurancePolicy'
     Benefits:
       type: array
       items:
@@ -856,9 +852,9 @@ components:
         points: 6
     Membership:
       required:
-      - end_date
-      - start_date
-      - type
+        - start_date
+        - end_date
+        - type
       properties:
         id:
           type: integer
@@ -878,7 +874,7 @@ components:
         id: 1
         type: Smart
         start_date: 2000-01-23
-    InsurancePackage:
+    InsurancePolicy:
       properties:
         id:
           type: integer

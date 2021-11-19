@@ -3,18 +3,18 @@ import dataclasses
 from injector import singleton, inject
 
 from core.model.profile import Profile
-from web.repository.membership_repository import MembershipRepository
 from web.repository.profile_repository import ProfileRepository
 from web.service.auth_service import AuthService
+from web.service.membership_service import MembershipService
 
 
 @singleton
 class UserProfileService:
     __profile: ProfileRepository
-    __membership: MembershipRepository
+    __membership: MembershipService
 
     @inject
-    def __init__(self, profile_repository: ProfileRepository, membership_repository: MembershipRepository):
+    def __init__(self, profile_repository: ProfileRepository, membership_repository: MembershipService):
         self.__profile = profile_repository
         self.__membership = membership_repository
 
@@ -24,7 +24,7 @@ class UserProfileService:
         if not profile:
             return Profile()
 
-        membership = self.__membership.find_by_userid(user_id)
+        membership = self.__membership.get()
         return dataclasses.replace(profile, membership=membership)
 
     def update_profile(self, profile: Profile) -> Profile:

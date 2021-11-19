@@ -16,6 +16,7 @@ Method | HTTP request | Description
 Create new package
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
@@ -25,8 +26,8 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.InsurancePackageApi()
-body = swagger_client.InsurancePackage() # InsurancePackage | Package to create
-user_id = 56 # int | The id of the user
+body = swagger_client.InsurancePolicy()  # InsurancePolicy | Package to create
+user_id = 56  # int | The id of the user
 
 try:
     # Create new package
@@ -39,7 +40,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**InsurancePackage**](InsurancePackage.md)| Package to create | 
+ **body** | [**InsurancePolicy**](InsurancePackage.md)| Package to create | 
  **user_id** | **int**| The id of the user | 
 
 ### Return type
@@ -151,7 +152,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_all**
-> InsurancePackage get_all(user_id, package_id)
+> InsurancePolicy get_all(user_id, package_id)
 
 Gets all packages for a user
 
@@ -185,7 +186,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InsurancePackage**](InsurancePackage.md)
+[**InsurancePolicy**](InsurancePackage.md)
 
 ### Authorization
 
@@ -214,7 +215,7 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.InsurancePackageApi()
-body = swagger_client.InsurancePackage()  # InsurancePackage | Package to create
+body = swagger_client.InsurancePolicy()  # InsurancePolicy | Package to create
 user_id = 56  # int | The id of the user
 
 try:
@@ -228,7 +229,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**InsurancePackage**](InsurancePackage.md)| Package to create | 
+ **body** | [**InsurancePolicy**](InsurancePackage.md)| Package to create | 
  **user_id** | **int**| The id of the user | 
 
 ### Return type

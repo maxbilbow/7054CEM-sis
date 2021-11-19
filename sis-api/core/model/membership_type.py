@@ -11,6 +11,18 @@ class MembershipType(IntEnum):
     Silver = 1
     Gold = 2
 
+    def __gt__(self, other):
+        return self.value > other.value
+
+    def __ge__(self, other):
+        return self.value >= other.value
+
+    def __lt__(self, other):
+        return self.value < other.value
+
+    def __le__(self, other):
+        return self.value <= other.value
+
 
 def get_membership_type(role: Role, points: int) -> MembershipType:
     if role is Role.Advisor:

@@ -24,6 +24,7 @@ class Membership:
     def from_dict(cls, args: dict):
         args["start_date"] = to_date(args["start_date"])
         args["end_date"] = to_date(args["end_date"])
+        args["type"] = MembershipType[args["type"]]
         return cls(**args)
 
 

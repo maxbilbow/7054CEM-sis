@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional, List
 
 from .benefit import Benefit
-from .insurance_package import InsurancePackage
+from .insurance_policy import InsurancePolicy
 from .membership import Membership
 from .roles import Role
 
@@ -16,7 +16,7 @@ class Profile:
 
     # Entities
     membership: Optional[Membership] = field(default=None)
-    # insurance_packages: List[InsurancePackage] = field(default_factory=list)
+    # insurance_packages: List[InsurancePolicy] = field(default_factory=list)
 
 
 

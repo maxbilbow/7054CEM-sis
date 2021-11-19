@@ -1,4 +1,4 @@
-# InsurancePackage
+# InsurancePolicy
 
 ## Properties
 Name | Type | Description | Notes

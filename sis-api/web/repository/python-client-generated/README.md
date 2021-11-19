@@ -104,7 +104,7 @@ Class | Method | HTTP request | Description
  - [ClaimStatus](docs/ClaimStatus.md)
  - [Claims](docs/Claims.md)
  - [InlineResponse200](docs/InlineResponse200.md)
- - [InsurancePackage](docs/InsurancePackage.md)
+ - [InsurancePolicy](docs/InsurancePackage.md)
  - [InsurancePackageType](docs/InsurancePackageType.md)
  - [InsurancePackages](docs/InsurancePackages.md)
  - [Membership](docs/Membership.md)

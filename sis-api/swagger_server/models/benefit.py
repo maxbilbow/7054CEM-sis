@@ -15,30 +15,30 @@ class Benefit(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, name: str=None, min_status: MembershipType=None, max_status: MembershipType=None):  # noqa: E501
+    def __init__(self, name: str=None, min_membership: MembershipType=None, max_membership: MembershipType=None):  # noqa: E501
         """Benefit - a model defined in Swagger
 
         :param name: The name of this Benefit.  # noqa: E501
         :type name: str
-        :param min_status: The min_status of this Benefit.  # noqa: E501
-        :type min_status: MembershipType
-        :param max_status: The max_status of this Benefit.  # noqa: E501
-        :type max_status: MembershipType
+        :param min_membership: The min_membership of this Benefit.  # noqa: E501
+        :type min_membership: MembershipType
+        :param max_membership: The max_membership of this Benefit.  # noqa: E501
+        :type max_membership: MembershipType
         """
         self.swagger_types = {
             'name': str,
-            'min_status': MembershipType,
-            'max_status': MembershipType
+            'min_membership': MembershipType,
+            'max_membership': MembershipType
         }
 
         self.attribute_map = {
             'name': 'name',
-            'min_status': 'min_status',
-            'max_status': 'max_status'
+            'min_membership': 'min_membership',
+            'max_membership': 'max_membership'
         }
         self._name = name
-        self._min_status = min_status
-        self._max_status = max_status
+        self._min_membership = min_membership
+        self._max_membership = max_membership
 
     @classmethod
     def from_dict(cls, dikt) -> 'Benefit':
@@ -69,47 +69,51 @@ class Benefit(Model):
         :param name: The name of this Benefit.
         :type name: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
     @property
-    def min_status(self) -> MembershipType:
-        """Gets the min_status of this Benefit.
+    def min_membership(self) -> MembershipType:
+        """Gets the min_membership of this Benefit.
 
 
-        :return: The min_status of this Benefit.
+        :return: The min_membership of this Benefit.
         :rtype: MembershipType
         """
-        return self._min_status
+        return self._min_membership
 
-    @min_status.setter
-    def min_status(self, min_status: MembershipType):
-        """Sets the min_status of this Benefit.
+    @min_membership.setter
+    def min_membership(self, min_membership: MembershipType):
+        """Sets the min_membership of this Benefit.
 
 
-        :param min_status: The min_status of this Benefit.
-        :type min_status: MembershipType
+        :param min_membership: The min_membership of this Benefit.
+        :type min_membership: MembershipType
         """
+        if min_membership is None:
+            raise ValueError("Invalid value for `min_membership`, must not be `None`")  # noqa: E501
 
-        self._min_status = min_status
+        self._min_membership = min_membership
 
     @property
-    def max_status(self) -> MembershipType:
-        """Gets the max_status of this Benefit.
+    def max_membership(self) -> MembershipType:
+        """Gets the max_membership of this Benefit.
 
 
-        :return: The max_status of this Benefit.
+        :return: The max_membership of this Benefit.
         :rtype: MembershipType
         """
-        return self._max_status
+        return self._max_membership
 
-    @max_status.setter
-    def max_status(self, max_status: MembershipType):
-        """Sets the max_status of this Benefit.
+    @max_membership.setter
+    def max_membership(self, max_membership: MembershipType):
+        """Sets the max_membership of this Benefit.
 
 
-        :param max_status: The max_status of this Benefit.
-        :type max_status: MembershipType
+        :param max_membership: The max_membership of this Benefit.
+        :type max_membership: MembershipType
         """
 
-        self._max_status = max_status
+        self._max_membership = max_membership

@@ -1,67 +1,48 @@
-import dataclasses
 from datetime import date
 from typing import Optional
 
 from injector import singleton, inject
 
 from core.model.membership import Membership
-from core.model.membership_type import MembershipType, get_membership_type
-from web.exceptions import BadRequest
-from web.repository.membership_repository import MembershipRepository
-from web.repository.profile_repository import ProfileRepository
+from core.model.membership_type import MembershipType
+from web.repository.api import Api
 from web.service.auth_service import AuthService
 
 
 @singleton
 class MembershipService:
-    __membership: MembershipRepository
-    __profile: ProfileRepository
+    __api: Api
 
     @inject
-    def __init__(self, membership_repository: MembershipRepository, profile_repository: ProfileRepository):
-        self.__membership = membership_repository
-        self.__profile = profile_repository
+    def __init__(self, api: Api):
+        self.__api = api
 
-    def get(self) -> Membership:
+    def get(self, ) -> Optional[Membership]:
         user_id = AuthService.get_user_id()
-        return self.__membership.find_by_userid(user_id)
+        res = self.__api.get(f"/user/{user_id}/membership")
+        return Membership.from_dict(res) if res else None
 
-    def new_membership(self,
-                       end_date: date) -> Membership:
-        current_membership = self.get()
-        if current_membership is not None:
-            raise BadRequest("Cannot create new membership when current one is active")
-
-        if end_date <= date.today():
-            raise BadRequest("end_date must be in the future")
-
+    def update_membership(self, start_date: date, end_date: date,
+                          membership_type: MembershipType) -> Optional[Membership]:
         user_id = AuthService.get_user_id()
-        membership = Membership(id=-1, user_id=user_id, start_date=date.today(), end_date=end_date,
-                                type=self.get_eligible_membership_type())
-        self.__membership.create(user_id, membership)
-        return self.get()
+        res = self.__api.put(f"/user/{user_id}/membership", json={
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
+            "type": membership_type.name
+        })
+        return Membership.from_dict(res)
 
-    def update_membership(self, end_date: Optional[date] = None, membership_type: Optional[MembershipType] = None):
-        membership = self.get()
-        if end_date is not None:
-            if end_date < date.today() or end_date < membership.start_date:
-                raise BadRequest("New end_date is invalid")
-            membership = dataclasses.replace(membership, end_date=end_date)
-
-        if membership_type is not None:
-            eligible_type = self.get_eligible_membership_type()
-            if membership_type < eligible_type:
-                raise BadRequest(f"User is not eligible for {membership_type.name} membership")
-            membership = dataclasses.replace(membership, type=membership_type)
-
+    def new_membership(self, end_date: date, start_date: Optional[date],
+                       membership_type: Optional[MembershipType]) -> Optional[Membership]:
         user_id = AuthService.get_user_id()
-        return self.__membership.update(user_id, membership)
+        res = self.__api.post(f"/user/{user_id}/membership", json={
+            "start_date": start_date.isoformat() if start_date else date.today(),
+            "end_date": end_date.isoformat(),
+            "type": membership_type.name if membership_type else MembershipType.Smart.name
+        })
+        return Membership.from_dict(res)
 
-    def cancel_membership(self):
+    def cancel_membership(self) -> Optional[Membership]:
         user_id = AuthService.get_user_id()
-        return self.__membership.cancel(user_id)
-
-    def get_eligible_membership_type(self):
-        user_id = AuthService.get_user_id()
-        profile = self.__profile.get(user_id)
-        return get_membership_type(role=profile.role, points=profile.points)
+        res = self.__api.delete(f"/user/{user_id}/membership")
+        return None if not res else Membership.from_dict(res)

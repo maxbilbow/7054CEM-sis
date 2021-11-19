@@ -9,7 +9,7 @@ tags:
 - name: User
 - name: User Profile
 - name: Membership
-- name: Insurance Package
+- name: Insurance Policy
 - name: Claims
 - name: Claim History
 - name: Attachments
@@ -376,10 +376,10 @@ paths:
         404:
           description: User doesn't exist
           content: {}
-  /user/{user_id}/insurance_package:
+  /user/{user_id}/insurance_policy:
     get:
       tags:
-        - Insurance Package
+        - Insurance Policy
       summary: Get active packages
       operationId: get_active
       parameters:
@@ -391,14 +391,14 @@ paths:
            type: integer
       responses:
         200:
-          description: Retrieves all insurance packages for the user
+          description: Retrieves all insurance Policys for the user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InsurancePackages'
+                $ref: '#/components/schemas/InsurancePolicies'
     post:
       tags:
-        - Insurance Package
+        - Insurance Policy
       summary: Create new package
       operationId: create_package
       parameters:
@@ -413,17 +413,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InsurancePackage'
+              $ref: '#/components/schemas/InsurancePolicy'
         required: true
       responses:
         201:
           description: Package Created
           content: { }
-      x-swagger-router-controller: web.controllers.insurance_package_controller
       x-codegen-request-body-name: body
     put:
       tags:
-        - Insurance Package
+        - Insurance Policy
       summary: Update package
       operationId: update
       parameters:
@@ -438,18 +437,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InsurancePackage'
+              $ref: '#/components/schemas/InsurancePolicy'
         required: true
       responses:
         201:
           description: Package Created
           content: { }
-      x-swagger-router-controller: web.controllers.insurance_package_controller
       x-codegen-request-body-name: body
-  /user/{user_id}/insurance_package/{package_id}:
+  /user/{user_id}/insurance_policy/{package_id}:
     get:
       tags:
-        - Insurance Package
+        - Insurance Policy
       summary: Gets all packages for a user
       parameters:
        - name: user_id
@@ -460,7 +458,7 @@ paths:
            type: integer
        - name: package_id
          in: path
-         description: The id of the insurance package
+         description: The id of the insurance Policy
          required: true
          schema:
            type: integer
@@ -471,11 +469,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InsurancePackage'
-      x-swagger-router-controller: controllers.insurance_package_controller
+                $ref: '#/components/schemas/InsurancePolicy'
     delete:
       tags:
-        - Insurance Package
+        - Insurance Policy
       summary: Delete application
       operationId: delete_package
       parameters:
@@ -487,7 +484,7 @@ paths:
           type: integer
       - name: package_id
         in: path
-        description: The id of the insurance package
+        description: The id of the insurance Policy
         required: true
         schema:
          type: integer
@@ -498,7 +495,6 @@ paths:
         404:
           description: Package doesn't exist
           content: {}
-      x-swagger-router-controller: web.controllers.insurance_package_controller
     post:
       tags:
       - Claims
@@ -716,10 +712,10 @@ components:
       in: header
       x-apikeyInfoFunc: check_api_key
   schemas:
-    InsurancePackages:
+    InsurancePolicies:
       type: array
       items:
-        $ref: '#/components/schemas/InsurancePackage'
+        $ref: '#/components/schemas/InsurancePolicy'
     Benefits:
       type: array
       items:
@@ -782,7 +778,7 @@ components:
           format: date
         type:
           $ref: '#/components/schemas/MembershipType'
-    InsurancePackage:
+    InsurancePolicy:
       properties:
         id:
           type: integer
