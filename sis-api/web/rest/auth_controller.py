@@ -10,7 +10,7 @@ from web.rest.decorators import logout_required, login_required
 
 
 @inject
-@app.route("/auth/status", methods=["GET"])
+@app.route("/api/is-authenticated", methods=["GET"])
 def get_auth_status(service: AuthService):
     user = service.get_authenticated_user()
     if user is not None:
@@ -30,7 +30,7 @@ def get_login_page():
 
 
 @app.route("/register")
-@logout_required
+# @logout_required
 def get_register_page():
     return render_template("register.html")
 
@@ -45,7 +45,7 @@ def logout(auth_service: AuthService):
 
 @inject
 @logout_required
-@app.route('/auth/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login(auth_service: AuthService):
     try:
         auth_service.login(
@@ -75,7 +75,7 @@ def login(auth_service: AuthService):
 
 @inject
 @logout_required
-@app.route('/auth/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def register(auth_service: AuthService):
     print(request.form)
     try:

@@ -15,4 +15,11 @@ export class UserProfileService {
         .subscribe(next => resolve(next))
     );
   }
+
+  updateProfile(profile: UserProfile) {
+    return new Promise<UserProfile>((resolve, reject) =>
+      this.httpClient.post<UserProfile>("api/profile", profile)
+        .subscribe(next => resolve(next))
+    );
+  }
 }

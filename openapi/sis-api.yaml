@@ -5,6 +5,7 @@ info:
 servers:
 - url: /api/v1
 tags:
+- name: Authorization
 - name: User
 - name: User Profile
 - name: Membership
@@ -13,6 +14,21 @@ tags:
 - name: Claim History
 - name: Attachments
 paths:
+  /secret:
+    get:
+      tags:
+        - Authorization
+      summary: Return secret string
+      operationId: get_secret
+      responses:
+        '200':
+          description: secret response
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+        - api_key: []
   /user-id/{email}:
     get:
       tags:
@@ -693,6 +709,12 @@ paths:
       x-swagger-router-controller: web.controllers.attachment_controller
 
 components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: X-Auth
+      in: header
+      x-apikeyInfoFunc: check_api_key
   schemas:
     InsurancePackages:
       type: array

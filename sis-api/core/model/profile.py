@@ -9,7 +9,7 @@ from .roles import Role
 
 @dataclass(frozen=True, eq=True)
 class Profile:
-    user_id: int = field(metadata={"Key": True})
+    user_id: int = field(metadata={"Key": True}, default=-1)
     name: str = field(default="")
     points: int = field(default=0)
     role: Role = field(default=Role.Member)

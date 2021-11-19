@@ -1,1 +1,11 @@
-<p>user-profile works!</p>
+<!-- Default form contact -->
+<div class="text-center border border-light p-5" *ngIf="profile">
+
+  <!-- Name -->
+  <input [(ngModel)]="profile.name" type="text" id="user-name" class="form-control mb-4" placeholder="Full Name">
+
+  <!-- Send button -->
+  <button mdbBtn color="info" block="true" type="submit" (click)="save()">Send</button>
+
+</div>
+<!-- Default form contact -->

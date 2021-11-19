@@ -40,7 +40,8 @@ def insert(table_name: str,
     try:
         o = to_dict(entity, use_enum_values=True)
         for ex in exclude_keys:
-            del o[ex]
+            if ex in o:
+                del o[ex]
 
         placeholder = ", ".join(["%s"] * len(o))
         qry = "INSERT INTO {table_name} ({columns}) VALUES ({values})" \

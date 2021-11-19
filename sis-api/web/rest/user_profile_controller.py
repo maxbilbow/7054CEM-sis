@@ -1,7 +1,7 @@
-import dataclasses as dataclasses
-from flask import jsonify
+from flask import jsonify, request
 
-from core.model import custom_asdict_factory
+from core.model import to_dict
+from core.model.profile import Profile
 from web.flask_app import app
 from web.service.user_profile_service import UserProfileService
 
@@ -10,4 +10,11 @@ from web.service.user_profile_service import UserProfileService
 def get_profile(profile_service: UserProfileService):
 
     profile = profile_service.get_profile()
-    return jsonify(dataclasses.asdict(profile, dict_factory=custom_asdict_factory))
+    return jsonify(to_dict(profile))
+
+
+@app.route("/api/profile", methods=["POST"])
+def update_profile(profile_service: UserProfileService):
+    profile = Profile(**request.json)
+    profile = profile_service.update_profile(profile)
+    return jsonify(to_dict(profile))

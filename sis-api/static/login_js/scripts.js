@@ -5,12 +5,12 @@ $("form[name=signup_form").submit(function(e) {
   var data = $form.serialize();
 
   $.ajax({
-    url: "/auth/register",
+    url: "/api/register",
     type: "POST",
     data: data,
     dataType: "json",
     success: function(resp) {
-      window.location.href = "/user-profile";
+      window.location.href = "/";
     },
     error: function(resp) {
       var error = resp.responseJSON ? resp.responseJSON.error : "Unknown Error";
@@ -28,7 +28,7 @@ $("form[name=login_form").submit(function(e) {
   var data = $form.serialize();
 
   $.ajax({
-    url: "/auth/login",
+    url: "/api/login",
     type: "POST",
     data: data,
     dataType: "json",

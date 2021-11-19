@@ -43,4 +43,6 @@ class MembershipRepository:
         mysql.update_by_pk(table_name="membership", pk=pk, entity=membership, exclude_keys=["id", "user_id"])
         return MembershipRepository.find_by_id(pk)
 
-
+    @staticmethod
+    def delete(membership: Membership):
+        mysql.delete_by(table_name="membership", key_value=membership.id)

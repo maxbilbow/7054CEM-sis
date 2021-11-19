@@ -49,6 +49,17 @@ class TestMembershipController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
+    def test_get_current(self):
+        """Test case for get_current
+
+        Get current active membership for user
+        """
+        response = self.client.open(
+            '/user/{user_id}/membership'.format(user_id=56),
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
     def test_update_membership(self):
         """Test case for update_membership
 

@@ -13,7 +13,7 @@ class UserProfileRepository:
     @staticmethod
     def find_by_user_id(user_id: int):
         result = mysql.find_by(table_name="user_profile", key="user_id", key_value=user_id)
-        return Profile(*result)
+        return None if result is None else Profile(*result)
 
     @staticmethod
     def update(user_id: int, profile: Profile):

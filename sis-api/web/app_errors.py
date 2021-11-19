@@ -4,3 +4,7 @@ class InvalidRequestError(Exception):
 
 class AuthError(Exception):
     pass
+
+
+class BadRequest(Exception):
+    pass

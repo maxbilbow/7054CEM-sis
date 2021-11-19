@@ -1,1 +1,23 @@
-<p>my-membership works!</p>
+<!-- Default form contact -->
+<div class="text-center border border-light p-5" *ngIf="membership">
+
+  <!-- Name -->
+  <input [(ngModel)]="membership.start_date" type="date" id="start-date" class="form-control mb-4" placeholder="Start Date">
+  <input [(ngModel)]="membership.end_date" type="date" id="end-date" class="form-control mb-4" placeholder="End Date">
+  <input [(ngModel)]="membership.type" type="text" id="membership-type" class="form-control mb-4" placeholder="Type">
+
+  <!-- Send button -->
+  <button mdbBtn color="info" block="true" type="submit" (click)="save()">Update</button>
+  <button mdbBtn color="info" block="true" type="submit" (click)="cancel()">Cancel</button>
+</div>
+
+<div class="text-center border border-light p-5" *ngIf="!membership">
+
+  <!-- Name -->
+  <input [(ngModel)]="endDate" type="date" id="new-end-date" class="form-control mb-4" placeholder="End Date">
+  <input [(ngModel)]="eligibleType" type="text" id="eligible-membership-type" class="form-control mb-4" placeholder="Membership Type">
+
+  <!-- Send button -->
+  <button mdbBtn color="info" block="true" type="submit" (click)="create()">Apply</button>
+</div>
+<!-- Default form contact -->

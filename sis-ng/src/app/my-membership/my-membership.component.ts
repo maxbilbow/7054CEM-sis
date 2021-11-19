@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Membership} from "../model/membership";
+import {MembershipService} from "./membership.service";
 
 @Component({
   selector: 'app-my-membership',
@@ -7,9 +9,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyMembershipComponent implements OnInit {
 
-  constructor() { }
+  membership?: Membership
+  endDate = new Date();
+  eligibleType = ""
 
-  ngOnInit(): void {
+  constructor(private readonly membershipService: MembershipService) {
   }
 
+  ngOnInit(): void {
+    this.membershipService.getEligibleType()
+      .then((eligibleType) => {
+        this.eligibleType = eligibleType;
+      })
+    this.membershipService.fetch()
+      .then(membership => {
+        this.membership = membership
+      })
+  }
+
+  create() {
+    this.membershipService.create({end_date: this.endDate})
+      .then(membership => {
+        this.membership = membership
+      })
+  }
+
+  save() {
+    this.membershipService.update(this.membership!)
+      .then(membership => {
+        this.membership = membership
+      })
+  }
+
+  cancel() {
+    this.membershipService.cancel()
+      .then(membership => {
+        this.membership = membership;
+      })
+  }
 }

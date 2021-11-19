@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import date
 
+from . import to_date
 from .membership_type import MembershipType
 
 
@@ -12,6 +13,8 @@ class Membership:
     end_date: date
     type: MembershipType
 
-
-    # benefits: List[Benefit] = field(default_factory=list)
-
+    @classmethod
+    def from_dict(cls, args: dict):
+        args["start_date"] = to_date(args["start_date"])
+        args["end_date"] = to_date(args["end_date"])
+        return cls(**args)

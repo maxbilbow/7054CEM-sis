@@ -3,6 +3,8 @@ import dataclasses
 import connexion
 
 # from swagger_server.models.user import User  # noqa: E501
+from flask import session
+
 from core.model.user import User
 from core.repository.user import UserRepository
 from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
@@ -39,6 +41,8 @@ def find_by_email(email):  # noqa: E501
     :rtype: str
     """
     user = UserRepository.find_by_email(email)
+    if user is None:
+        return "User not found with email address", 404
     return user.id
 
 
@@ -52,6 +56,7 @@ def get_user(user_id):  # noqa: E501
 
     :rtype: User
     """
+
     return dataclasses.asdict(UserRepository.find_by_id(user_id))
 
 

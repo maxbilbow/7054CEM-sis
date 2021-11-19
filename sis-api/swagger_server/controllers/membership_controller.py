@@ -27,8 +27,12 @@ def cancel_membership(user_id):  # noqa: E501
     """
     membership = MembershipRepository.find_by_user_id(user_id)
     membership = dataclasses.replace(membership, end_date=datetime.date.today())
-    membership = MembershipRepository.update_current(user_id, membership)
-    return to_dict(membership)
+    if membership.start_date == membership.end_date:
+        MembershipRepository.delete(membership)
+        return None
+    else:
+        membership = MembershipRepository.update_current(user_id, membership)
+        return to_dict(membership)
 
 
 def create_membership(body, user_id):  # noqa: E501

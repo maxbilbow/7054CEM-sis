@@ -19,7 +19,7 @@ class UserRepository:
     @staticmethod
     def find_by_email(email: str):
         result = mysql.find_by(table_name="user", key="email", key_value=email)
-        return User(*result)
+        return None if result is None else User(*result)
 
     @staticmethod
     def update(user_id: int, user: User):

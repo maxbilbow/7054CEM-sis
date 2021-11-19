@@ -38,6 +38,8 @@ def get_profile(user_id):  # noqa: E501
     :rtype: UserProfile
     """
     profile = UserProfileRepository.find_by_user_id(user_id)
+    if profile is None:
+        return "Profile not found", 404
     return model.to_dict(profile)
 
 

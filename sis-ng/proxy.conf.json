@@ -3,5 +3,25 @@
   {
     "target": "http://127.0.0.1:8888",
     "secure": false
+  },
+  "/login":
+  {
+    "target": "http://127.0.0.1:8888",
+    "secure": false
+  },
+  "/logout":
+  {
+    "target": "http://127.0.0.1:8888",
+    "secure": false
+  },
+  "/register":
+  {
+    "target": "http://127.0.0.1:8888",
+    "secure": false
+  },
+  "/static":
+  {
+    "target": "http://127.0.0.1:8888",
+    "secure": false
   }
 }

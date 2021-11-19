@@ -18,18 +18,14 @@ class AuthService:
 
     @staticmethod
     def get_user_id() -> int:
-        user = session['authenticated_user'] = UserRepository.create_user("", "")
+        user = None if 'authenticated_user' not in session else session['authenticated_user']
         if user is None:
             raise AuthError("Authenticated user not found")
 
-        return user.id
+        return user["id"]
 
-    def update_session(self, user: Optional[User] = None):
-        if user is None and session["authenticated_user"]:
-            user = session["authenticated_user"]
-        if user is None:
-            return
-
+    @staticmethod
+    def update_session(user: User):
         session['authenticated_user'] = user
         return user
 
@@ -63,9 +59,11 @@ class AuthService:
 
         raise AuthError("Invalid login credentials")
 
-    def get_authenticated_user(self) -> Optional[dict]:
-        if "authenticated_user" in session:
-            return self.update_session()
+    @staticmethod
+    def get_authenticated_user() -> Optional[User]:
+        user = None if 'authenticated_user' not in session else session['authenticated_user']
+        if user is not None:
+            return user
         else:
             return None
 
