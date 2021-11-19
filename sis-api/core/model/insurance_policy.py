@@ -10,7 +10,8 @@ class InsuranceType(Enum):
 
 @dataclass(frozen=True, eq=True)
 class InsurancePolicy:
-    user_id: int = field(metadata={"Key": True})
+    id: int = field(metadata={"Key": True})
+    user_id: int
     type: InsuranceType
     start_date: date
     end_date: date
@@ -22,5 +23,3 @@ class InsurancePolicy:
         if self.end_date < date.today():
             return "Expired"
         return "Active"
-
-

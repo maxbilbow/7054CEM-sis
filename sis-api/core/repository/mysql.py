@@ -6,6 +6,7 @@ from mysql import connector
 import config
 from core.model import to_dict
 
+
 # _db: connector.connection.MySQLConnection = None
 
 
@@ -97,6 +98,19 @@ def find_by(table_name: str, key_value: Any, key: str = "id"):
         entry = cur.fetchone()
         con.commit()
         return entry
+    finally:
+        cur.close()
+        con.close()
+
+
+def find_all_by(table_name: str, key_value: Any, key: str = "id"):
+    con = connect()
+    cur = con.cursor()
+    try:
+        cur.execute(f"SELECT * FROM `{table_name}` WHERE {key} = '{key_value}'")
+        rows = cur.fetchall()
+        con.commit()
+        return rows
     finally:
         cur.close()
         con.close()

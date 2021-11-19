@@ -1,6 +1,7 @@
 import connexion
 import six
 
+from core.service.insurance_policy_service import InsurancePolicyService
 from swagger_server.models.insurance_policies import InsurancePolicies  # noqa: E501
 from swagger_server.models.insurance_policy import InsurancePolicy  # noqa: E501
 from swagger_server import util
@@ -20,7 +21,8 @@ def create_package(body, user_id):  # noqa: E501
     """
     if connexion.request.is_json:
         body = InsurancePolicy.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+
+    return InsurancePolicyService().find_for_user(user_id)
 
 
 def delete_package(user_id, package_id):  # noqa: E501
