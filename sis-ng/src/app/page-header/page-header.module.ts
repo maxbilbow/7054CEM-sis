@@ -7,6 +7,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatButtonModule} from "@angular/material/button";
+import {RouterModule} from "@angular/router";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {MatButtonModule} from "@angular/material/button";
     MatMenuModule,
     MatIconModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule
   ]
 })
 export class PageHeaderModule { }

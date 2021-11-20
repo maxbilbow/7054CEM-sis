@@ -7,6 +7,9 @@ import {MatIconModule} from "@angular/material/icon";
 import {InsuranceQuoteModule} from "./insurance-quote/insurance-quote.module";
 import {HttpClientModule} from "@angular/common/http";
 import {RouterModule} from "@angular/router";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatTableModule} from "@angular/material/table";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -25,6 +28,10 @@ import {RouterModule} from "@angular/router";
     MatIconModule,
     HttpClientModule,
     RouterModule,
+    MatNativeDateModule,
+    MatTableModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class InsuranceQuotesModule {

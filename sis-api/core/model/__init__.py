@@ -1,11 +1,19 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, is_dataclass
 from datetime import date
 from enum import Enum
 from typing import Optional, Union
 
 
-def to_dict(o: dataclass, use_enum_values=False) -> dict:
-    return asdict(o, dict_factory=_serializable_dict)
+def to_dict(o, use_enum_values=False) -> Optional[Union[list, dict]]:
+    if o is None:
+        return None
+    if is_dataclass(o):
+        return asdict(o, dict_factory=_serializable_dict)
+    if isinstance(o, list):
+        return [to_dict(each) for each in o]
+
+    raise TypeError("{} is not a dict".format(type(o)))
+
 
 
 def _serializable_dict(data):

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {InsuranceQuote} from "../insurance-quote";
+import {QuoteService} from "../quote.service";
 
 @Component({
   selector: 'app-saved-quotes',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./saved-quotes.component.less']
 })
 export class SavedQuotesComponent implements OnInit {
+  readonly displayedColumns = ['type'];
+  quotes: InsuranceQuote[] = []
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private readonly quoteService: QuoteService) {
   }
 
+  ngOnInit(): void {
+    this.quoteService.get()
+      .then(quotes => {
+        this.quotes = quotes;
+      })
+      .catch(console.error)
+  }
 }

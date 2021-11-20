@@ -5,26 +5,29 @@ import {MyPoliciesComponent} from "./my-policies/my-policies.component";
 import {MyMembershipComponent} from "./my-membership/my-membership.component";
 import {NewQuoteComponent} from "./insurance-quotes/new-quote/new-quote.component";
 import {SavedQuotesComponent} from "./insurance-quotes/saved-quotes/saved-quotes.component";
-import {InsuranceQuote} from "./insurance-quotes/insurance-quote";
+import {InsuranceQuoteComponent} from "./insurance-quotes/insurance-quote/insurance-quote.component";
 
 const routes: Routes = [
   {
-    path: "/new-quote", component: NewQuoteComponent
+    path: '', redirectTo: 'new-quote', pathMatch: 'full'
   },
   {
-    path: "/saved-quotes", component: SavedQuotesComponent
+    path: "new-quote", component: NewQuoteComponent
   },
   {
-    path: "/saved-quote/:quote_id", component: InsuranceQuote,
+    path: "saved-quotes", component: SavedQuotesComponent
   },
   {
-    path: "/profile", component: UserProfileComponent
+    path: "saved-quote/:quote_id", component: InsuranceQuoteComponent,
   },
   {
-    path: "/my-policies", component: MyPoliciesComponent
+    path: "profile", component: UserProfileComponent
   },
   {
-    path: "/my-membership", component: MyMembershipComponent
+    path: "my-policies", component: MyPoliciesComponent
+  },
+  {
+    path: "my-membership", component: MyMembershipComponent
   }
 ];
 

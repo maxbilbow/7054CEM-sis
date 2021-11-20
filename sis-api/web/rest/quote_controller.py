@@ -2,7 +2,6 @@ from flask import jsonify, request, current_app as app
 from flask_api import status
 
 from core.model import to_dict
-from core.model.insurance_policy import InsuranceType
 from web.exceptions import BadRequest
 from web.service.quote_service import QuoteService
 
@@ -13,11 +12,11 @@ def get_saved_quotes(quote_service: QuoteService):
     return jsonify(to_dict(quotes)), status.HTTP_200_OK
 
 
-@app.route("/api/quote/<insurance_type>", methods=["POST"])
-def new_quote(insurance_type: InsuranceType, quote_service: QuoteService):
+@app.route("/api/quote", methods=["POST"])
+def new_quote(quote_service: QuoteService):
     try:
-        quote = quote_service.new_quote(insurance_type)
-        return jsonify(quote), status.HTTP_201_CREATED
+        quote_id = quote_service.new_quote(request.json["type"])
+        return jsonify({"quote_id": quote_id}), status.HTTP_201_CREATED
     except BadRequest as be:
         return str(be), status.HTTP_400_BAD_REQUEST
 
