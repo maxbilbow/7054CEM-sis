@@ -1,11 +1,16 @@
 <!-- Default form contact -->
 <div class="text-center border border-light p-5" *ngIf="profile">
-
-  <!-- Name -->
-  <input [(ngModel)]="profile.name" type="text" id="user-name" class="form-control mb-4" placeholder="Full Name">
+  <p>
+    <mat-form-field matFormFieldCtrl=ctrl appearance="standard">
+      <mat-label>Full Name</mat-label>
+      <input matInput placeholder="Full Name" [(ngModel)]="profile.name">
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-hint>Hint</mat-hint>
+    </mat-form-field>
+  </p>
 
   <!-- Send button -->
-  <button mdbBtn color="info" block="true" type="submit" (click)="save()">Send</button>
-
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
 </div>
 <!-- Default form contact -->
+

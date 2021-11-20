@@ -3,35 +3,24 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {UserProfileComponent} from './user-profile/user-profile.component';
-import {MyMembershipComponent} from './my-membership/my-membership.component';
-import {MyClaimsComponent} from './my-claims/my-claims.component';
-import {MyPoliciesComponent} from './my-policies/my-policies.component';
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {HttpClientModule} from "@angular/common/http";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatNativeDateModule} from "@angular/material/core";
-import {MatTableModule} from "@angular/material/table";
+import {UserProfileModule} from "./user-profile/user-profile.module";
+import {PageHeaderModule} from "./page-header/page-header.module";
+import {MyMembershipModule} from "./my-membership/my-membership.module";
+import {MyPoliciesModule} from "./my-policies/my-policies.module";
+import {InsuranceQuotesModule} from "./insurance-quotes/insurance-quotes.module";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    UserProfileComponent,
-    MyMembershipComponent,
-    MyClaimsComponent,
-    MyPoliciesComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule,
-    HttpClientModule,
-    FormsModule,
-    MatNativeDateModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatTableModule
+    PageHeaderModule,
+    UserProfileModule,
+    MyMembershipModule,
+    MyPoliciesModule,
+    InsuranceQuotesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
