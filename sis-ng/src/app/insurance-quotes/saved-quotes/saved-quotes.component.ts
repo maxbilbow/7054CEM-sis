@@ -8,17 +8,30 @@ import {QuoteService} from "../quote.service";
   styleUrls: ['./saved-quotes.component.less']
 })
 export class SavedQuotesComponent implements OnInit {
-  readonly displayedColumns = ['type'];
+  readonly displayedColumns = ['type', 'updated', 'price', 'actions'];
   quotes: InsuranceQuote[] = []
 
   constructor(private readonly quoteService: QuoteService) {
   }
 
   ngOnInit(): void {
+    this.loadQuotes();
+  }
+
+  loadQuotes() {
     this.quoteService.get()
       .then(quotes => {
         this.quotes = quotes;
       })
       .catch(console.error)
+  }
+
+  open({id}: InsuranceQuote) {
+    this.quoteService.open(id).catch(console.error)
+  }
+
+  delete({id}: InsuranceQuote) {
+    this.quoteService.delete(id).catch(console.error)
+      .then(() => this.loadQuotes())
   }
 }

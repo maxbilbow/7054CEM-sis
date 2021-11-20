@@ -1,6 +1,5 @@
 import dataclasses
 import time
-from datetime import datetime
 from typing import Optional
 
 from core.model.quote import Quote
@@ -11,8 +10,9 @@ class QuoteRepository:
 
     @staticmethod
     def insert(quote: Quote):
+        quote = dataclasses.replace(quote, updated=int(time.time() * 1000), created=int(time.time() * 1000))
         id = mysql.insert(table_name="quote", entity=quote,
-                          exclude_keys=["id", "created", "updated"])
+                          exclude_keys=["id"])
         return QuoteRepository.find_by_id(id)
 
     @staticmethod
@@ -27,7 +27,7 @@ class QuoteRepository:
 
     @staticmethod
     def update(quote: Quote):
-        quote = dataclasses.replace(quote, updated=datetime.now())
+        quote = dataclasses.replace(quote, updated=int(time.time() * 1000))
         return mysql.update_by_pk(pk_name="id",
                                   pk=quote.id,
                                   table_name="quote",

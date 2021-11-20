@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2021 at 05:23 PM
+-- Generation Time: Nov 20, 2021 at 11:44 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.2.34
 
@@ -61,7 +61,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password_hash`) VALUES
-(9, 'a@a.a', '$pbkdf2-sha256$29000$aG1NqZUSAqC0FgIAwFiLMQ$Aq3DYDBkeVYcH5nc0sQjuaQhqhMn3qli7imh/eOKOvs');
+(9, 'a@a.a', '$pbkdf2-sha256$29000$aG1NqZUSAqC0FgIAwFiLMQ$Aq3DYDBkeVYcH5nc0sQjuaQhqhMn3qli7imh/eOKOvs'),
+(11, 'bob@bob.bob', '$pbkdf2-sha256$29000$fa815tx7jxEiBGAMgZDSeg$mFOE0G2d0xpEJx6kISDF3zpmflid6ysacsZLRDWIdzY');
 
 -- --------------------------------------------------------
 
@@ -121,7 +122,7 @@ ALTER TABLE `membership`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

@@ -9,8 +9,8 @@ tags:
 - name: User
 - name: User Profile
 - name: Membership
-- name: Insurance Policy
 - name: Quotes
+- name: Insurance Policy
 paths:
   /secret:
     get:
@@ -57,6 +57,32 @@ paths:
           description: User doesn't exist for email
           content: {}
       x-openapi-router-controller: swagger_server.controllers.user_controller
+  /user/verify:
+    post:
+      tags:
+      - User
+      summary: Verify user credentials and return user id
+      operationId: check_credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Successfully retrived user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "401":
+          description: User is not authorised
+          content: {}
+        "404":
+          description: User doesn't exist for email
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.user_controller
   /user:
     post:
       tags:
@@ -75,7 +101,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/inline_response_200_1'
         "404":
           description: User doesn't exist
           content: {}
@@ -704,10 +730,10 @@ components:
         email:
           type: string
           format: email
-        password_hash:
+        password:
           type: string
       example:
-        password_hash: bob
+        password: bob
         email: bob@bob.bob
     UserProfile:
       type: object
@@ -764,7 +790,7 @@ components:
         user_id:
           type: integer
         type:
-          $ref: '#/components/schemas/InsurancePackageType'
+          $ref: '#/components/schemas/InsuranceType'
         start_date:
           type: string
           format: date
@@ -786,16 +812,19 @@ components:
         user_id:
           type: integer
         type:
-          $ref: '#/components/schemas/InsurancePackageType'
+          $ref: '#/components/schemas/InsuranceType'
         created:
           type: integer
         updated:
           type: integer
         is_complete:
           type: boolean
+        price:
+          type: number
       example:
         user_id: 6
         created: 1
+        price: 5.63737665663332876420099637471139430999755859375
         id: 0
         is_complete: true
         type: Home
@@ -821,7 +850,7 @@ components:
       - Smart
       - Silver
       - Gold
-    InsurancePackageType:
+    InsuranceType:
       type: string
       enum:
       - Home
@@ -832,6 +861,15 @@ components:
       - Member
       - Advisor
     inline_response_200:
+      properties:
+        user_id:
+          type: integer
+        authenticated:
+          type: boolean
+      example:
+        user_id: 0
+        authenticated: true
+    inline_response_200_1:
       properties:
         user_id:
           type: integer

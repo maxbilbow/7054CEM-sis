@@ -53,7 +53,7 @@ export class QuoteService {
   delete(id: number): Promise<boolean> {
     return new Promise((resolve, reject) => this.http.delete<boolean>(`/api/quote/${id}`)
       .subscribe({
-        next: () => resolve(this.router.navigate(['/saved-quotes'])),
+        next: resolve,
         error: reject
       })
     );

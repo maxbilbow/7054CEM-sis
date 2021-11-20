@@ -11,7 +11,7 @@ from web.repository.api import Api
 
 
 @singleton
-class UserRepository:
+class UserService:
     __api: Api
 
     @inject
@@ -29,10 +29,17 @@ class UserRepository:
         else:
             raise NotFoundError(email)
 
-    def create_user(self, email: str, password_hash: str) -> User:
+    def check_credentials(self, email: str, password: str) -> Optional[User]:
+        response = self.__api.post(f"/user/verify", json={
+            "email": email,
+            "password": password
+        })
+        return self.find_by_id(response["user_id"])
+
+    def create_user(self, email: str, password: str) -> User:
         response = self.__api.post(f"/user", json={
             "email": email,
-            "password_hash": password_hash
+            "password": password
         })
         user_id = response["user_id"]
         return self.find_by_id(user_id)

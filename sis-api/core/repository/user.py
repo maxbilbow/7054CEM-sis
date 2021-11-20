@@ -1,3 +1,6 @@
+import dataclasses
+from typing import Optional
+
 from core.repository import mysql
 from core.model.user import User
 
@@ -14,7 +17,9 @@ class UserRepository:
     @staticmethod
     def find_by_id(user_id: int):
         result = mysql.find_by(table_name="user", key_value=user_id)
-        return User(*result)
+        if not result:
+            return None
+        return dataclasses.replace(User(*result), password_hash=None)
 
     @staticmethod
     def find_by_email(email: str):
@@ -22,8 +27,12 @@ class UserRepository:
         return None if result is None else User(*result)
 
     @staticmethod
-    def update(user_id: int, user: User):
-        return mysql.update_by_pk(pk=user_id, table_name="user", entity=user)
+    def update(user_id: int, email: Optional[str], password: Optional[str]) -> User:
+        exclude = ["password_hash"] if password is None else list()
+        if email is None:
+            exclude.append("email")
+        user = User(user_id, email, password)
+        return mysql.update_by_pk(pk=user_id, table_name="user", entity=user, exclude_keys=exclude)
 
     @staticmethod
     def delete(user_id: int):

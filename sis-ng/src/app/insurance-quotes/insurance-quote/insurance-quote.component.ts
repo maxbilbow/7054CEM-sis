@@ -17,10 +17,9 @@ export class InsuranceQuoteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe({
+    this.route.params.subscribe({
       next: async (params) => {
-        const id = params["quote_id"] as number;
-        console.log(id)
+        const id = Number(params["quote_id"]);
         this.quote = await this.quoteService.get(id)
       }
     })

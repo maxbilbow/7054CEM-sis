@@ -9,8 +9,8 @@ tags:
 - name: User
 - name: User Profile
 - name: Membership
-- name: Insurance Policy
 - name: Quotes
+- name: Insurance Policy
 paths:
   /secret:
     get:
@@ -50,6 +50,35 @@ paths:
                 type: integer
         404:
           description: User doesn't exist for email
+          content: { }
+  /user/verify:
+    post:
+      tags:
+        - User
+      summary: Verify user credentials and return user id
+      operationId: check_credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: Successfully retrived user
+          content:
+            application/json:
+              schema:
+                properties:
+                  user_id:
+                    type: integer
+                  authenticated:
+                    type: boolean
+        404:
+          description: User doesn't exist for email
+          content: { }
+        401:
+          description: User is not authorised
           content: { }
   /user:
     post:
@@ -637,10 +666,10 @@ components:
         email:
           type: string
           format: email
-        password_hash:
+        password:
           type: string
       example:
-        password_hash: bob
+        password: bob
         email: bob@bob.bob
     UserProfile:
       type: object
@@ -680,7 +709,7 @@ components:
         user_id:
           type: integer
         type:
-          $ref: '#/components/schemas/InsurancePackageType'
+          $ref: '#/components/schemas/InsuranceType'
         start_date:
           type: string
           format: date
@@ -696,15 +725,15 @@ components:
         user_id:
           type: integer
         type:
-          $ref: '#/components/schemas/InsurancePackageType'
+          $ref: '#/components/schemas/InsuranceType'
         created:
-          type: string
-          format: date-time
+          type: integer
         updated:
-          type: string
-          format: date-time
+          type: integer
         is_complete:
           type: boolean
+        price:
+          type: number
     Benefit:
       required:
         - name
@@ -722,7 +751,7 @@ components:
         - Smart
         - Silver
         - Gold
-    InsurancePackageType:
+    InsuranceType:
       type: string
       enum:
         - Home

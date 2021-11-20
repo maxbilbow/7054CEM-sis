@@ -10,6 +10,7 @@ class Quote:
     id: int = field(metadata={"Key": True})
     user_id: int
     type: InsuranceType
-    created: Optional[datetime]
-    updated: Optional[datetime]
+    created: int = field(default=-1)
+    updated: int = field(default=-1)
     is_complete: bool = field(default=False)
+    price: Optional[float] = field(default=None)
