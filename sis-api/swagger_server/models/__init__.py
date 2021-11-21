@@ -6,9 +6,10 @@ from __future__ import absolute_import
 from swagger_server.models.benefit import Benefit
 from swagger_server.models.benefits import Benefits
 from swagger_server.models.inline_response200 import InlineResponse200
-from swagger_server.models.insurance_package_type import InsurancePackageType
+from swagger_server.models.inline_response2001 import InlineResponse2001
 from swagger_server.models.insurance_policies import InsurancePolicies
 from swagger_server.models.insurance_policy import InsurancePolicy
+from swagger_server.models.insurance_type import InsuranceType
 from swagger_server.models.membership import Membership
 from swagger_server.models.membership_type import MembershipType
 from swagger_server.models.quote import Quote

@@ -8,7 +8,7 @@ from core.model.membership_type import MembershipType, get_membership_type
 from core.model.profile import Profile
 from core.model.roles import Role
 from core.repository.membership import MembershipRepository
-from web.service.membership_service import MembershipService
+from core.service.membership_service import MembershipService
 
 
 @given("a start date of {start_date}")
@@ -39,8 +39,7 @@ def step_impl(context):
     role = context.role if "role" in context else Role.Member
     profile = Profile(user_id=0, points=points, role=role)
     ms = MembershipService(MembershipRepository())
-    context.membership = ms.new_membership(profile=profile, start_date=context.start_date,
-                                           term_months=context.term)
+    context.membership = ms.new_membership(user_id=-1, end_date=context.start_date)
 
 
 @then("the renewal date will be {end_date}")
@@ -98,3 +97,30 @@ def step_impl(context, membership_type: str):
     """
     expected_type = MembershipType[membership_type]
     assert_that(context.membership_status, equal_to(expected_type))
+
+
+@given("an end_date not after today")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    context.end_date = date.today()
+
+
+@when("a new membership is requested")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    try:
+        MembershipService().new_membership(1, end_date=date.today())
+    except Exception as e:
+        context.error = e
+
+
+@then("an error is thrown")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    assert context.error is not None

@@ -18,12 +18,12 @@ class QuoteRepository:
     @staticmethod
     def find_by_id(id: int) -> Optional[Quote]:
         result = mysql.find_by(table_name="quote", key="id", key_value=id)
-        return None if result is None else Quote(*result)
+        return None if result is None else Quote.from_dict(result)
 
     @staticmethod
     def find_by_userid(user_id: int) -> list[Quote]:
         rows = mysql.find_all_by(table_name="quote", key="user_id", key_value=user_id)
-        return [Quote(*row) for row in rows]
+        return [Quote.from_dict(row) for row in rows]
 
     @staticmethod
     def update(quote: Quote):

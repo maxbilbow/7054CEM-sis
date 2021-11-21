@@ -2,7 +2,6 @@ from typing import List
 
 from injector import inject
 
-from core.model.insurance_policy import InsuranceType
 from web.repository.api import Api
 from web.service.auth_service import AuthService
 

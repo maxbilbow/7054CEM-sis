@@ -1,0 +1,11 @@
+db:
+  name: sis_data_bdd_testng
+  host: localhost
+  port: 3306
+  user: root
+  password: ''
+
+
+
+
+

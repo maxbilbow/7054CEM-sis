@@ -1,8 +1,8 @@
+import requests
 from flask_api import status
 from injector import singleton
 
-import config
-import requests
+from core import config
 
 URL = config.get("api.path")
 
@@ -16,7 +16,6 @@ def _json(response):
         return response.json()
 
 
-@singleton
 class Api:
     @staticmethod
     def get(path: str, params=None, **kwargs):

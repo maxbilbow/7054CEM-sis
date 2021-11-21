@@ -682,8 +682,6 @@ components:
           $ref: '#/components/schemas/Role'
         points:
           type: integer
-        membership:
-          $ref: '#/components/schemas/Membership'
     Membership:
       required:
         - start_date

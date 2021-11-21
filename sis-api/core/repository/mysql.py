@@ -3,7 +3,7 @@ from typing import Any, Optional, List
 
 from mysql import connector
 
-import config
+from core import config
 from core.model import to_dict
 
 
@@ -36,7 +36,7 @@ def insert(table_name: str,
         exclude_keys = list()
 
     con = connect()
-    cur = con.cursor()
+    cur = con.cursor(dictionary=True)
 
     try:
         o = to_dict(entity, use_enum_values=True)
@@ -92,7 +92,8 @@ def update_by_pk(table_name: str,
 
 def find_by(table_name: str, key_value: Any, key: str = "id"):
     con = connect()
-    cur = con.cursor()
+    cur = con.cursor(dictionary=True)
+
     try:
         cur.execute(f"SELECT * FROM `{table_name}` WHERE {key} = '{key_value}'")
         entry = cur.fetchone()
@@ -105,7 +106,7 @@ def find_by(table_name: str, key_value: Any, key: str = "id"):
 
 def find_all_by(table_name: str, key_value: Any, key: str = "id"):
     con = connect()
-    cur = con.cursor()
+    cur = con.cursor(dictionary=True)
     try:
         cur.execute(f"SELECT * FROM `{table_name}` WHERE {key} = '{key_value}'")
         rows = cur.fetchall()

@@ -3,6 +3,7 @@ from flask_api import status
 
 from core.model import to_dict, to_date
 from core.model.membership_type import MembershipType, get_membership_type
+from core.model.profile import Profile
 from web.exceptions import BadRequest
 from web.service.membership_service import MembershipService
 from web.service.user_profile_service import UserProfileService
@@ -54,5 +55,5 @@ def cancel_membership(membership_service: MembershipService):
 
 @app.route("/api/membership/get_eligible_type", methods=["GET"])
 def get_eligible_type(profile_service: UserProfileService):
-    profile = profile_service.get_profile()
+    profile = Profile.from_dict(profile_service.get())
     return get_membership_type(role=profile.role, points=profile.points).name, status.HTTP_200_OK

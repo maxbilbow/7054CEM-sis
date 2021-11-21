@@ -1,36 +1,28 @@
-import dataclasses
+from typing import Optional
 
-from injector import singleton, inject
+from injector import inject
 
+from core.model import to_dict
 from core.model.profile import Profile
-from web.repository.profile_repository import ProfileRepository
+from web.repository.api import Api
 from web.service.auth_service import AuthService
-from web.service.membership_service import MembershipService
 
 
-@singleton
 class UserProfileService:
-    __profile: ProfileRepository
-    __membership: MembershipService
+    __api: Api
 
     @inject
-    def __init__(self, profile_repository: ProfileRepository, membership_repository: MembershipService):
-        self.__profile = profile_repository
-        self.__membership = membership_repository
+    def __init__(self, api: Api):
+        self.__api = api
 
-    def get_profile(self) -> Profile:
+    def get(self) -> Optional[dict]:
         user_id = AuthService.get_user_id()
-        profile = self.__profile.get(user_id)
-        if not profile:
-            return Profile()
+        profile = self.__api.get(f"/user/{user_id}/profile")
+        return profile
 
-        membership = self.__membership.get()
-        return dataclasses.replace(profile, membership=membership)
-
-    def update_profile(self, profile: Profile) -> Profile:
+    def insert_or_update(self, profile: Profile) -> dict:
         user_id = AuthService.get_user_id()
-        if self.__profile.get(user_id) is None:
-            self.__profile.insert(user_id, profile)
+        if self.get() is None:
+            return self.__api.post(f"/user/{user_id}/profile", json=to_dict(profile))
         else:
-            self.__profile.update(user_id, profile)
-        return self.get_profile()
+            return self.__api.put(f"/user/{user_id}/profile", json=to_dict(profile))

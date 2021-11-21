@@ -14,30 +14,30 @@ class User(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, email: str=None, password_hash: str=None):  # noqa: E501
+    def __init__(self, id: int=None, email: str=None, password: str=None):  # noqa: E501
         """User - a model defined in Swagger
 
         :param id: The id of this User.  # noqa: E501
         :type id: int
         :param email: The email of this User.  # noqa: E501
         :type email: str
-        :param password_hash: The password_hash of this User.  # noqa: E501
-        :type password_hash: str
+        :param password: The password of this User.  # noqa: E501
+        :type password: str
         """
         self.swagger_types = {
             'id': int,
             'email': str,
-            'password_hash': str
+            'password': str
         }
 
         self.attribute_map = {
             'id': 'id',
             'email': 'email',
-            'password_hash': 'password_hash'
+            'password': 'password'
         }
         self._id = id
         self._email = email
-        self._password_hash = password_hash
+        self._password = password
 
     @classmethod
     def from_dict(cls, dikt) -> 'User':
@@ -95,22 +95,22 @@ class User(Model):
         self._email = email
 
     @property
-    def password_hash(self) -> str:
-        """Gets the password_hash of this User.
+    def password(self) -> str:
+        """Gets the password of this User.
 
 
-        :return: The password_hash of this User.
+        :return: The password of this User.
         :rtype: str
         """
-        return self._password_hash
+        return self._password
 
-    @password_hash.setter
-    def password_hash(self, password_hash: str):
-        """Sets the password_hash of this User.
+    @password.setter
+    def password(self, password: str):
+        """Sets the password of this User.
 
 
-        :param password_hash: The password_hash of this User.
-        :type password_hash: str
+        :param password: The password of this User.
+        :type password: str
         """
 
-        self._password_hash = password_hash
+        self._password = password

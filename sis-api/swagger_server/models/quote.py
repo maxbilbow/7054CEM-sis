@@ -6,7 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
-from swagger_server.models.insurance_package_type import InsurancePackageType  # noqa: F401,E501
+from swagger_server.models.insurance_type import InsuranceType  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -15,7 +15,7 @@ class Quote(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, user_id: int=None, type: InsurancePackageType=None, created: int=None, updated: int=None, is_complete: date=None):  # noqa: E501
+    def __init__(self, id: int=None, user_id: int=None, type: InsuranceType=None, created: int=None, updated: int=None, is_complete: bool=None, price: float=None):  # noqa: E501
         """Quote - a model defined in Swagger
 
         :param id: The id of this Quote.  # noqa: E501
@@ -23,21 +23,24 @@ class Quote(Model):
         :param user_id: The user_id of this Quote.  # noqa: E501
         :type user_id: int
         :param type: The type of this Quote.  # noqa: E501
-        :type type: InsurancePackageType
+        :type type: InsuranceType
         :param created: The created of this Quote.  # noqa: E501
         :type created: int
         :param updated: The updated of this Quote.  # noqa: E501
         :type updated: int
         :param is_complete: The is_complete of this Quote.  # noqa: E501
-        :type is_complete: date
+        :type is_complete: bool
+        :param price: The price of this Quote.  # noqa: E501
+        :type price: float
         """
         self.swagger_types = {
             'id': int,
             'user_id': int,
-            'type': InsurancePackageType,
+            'type': InsuranceType,
             'created': int,
             'updated': int,
-            'is_complete': date
+            'is_complete': bool,
+            'price': float
         }
 
         self.attribute_map = {
@@ -46,7 +49,8 @@ class Quote(Model):
             'type': 'type',
             'created': 'created',
             'updated': 'updated',
-            'is_complete': 'is_complete'
+            'is_complete': 'is_complete',
+            'price': 'price'
         }
         self._id = id
         self._user_id = user_id
@@ -54,6 +58,7 @@ class Quote(Model):
         self._created = created
         self._updated = updated
         self._is_complete = is_complete
+        self._price = price
 
     @classmethod
     def from_dict(cls, dikt) -> 'Quote':
@@ -109,22 +114,22 @@ class Quote(Model):
         self._user_id = user_id
 
     @property
-    def type(self) -> InsurancePackageType:
+    def type(self) -> InsuranceType:
         """Gets the type of this Quote.
 
 
         :return: The type of this Quote.
-        :rtype: InsurancePackageType
+        :rtype: InsuranceType
         """
         return self._type
 
     @type.setter
-    def type(self, type: InsurancePackageType):
+    def type(self, type: InsuranceType):
         """Sets the type of this Quote.
 
 
         :param type: The type of this Quote.
-        :type type: InsurancePackageType
+        :type type: InsuranceType
         """
         if type is None:
             raise ValueError("Invalid value for `type`, must not be `None`")  # noqa: E501
@@ -174,22 +179,43 @@ class Quote(Model):
         self._updated = updated
 
     @property
-    def is_complete(self) -> date:
+    def is_complete(self) -> bool:
         """Gets the is_complete of this Quote.
 
 
         :return: The is_complete of this Quote.
-        :rtype: date
+        :rtype: bool
         """
         return self._is_complete
 
     @is_complete.setter
-    def is_complete(self, is_complete: date):
+    def is_complete(self, is_complete: bool):
         """Sets the is_complete of this Quote.
 
 
         :param is_complete: The is_complete of this Quote.
-        :type is_complete: date
+        :type is_complete: bool
         """
 
         self._is_complete = is_complete
+
+    @property
+    def price(self) -> float:
+        """Gets the price of this Quote.
+
+
+        :return: The price of this Quote.
+        :rtype: float
+        """
+        return self._price
+
+    @price.setter
+    def price(self, price: float):
+        """Sets the price of this Quote.
+
+
+        :param price: The price of this Quote.
+        :type price: float
+        """
+
+        self._price = price

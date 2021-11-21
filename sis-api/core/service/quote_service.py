@@ -20,7 +20,7 @@ class QuoteService:
 
     def update_quote(self, quote_id: int, data: dict):
         data["id"] = quote_id
-        quote = Quote(**data)
+        quote = Quote.from_dict(data)
         return self.__repo.update(quote)
 
     def delete_quote(self, quote_id):

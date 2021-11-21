@@ -4,6 +4,7 @@ from flask_api import status
 from core import model
 from core.model.profile import Profile
 from core.repository.user_profile import UserProfileRepository
+from core.service.profile_service import ProfileService
 
 
 def create_profile(body, user_id):  # noqa: E501
@@ -21,8 +22,7 @@ def create_profile(body, user_id):  # noqa: E501
     if connexion.request.is_json:
         json = connexion.request.get_json()
         json["user_id"] = user_id
-        profile = Profile(**json)
-        UserProfileRepository.insert(profile)
+        profile = ProfileService().insert_profile(json)
         return profile
 
     return "Whoops..."
@@ -54,7 +54,7 @@ def remove_profile(user_id):  # noqa: E501
 
     :rtype: None
     """
-    UserProfileRepository.delete(user_id)
+    ProfileService().delete(user_id)
     return 'User Profile deleted'
 
 
@@ -70,10 +70,10 @@ def update_profile(body, user_id):  # noqa: E501
 
     :rtype: dict
     """
-    if connexion.request.is_json:
-        json = connexion.request.get_json()
-        json["user_id"] = user_id
-        profile = Profile(**json)
-        UserProfileRepository.update(user_id, profile)
-        return model.to_dict(profile)
-    return 'do some magic!'
+    if not connexion.request.is_json:
+        return {}, status.HTTP_400_BAD_REQUEST
+    else:
+        body["user_id"] = user_id
+        profile = Profile.from_dict(body)
+        UserProfileRepository.update(profile)
+        return model.to_dict(profile), status.HTTP_202_ACCEPTED

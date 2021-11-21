@@ -16,7 +16,7 @@ class InsurancePolicyRepository:
     @staticmethod
     def find_by_user_id(user_id: int) -> List[InsurancePolicy]:
         rows = mysql.find_all_by(table_name="insurance_policy", key="user_id", key_value=user_id)
-        return [InsurancePolicy(*row) for row in rows]
+        return [InsurancePolicy.from_dict(row) for row in rows]
 
     @staticmethod
     def update(user_id: int, profile: Profile):

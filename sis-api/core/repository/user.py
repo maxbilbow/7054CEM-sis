@@ -19,12 +19,12 @@ class UserRepository:
         result = mysql.find_by(table_name="user", key_value=user_id)
         if not result:
             return None
-        return dataclasses.replace(User(*result), password_hash=None)
+        return dataclasses.replace(User(**result), password_hash=None)
 
     @staticmethod
     def find_by_email(email: str):
         result = mysql.find_by(table_name="user", key="email", key_value=email)
-        return None if result is None else User(*result)
+        return None if result is None else User(**result)
 
     @staticmethod
     def update(user_id: int, email: Optional[str], password: Optional[str]) -> User:

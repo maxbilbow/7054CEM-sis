@@ -746,18 +746,10 @@ components:
           $ref: '#/components/schemas/Role'
         points:
           type: integer
-        membership:
-          $ref: '#/components/schemas/Membership'
       example:
         role: Member
         user_id: 0
         name: name
-        membership:
-          end_date: 2000-01-23
-          user_id: 5
-          id: 1
-          type: Smart
-          start_date: 2000-01-23
         points: 6
     Membership:
       required:

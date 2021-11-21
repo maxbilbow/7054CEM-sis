@@ -2,17 +2,10 @@
 Feature: Membership model determined properties
   # Enter feature description here
 
-  Scenario Outline: Create New Membership
-    Given a start date of <start_date>
-    And a term time of <term> months
-    When a new membership is created
-    Then the renewal date will be <end_date>
-    Examples:
-      | start_date | term | end_date |
-      | 2021-11-1  | 12   | 2022-11-1    |
-      | 2021-11-1  | 1    | 2021-12-1    |
-      | 2020-02-29 | 12   | 2021-02-28   |
-      | 2021-11-1  | 36   | 2024-11-1    |
+  Scenario: Invalid Membership Term
+    Given an end_date not after today
+    When a new membership is requested
+    Then an error is thrown
 
 
   Scenario Outline: Membership Type Factory

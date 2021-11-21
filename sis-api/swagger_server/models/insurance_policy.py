@@ -6,7 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
-from swagger_server.models.insurance_package_type import InsurancePackageType  # noqa: F401,E501
+from swagger_server.models.insurance_type import InsuranceType  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -15,7 +15,7 @@ class InsurancePolicy(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, user_id: int=None, type: InsurancePackageType=None, start_date: date=None, end_date: date=None):  # noqa: E501
+    def __init__(self, id: int=None, user_id: int=None, type: InsuranceType=None, start_date: date=None, end_date: date=None):  # noqa: E501
         """InsurancePolicy - a model defined in Swagger
 
         :param id: The id of this InsurancePolicy.  # noqa: E501
@@ -23,7 +23,7 @@ class InsurancePolicy(Model):
         :param user_id: The user_id of this InsurancePolicy.  # noqa: E501
         :type user_id: int
         :param type: The type of this InsurancePolicy.  # noqa: E501
-        :type type: InsurancePackageType
+        :type type: InsuranceType
         :param start_date: The start_date of this InsurancePolicy.  # noqa: E501
         :type start_date: date
         :param end_date: The end_date of this InsurancePolicy.  # noqa: E501
@@ -32,7 +32,7 @@ class InsurancePolicy(Model):
         self.swagger_types = {
             'id': int,
             'user_id': int,
-            'type': InsurancePackageType,
+            'type': InsuranceType,
             'start_date': date,
             'end_date': date
         }
@@ -104,22 +104,22 @@ class InsurancePolicy(Model):
         self._user_id = user_id
 
     @property
-    def type(self) -> InsurancePackageType:
+    def type(self) -> InsuranceType:
         """Gets the type of this InsurancePolicy.
 
 
         :return: The type of this InsurancePolicy.
-        :rtype: InsurancePackageType
+        :rtype: InsuranceType
         """
         return self._type
 
     @type.setter
-    def type(self, type: InsurancePackageType):
+    def type(self, type: InsuranceType):
         """Sets the type of this InsurancePolicy.
 
 
         :param type: The type of this InsurancePolicy.
-        :type type: InsurancePackageType
+        :type type: InsuranceType
         """
 
         self._type = type

@@ -14,20 +14,25 @@ class InlineResponse200(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, user_id: int=None):  # noqa: E501
+    def __init__(self, user_id: int=None, authenticated: bool=None):  # noqa: E501
         """InlineResponse200 - a model defined in Swagger
 
         :param user_id: The user_id of this InlineResponse200.  # noqa: E501
         :type user_id: int
+        :param authenticated: The authenticated of this InlineResponse200.  # noqa: E501
+        :type authenticated: bool
         """
         self.swagger_types = {
-            'user_id': int
+            'user_id': int,
+            'authenticated': bool
         }
 
         self.attribute_map = {
-            'user_id': 'user_id'
+            'user_id': 'user_id',
+            'authenticated': 'authenticated'
         }
         self._user_id = user_id
+        self._authenticated = authenticated
 
     @classmethod
     def from_dict(cls, dikt) -> 'InlineResponse200':
@@ -60,3 +65,24 @@ class InlineResponse200(Model):
         """
 
         self._user_id = user_id
+
+    @property
+    def authenticated(self) -> bool:
+        """Gets the authenticated of this InlineResponse200.
+
+
+        :return: The authenticated of this InlineResponse200.
+        :rtype: bool
+        """
+        return self._authenticated
+
+    @authenticated.setter
+    def authenticated(self, authenticated: bool):
+        """Sets the authenticated of this InlineResponse200.
+
+
+        :param authenticated: The authenticated of this InlineResponse200.
+        :type authenticated: bool
+        """
+
+        self._authenticated = authenticated
