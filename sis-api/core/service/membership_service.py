@@ -68,4 +68,4 @@ class MembershipService:
 
     def get_eligible_membership_type(self, user_id: int) -> MembershipType:
         profile = self.__profile.find_by_user_id(user_id)
-        return get_membership_type(role=profile.role, points=profile.points)
+        return get_membership_type(points=profile.points if profile else 0)

@@ -24,9 +24,7 @@ class MembershipType(IntEnum):
         return self.value <= other.value
 
 
-def get_membership_type(role: Role, points: int) -> MembershipType:
-    if role is Role.Advisor:
-        return MembershipType.Gold
+def get_membership_type(points: int) -> MembershipType:
     if points >= GOLD_POINTS_THRESHOLD:
         return MembershipType.Gold
     elif points >= SILVER_POINTS_THRESHOLD:

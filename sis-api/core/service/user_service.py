@@ -1,13 +1,10 @@
-import dataclasses
 from typing import Optional
 
-from flask import session
 from injector import singleton, inject
 from passlib.hash import pbkdf2_sha256
 
-from core.model.user import User
 from core.repository.user import UserRepository
-from web.exceptions import AuthError, BadRequest
+from web.exceptions import BadRequest
 
 
 @singleton

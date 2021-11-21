@@ -1,5 +1,5 @@
+from copy import copy
 from dataclasses import dataclass, field
-from datetime import datetime
 from typing import Optional
 
 from core.model.base_model import BaseModel
@@ -16,6 +16,15 @@ class Quote(BaseModel):
     is_complete: bool = field(default=False)
     price: Optional[float] = field(default=None)
 
-    def get_type(self) -> InsuranceType:
-        return InsuranceType[self.type]
+    def __post_init__(self):
+        if isinstance(self.type, str):
+            raise TypeError("Insurance type is not an enum")
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        data = copy(data)
+        data["type"] = InsuranceType[data["type"]]
+        data["is_complete"] = True if data["is_complete"] else False
+        return cls(**data)
+
 

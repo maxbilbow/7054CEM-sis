@@ -2,6 +2,7 @@ from datetime import date
 
 from behave import given, when, then
 from hamcrest import *
+from isodate import duration
 
 from core.model.membership import Membership
 from core.model.membership_type import MembershipType, get_membership_type
@@ -86,7 +87,7 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    context.membership_status = get_membership_type(context.role, context.points)
+    context.membership_status = get_membership_type(context.points)
 
 
 @then("their membership status will be {membership_type}")
@@ -124,3 +125,11 @@ def step_impl(context):
     :type context: behave.runner.Context
     """
     assert context.error is not None
+
+
+@given("the user has an active membership")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    MembershipService().new_membership(context.user_id, date.today() + duration.timedelta(days=1))

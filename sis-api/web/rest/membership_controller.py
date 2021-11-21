@@ -56,4 +56,4 @@ def cancel_membership(membership_service: MembershipService):
 @app.route("/api/membership/get_eligible_type", methods=["GET"])
 def get_eligible_type(profile_service: UserProfileService):
     profile = Profile.from_dict(profile_service.get())
-    return get_membership_type(role=profile.role, points=profile.points).name, status.HTTP_200_OK
+    return get_membership_type(points=profile.points).name, status.HTTP_200_OK

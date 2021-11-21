@@ -14,6 +14,7 @@ class InsuranceType(Enum):
 @dataclass(frozen=True, eq=True)
 class InsurancePolicy(BaseModel):
     id: int = field(metadata={"Key": True})
+    package_id: int
     user_id: int
     type: InsuranceType
     start_date: date
@@ -26,12 +27,3 @@ class InsurancePolicy(BaseModel):
         if self.end_date < date.today():
             return "Expired"
         return "Active"
-
-    def __post_init__(self):
-        if isinstance(self.type, str):
-            raise TypeError("membership type is not an enum")
-
-    def from_dict(cls, data: dict):
-        data = copy(data)
-        data["type"] = InsuranceType[data["type"]]
-        return cls(**data)

@@ -10,7 +10,7 @@ class InsurancePolicyRepository:
 
     @staticmethod
     def insert(policy: InsurancePolicy) -> InsurancePolicy:
-        id = mysql.insert(table_name="insurance_policy", entity=policy)
+        id = mysql.insert(table_name="insurance_policy", entity=policy, exclude_keys=["type", "id"])
         return dataclasses.replace(policy, id=id)
 
     @staticmethod

@@ -15,8 +15,8 @@ class QuoteService:
     def find_for_user(self, user_id: int):
         return self.__repo.find_by_userid(user_id)
 
-    def new_quote(self, user_id: int, insurance_type: InsuranceType):
-        return self.__repo.insert(Quote(-1, user_id, insurance_type))
+    def new_quote(self, user_id: int, insurance_type: str):
+        return self.__repo.insert(Quote(-1, user_id, InsuranceType[insurance_type]))
 
     def update_quote(self, quote_id: int, data: dict):
         data["id"] = quote_id

@@ -1,9 +1,7 @@
 from copy import copy
 from dataclasses import dataclass, field
-from typing import Optional
 
 from .base_model import BaseModel
-from .membership import Membership
 from .roles import Role
 
 
