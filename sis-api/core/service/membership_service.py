@@ -6,7 +6,7 @@ from core.model.membership import Membership
 from core.model.membership_type import MembershipType, get_membership_type
 from core.repository.membership import MembershipRepository
 from core.repository.user_profile import UserProfileRepository
-from web.exceptions import BadRequest
+from core.exceptions import BadRequest
 
 
 class MembershipService:

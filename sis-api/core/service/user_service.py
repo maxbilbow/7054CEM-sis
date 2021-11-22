@@ -4,7 +4,7 @@ from injector import singleton, inject
 from passlib.hash import pbkdf2_sha256
 
 from core.repository.user import UserRepository
-from web.exceptions import BadRequest
+from core.exceptions import BadRequest
 
 
 @singleton

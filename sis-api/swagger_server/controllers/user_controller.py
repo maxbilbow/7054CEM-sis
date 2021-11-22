@@ -6,7 +6,6 @@ from core.model import to_dict
 from core.model.user import User
 from core.service.user_service import UserService
 from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
-from web.exceptions import BadRequest
 
 
 def create_user(body):  # noqa: E501

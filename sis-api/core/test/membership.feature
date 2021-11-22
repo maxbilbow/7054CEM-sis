@@ -9,20 +9,18 @@ Feature: Membership model determined properties
 
 
   Scenario Outline: Membership Type Factory
-    Given a user profile with <role> role
-    And a user profile with <points> points
+    Given a user profile with <points> points
     When their membership status is requested
     Then their membership status will be <membership_type>
     Examples:
-      | role    | points | membership_type |
-      | Advisor | 0      | Gold   |
-      | Member  | 0      | Smart  |
-      | Member  | 0      | Smart  |
-      | Member  | 1      | Smart  |
-      | Member  | 2      | Silver |
-      | Member  | 3      | Silver |
-      | Member  | 4      | Silver |
-      | Member  | 5      | Gold   |
+      | points | membership_type |
+      | 0      | Smart  |
+      | 0      | Smart  |
+      | 1      | Smart  |
+      | 2      | Silver |
+      | 3      | Silver |
+      | 4      | Silver |
+      | 5      | Gold   |
 
 
   Scenario Outline: Date Formatting

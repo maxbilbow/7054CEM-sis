@@ -1,5 +1,3 @@
-import dataclasses
-
 from injector import singleton, inject
 
 from core.model.profile import Profile
