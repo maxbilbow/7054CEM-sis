@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./user-profile.component.less'],
 })
 export class UserProfileComponent implements OnInit {
-  profile?: UserProfile
+  profile!: UserProfile
 
   constructor(private readonly userProfileService: UserProfileService) {
   }

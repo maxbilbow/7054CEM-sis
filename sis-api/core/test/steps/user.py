@@ -1,10 +1,12 @@
 from behave import *
 from hamcrest import *
 
+from core.model import to_dict
 from core.repository.user_profile import UserProfileRepository
 from core.service.profile_service import ProfileService
 from core.service.quote_service import QuoteService
 from core.service.user_service import UserService
+from swagger_server.models import PersonalDetails, Address
 
 use_step_matcher("re")
 
@@ -16,7 +18,8 @@ def step_impl(context):
     """
     ProfileService().insert_profile({
         "user_id": context.user_id,
-        "role": "Member"
+        "personal_details": to_dict(PersonalDetails(full_name="", relationship_status="", employment_status="",
+                                                    address=Address()))
     })
 
 

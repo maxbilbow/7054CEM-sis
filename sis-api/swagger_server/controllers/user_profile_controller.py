@@ -54,7 +54,7 @@ def remove_profile(user_id):  # noqa: E501
 
     :rtype: None
     """
-    ProfileService().delete(user_id)
+    ProfileService().delete_profile(user_id)
     return 'User Profile deleted'
 
 

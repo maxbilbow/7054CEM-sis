@@ -1,6 +1,4 @@
-from enum import Enum, IntEnum
-
-from core.model.roles import Role
+from enum import IntEnum
 
 SILVER_POINTS_THRESHOLD = 2
 GOLD_POINTS_THRESHOLD = 5

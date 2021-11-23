@@ -23,3 +23,6 @@ class ProfileService:
     def update_profile(self, data: dict) -> Profile:
         self.__profile.update(Profile.from_dict(data))
         return self.get_profile(data["user_id"])
+
+    def delete_profile(self, user_id: int):
+        return self.__profile.delete(user_id)

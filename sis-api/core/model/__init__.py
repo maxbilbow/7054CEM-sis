@@ -1,19 +1,35 @@
-from dataclasses import asdict, is_dataclass
+from copy import copy
+from dataclasses import asdict, is_dataclass, dataclass
 from datetime import date
 from enum import Enum
-from typing import Optional, Union
+from typing import Optional, Union, List
+
+from swagger_server import encoder
+from swagger_server.models.base_model_ import Model
 
 
-def to_dict(o, use_enum_values=False) -> Optional[Union[list, dict]]:
+def get_keys(o: Union[dict, dataclass, Model], exclude: Optional[List[str]] = None) -> List[str]:
+    keys: List[str]
+    if isinstance(o, Model):
+        keys = [o.attribute_map[key] for key in list(o.swagger_types.keys())]
+    else:
+        keys = list(to_dict(o).keys())
+
+    if exclude is not None:
+        keys = list(filter(lambda x: x not in exclude, keys))
+    return keys
+
+
+def to_dict(o) -> Optional[Union[list, dict]]:
     if o is None:
         return None
     if is_dataclass(o):
         return asdict(o, dict_factory=_serializable_dict)
     if isinstance(o, list):
         return [to_dict(each) for each in o]
-
+    if isinstance(o, Model):
+        return encoder.JSONEncoder().default(o)
     raise TypeError("{} is not a dict".format(type(o)))
-
 
 
 def _serializable_dict(data):
@@ -23,7 +39,9 @@ def _serializable_dict(data):
         if isinstance(obj, Enum):
             return obj.name
         if isinstance(obj, date):
-            return obj.isoformat() #f"{obj.year}-{obj.month}-{obj.day}"
+            return obj.isoformat()  # f"{obj.year}-{obj.month}-{obj.day}"
+        if isinstance(obj, Model):
+            return to_dict(obj)
         return obj
 
     return dict((k, convert_value(v)) for k, v in data)
@@ -42,4 +60,3 @@ def to_date(value: Optional[Union[str, date]]) -> Optional[date]:
         return date.fromisoformat(value)
     else:
         return date.fromisoformat(value)
-

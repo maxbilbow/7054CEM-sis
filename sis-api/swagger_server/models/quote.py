@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
 from swagger_server.models.insurance_type import InsuranceType  # noqa: F401,E501
+from swagger_server.models.one_of_quote_sections import OneOfQuoteSections  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -15,7 +16,7 @@ class Quote(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, user_id: int=None, type: InsuranceType=None, created: int=None, updated: int=None, is_complete: bool=None, price: float=None):  # noqa: E501
+    def __init__(self, id: int=None, user_id: int=None, type: InsuranceType=None, created: int=None, updated: int=None, is_complete: bool=None, price: float=None, sections: OneOfQuoteSections=None):  # noqa: E501
         """Quote - a model defined in Swagger
 
         :param id: The id of this Quote.  # noqa: E501
@@ -32,6 +33,8 @@ class Quote(Model):
         :type is_complete: bool
         :param price: The price of this Quote.  # noqa: E501
         :type price: float
+        :param sections: The sections of this Quote.  # noqa: E501
+        :type sections: OneOfQuoteSections
         """
         self.swagger_types = {
             'id': int,
@@ -40,7 +43,8 @@ class Quote(Model):
             'created': int,
             'updated': int,
             'is_complete': bool,
-            'price': float
+            'price': float,
+            'sections': OneOfQuoteSections
         }
 
         self.attribute_map = {
@@ -50,7 +54,8 @@ class Quote(Model):
             'created': 'created',
             'updated': 'updated',
             'is_complete': 'is_complete',
-            'price': 'price'
+            'price': 'price',
+            'sections': 'sections'
         }
         self._id = id
         self._user_id = user_id
@@ -59,6 +64,7 @@ class Quote(Model):
         self._updated = updated
         self._is_complete = is_complete
         self._price = price
+        self._sections = sections
 
     @classmethod
     def from_dict(cls, dikt) -> 'Quote':
@@ -219,3 +225,24 @@ class Quote(Model):
         """
 
         self._price = price
+
+    @property
+    def sections(self) -> OneOfQuoteSections:
+        """Gets the sections of this Quote.
+
+
+        :return: The sections of this Quote.
+        :rtype: OneOfQuoteSections
+        """
+        return self._sections
+
+    @sections.setter
+    def sections(self, sections: OneOfQuoteSections):
+        """Sets the sections of this Quote.
+
+
+        :param sections: The sections of this Quote.
+        :type sections: OneOfQuoteSections
+        """
+
+        self._sections = sections

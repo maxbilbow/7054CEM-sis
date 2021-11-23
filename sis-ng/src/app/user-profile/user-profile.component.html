@@ -1,16 +1,6 @@
-<!-- Default form contact -->
-<div class="text-center border border-light p-5" *ngIf="profile">
-  <p>
-    <mat-form-field matFormFieldCtrl=ctrl appearance="standard">
-      <mat-label>Full Name</mat-label>
-      <input matInput placeholder="Full Name" [(ngModel)]="profile.name">
-      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      <mat-hint>Hint</mat-hint>
-    </mat-form-field>
-  </p>
-
+<mat-card *ngIf="profile">
+  <app-personal-details [personalDetails]="profile.personal_details"></app-personal-details>
+  <app-driver-history [driverHistory]="profile.driver_history"></app-driver-history>
   <!-- Send button -->
   <button mat-raised-button color="primary" (click)="save()">Save</button>
-</div>
-<!-- Default form contact -->
-
+</mat-card>

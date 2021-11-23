@@ -67,6 +67,8 @@ def deserialize_date(string):
     :return: date.
     :rtype: date
     """
+    if isinstance(string, datetime.date):
+        return string
     try:
         from dateutil.parser import parse
         return parse(string).date()

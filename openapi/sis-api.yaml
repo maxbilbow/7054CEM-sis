@@ -3,14 +3,14 @@ info:
   title: Smart Insurance System
   version: 1.0.0
 servers:
-- url: /api/v1
+  - url: /api/v1
 tags:
-- name: Authorization
-- name: User
-- name: User Profile
-- name: Membership
-- name: Quotes
-- name: Insurance Policy
+  - name: Authorization
+  - name: User
+  - name: User Profile
+  - name: Membership
+  - name: Quotes
+  - name: Insurance Policy
 paths:
   /secret:
     get:
@@ -26,7 +26,7 @@ paths:
               schema:
                 type: string
       security:
-        - api_key: []
+        - api_key: [ ]
   /user-id/{email}:
     get:
       tags:
@@ -34,13 +34,13 @@ paths:
       summary: Get a user id by email
       operationId: find_by_email
       parameters:
-      - name: email
-        in: path
-        description: The email of the user to retrieve
-        required: true
-        schema:
-          type: string
-          format: email
+        - name: email
+          in: path
+          description: The email of the user to retrieve
+          required: true
+          schema:
+            type: string
+            format: email
       responses:
         200:
           description: Successfully retrived user
@@ -180,12 +180,12 @@ paths:
       summary: Get a user profile
       operationId: get_profile
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user to retrieve
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user to retrieve
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successfully retrived user
@@ -195,7 +195,7 @@ paths:
                 $ref: '#/components/schemas/UserProfile'
         404:
           description: User doesn't exist
-          content: {}
+          content: { }
     post:
       tags:
         - User Profile
@@ -228,12 +228,12 @@ paths:
       summary: Update and replace a user profile
       operationId: update_profile
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user to update
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user to update
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -249,7 +249,7 @@ paths:
                 $ref: '#/components/schemas/UserProfile'
         404:
           description: User doesn't exist
-          content: {}
+          content: { }
       x-codegen-request-body-name: User
     delete:
       tags:
@@ -257,32 +257,32 @@ paths:
       summary: Remove a user profile
       operationId: remove_profile
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user to remove
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user to remove
+          required: true
+          schema:
+            type: integer
       responses:
         202:
           description: Successfully deleted user
-          content: {}
+          content: { }
         404:
           description: User doesn't exist
-          content: {}
+          content: { }
   /user/{user_id}/membership:
     get:
       tags:
-      - Membership
+        - Membership
       summary: Get current active membership for user
       operationId: get_current
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successfully retrived user's Membership
@@ -292,19 +292,19 @@ paths:
                 $ref: '#/components/schemas/Membership'
         404:
           description: Active membership does not exist
-          content: {}
+          content: { }
     post:
       tags:
-      - Membership
+        - Membership
       summary: Create new membership
       operationId: create_membership
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -320,19 +320,19 @@ paths:
                 $ref: '#/components/schemas/Membership'
         404:
           description: User doesn't exist
-          content: {}
+          content: { }
     put:
       tags:
-      - Membership
+        - Membership
       summary: Update a membership
       operationId: update_membership
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -348,19 +348,19 @@ paths:
                 $ref: '#/components/schemas/Membership'
         404:
           description: User doesn't exist
-          content: {}
+          content: { }
     delete:
       tags:
-      - Membership
+        - Membership
       summary: Cancel the current membership by setting its end_date to today
       operationId: cancel_membership
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successfully cancelled a membership
@@ -370,20 +370,20 @@ paths:
                 $ref: '#/components/schemas/Membership'
         404:
           description: User doesn't exist
-          content: {}
+          content: { }
   /user/{user_id}/benefits:
     get:
       tags:
-      - Membership
+        - Membership
       summary: Get all benefits available for a user
       operationId: get_benefits
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successfully retrived user's benefits
@@ -393,7 +393,7 @@ paths:
                 $ref: '#/components/schemas/Benefits'
         404:
           description: User doesn't exist
-          content: {}
+          content: { }
   /user/{user_id}/insurance_policy:
     get:
       tags:
@@ -401,12 +401,12 @@ paths:
       summary: Get active policies
       operationId: get_active
       parameters:
-       - name: user_id
-         in: path
-         description: The id of the user
-         required: true
-         schema:
-           type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Retrieves all insurance Policys for the user
@@ -420,12 +420,12 @@ paths:
       summary: Create new policy
       operationId: create_package
       parameters:
-       - name: user_id
-         in: path
-         description: The id of the user
-         required: true
-         schema:
-           type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       requestBody:
         description: Policy to create
         content:
@@ -444,12 +444,12 @@ paths:
       summary: Update policy
       operationId: update
       parameters:
-       - name: user_id
-         in: path
-         description: The id of the user
-         required: true
-         schema:
-           type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       requestBody:
         description: Policy to create
         content:
@@ -468,18 +468,18 @@ paths:
         - Insurance Policy
       summary: Gets all policies for a user
       parameters:
-       - name: user_id
-         in: path
-         description: The id of the user
-         required: true
-         schema:
-           type: integer
-       - name: package_id
-         in: path
-         description: The id of the insurance Policy
-         required: true
-         schema:
-           type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
+        - name: package_id
+          in: path
+          description: The id of the insurance Policy
+          required: true
+          schema:
+            type: integer
       operationId: get_all
       responses:
         200:
@@ -494,39 +494,39 @@ paths:
       summary: Delete application
       operationId: delete_package
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user to remove
-        required: true
-        schema:
-          type: integer
-      - name: package_id
-        in: path
-        description: The id of the insurance Policy
-        required: true
-        schema:
-         type: integer
+        - name: user_id
+          in: path
+          description: The id of the user to remove
+          required: true
+          schema:
+            type: integer
+        - name: package_id
+          in: path
+          description: The id of the insurance Policy
+          required: true
+          schema:
+            type: integer
       responses:
         202:
           description: Successfully deleted policy
-          content: {}
+          content: { }
         404:
           description: Policy doesn't exist
-          content: {}
+          content: { }
 
   /user/{user_id}/quote:
     get:
       tags:
-      - Quotes
+        - Quotes
       summary: Get all quotes for a user
       operationId: get_for_user
       parameters:
-      - name: user_id
-        in: path
-        description: The id of the user
-        required: true
-        schema:
-          type: integer
+        - name: user_id
+          in: path
+          description: The id of the user
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successfully retrived quotes for user
@@ -536,7 +536,7 @@ paths:
                 $ref: '#/components/schemas/Quotes'
         404:
           description: User doesn't exist
-          content: {}
+          content: { }
     post:
       tags:
         - Quotes
@@ -568,16 +568,16 @@ paths:
   /quote/{quote_id}:
     get:
       tags:
-      - Quotes
+        - Quotes
       summary: Get quote by id
       operationId: get_quote
       parameters:
-      - name: quote_id
-        in: path
-        description: The id of the quote
-        required: true
-        schema:
-          type: integer
+        - name: quote_id
+          in: path
+          description: The id of the quote
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successfully retrived quote
@@ -587,7 +587,7 @@ paths:
                 $ref: '#/components/schemas/Quote'
         404:
           description: Quote doesn't exist
-          content: {}
+          content: { }
     put:
       tags:
         - Quotes
@@ -676,12 +676,43 @@ components:
       properties:
         user_id:
           type: integer
-        name:
-          type: string
-        role:
-          $ref: '#/components/schemas/Role'
-        points:
+        personal_details:
+          $ref: '#/components/schemas/PersonalDetails'
+        driver_history:
+          $ref: '#/components/schemas/DriverHistory'
+    PersonalDetails:
+      properties:
+        id:
           type: integer
+        full_name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        dob:
+          type: string
+          format: date
+        relationship_status:
+          type: string
+          nullable: true
+          enum:
+            - Single
+            - Married
+            - null
+        home_owner:
+          type: boolean
+        dependents:
+          description: Number of dependents under the age of 16
+          type: integer
+        employment_status:
+          type: string
+          nullable: true
+          enum:
+            - FullTime
+            - PartTime
+            - Unemployed
+            - Retired
+            - Student
+            - null
     Membership:
       required:
         - start_date
@@ -732,6 +763,146 @@ components:
           type: boolean
         price:
           type: number
+        sections:
+          oneOf:
+            - $ref: '#/components/schemas/VehicleQuoteSections'
+            - $ref: '#/components/schemas/HomeQuoteSections'
+    VehicleQuoteSections:
+      properties:
+        driver_details:
+          $ref: '#/components/schemas/DriverDetails'
+        vehicle_details:
+          $ref: '#/components/schemas/VehicleDetails'
+        vehicle_usage:
+          $ref: '#/components/schemas/VehicleUsage'
+        additional_drivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/DriverDetails'
+    HomeQuoteSections:
+      properties:
+        personal_details:
+          $ref: '#/components/schemas/UserProfile'
+        home_details:
+          $ref: '#/components/schemas/HomeDetails'
+    VehicleDetails:
+      properties:
+        quote_id:
+          type: integer
+        alarm_fitter:
+          type: boolean
+        immobilizer_fitted:
+          type: boolean
+        tracking_device_fitted:
+          type: boolean
+        is_import:
+          type: boolean
+        off_side_drive:
+          type: boolean
+        number_of_seats:
+          type: number
+        current_value:
+          type: number
+        is_modified:
+          type: boolean
+    VehicleUsage:
+      properties:
+        usage:
+          type: string
+          nullable: true
+          enum:
+            - SDP
+            - SDPC
+            - SDPCB
+            - null
+        annual_milage:
+          type: integer
+        day_storage:
+          type: string
+          nullable: true
+          enum:
+            - Home
+            - CarParkOffice
+            - CarParkPublic
+            - StreetAwayFromHome
+            - null
+        night_storage:
+          type: string
+          nullable: true
+          enum:
+            - Drive
+            - StreetOutsideHome
+            - StreetAwayFromHome
+            - Garage
+            - null
+        night_storage_at_home:
+          type: boolean
+        night_storage_address:
+          $ref: '#/components/schemas/Address'
+    DriverDetails:
+      properties:
+        id:
+          type: integer
+        personal_details:
+          $ref: '#/components/schemas/PersonalDetails'
+        driving_history:
+          $ref: '#/components/schemas/DriverHistory'
+    DriverHistory:
+      properties:
+        id:
+          type: integer
+        licence_type:
+          type: string
+          enum:
+            - Full
+            - Provisional
+            - null
+        license_since:
+          type: string
+          format: date
+        licence_no:
+          type: string
+        previous_claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreviousClaim'
+    PreviousClaim:
+      properties:
+        id:
+          type: integer
+        driver_history_id:
+          type: integer
+        date:
+          type: string
+          format: date
+        fault:
+          type: string
+          enum:
+            - Self
+            - ThirdParty
+        claim_type:
+          type: string
+          enum:
+            - Accident
+            - Theft
+    HomeDetails:
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+    Address:
+      properties:
+        id:
+          type: integer
+        number_or_name:
+          type: string
+        street:
+          type: string
+        town:
+          type: string
+        county:
+          type: string
+        postcode:
+          type: string
     Benefit:
       required:
         - name
@@ -754,9 +925,4 @@ components:
       enum:
         - Home
         - Motor
-    Role:
-      type: string
-      enum:
-        - Member
-        - Advisor
 

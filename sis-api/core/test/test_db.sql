@@ -7,6 +7,25 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+DROP TABLE IF EXISTS `address`;
+CREATE TABLE IF NOT EXISTS `address` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `number_or_name` varchar(50) DEFAULT NULL,
+  `street` varchar(100) DEFAULT NULL,
+  `town` varchar(100) DEFAULT NULL,
+  `county` varchar(100) DEFAULT NULL,
+  `postcode` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `driver_history`;
+CREATE TABLE IF NOT EXISTS `driver_history` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `licence_type` enum('Full','Provisional') DEFAULT NULL,
+  `license_since` date DEFAULT NULL,
+  `licence_no` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `insurance_package`;
 CREATE TABLE IF NOT EXISTS `insurance_package` (
@@ -41,6 +60,31 @@ CREATE TABLE IF NOT EXISTS `membership` (
   KEY `user_membership` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS `personal_details`;
+CREATE TABLE IF NOT EXISTS `personal_details` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `full_name` text NOT NULL,
+  `address_id` int(11) UNSIGNED DEFAULT NULL,
+  `dob` date DEFAULT NULL,
+  `relationship_status` enum('Single','Married') DEFAULT NULL,
+  `home_owner` tinyint(1) NOT NULL,
+  `dependents` tinyint(4) NOT NULL DEFAULT 0,
+  `employment_status` enum('FullTime','PartTime','Unemployed','Retired','Student') DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `personal_details_address` (`address_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `previous_claim`;
+CREATE TABLE IF NOT EXISTS `previous_claim` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `driver_history_id` int(11) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `fault` enum('Self','ThirdParty') NOT NULL,
+  `claim_type` enum('Accident','Theft') NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `driver_history_previous_claim` (`driver_history_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 DROP TABLE IF EXISTS `quote`;
 CREATE TABLE IF NOT EXISTS `quote` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -66,9 +110,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 DROP TABLE IF EXISTS `user_profile`;
 CREATE TABLE IF NOT EXISTS `user_profile` (
   `user_id` int(11) UNSIGNED NOT NULL,
-  `name` varchar(60) NOT NULL,
-  `points` int(11) NOT NULL DEFAULT 0,
-  `role` enum('Member','Advisor') NOT NULL,
+  `personal_details_id` int(11) UNSIGNED DEFAULT NULL,
+  `driver_history_id` int(11) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -78,7 +121,13 @@ ALTER TABLE `insurance_policy`
   ADD CONSTRAINT `user_insurance_policy` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 ALTER TABLE `membership`
-  ADD CONSTRAINT `user_membership` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_membership` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `personal_details`
+  ADD CONSTRAINT `personal_details_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `previous_claim`
+  ADD CONSTRAINT `driver_history_previous_claim` FOREIGN KEY (`driver_history_id`) REFERENCES `driver_history` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `quote`
   ADD CONSTRAINT `user_quote` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -7,7 +7,6 @@ from isodate import duration
 from core.model.membership import Membership
 from core.model.membership_type import MembershipType, get_membership_type
 from core.model.profile import Profile
-from core.model.roles import Role
 from core.repository.membership import MembershipRepository
 from core.service.membership_service import MembershipService
 
@@ -36,9 +35,6 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    points = context.points if "points" in context else 0
-    role = context.role if "role" in context else Role.Member
-    profile = Profile(user_id=0, points=points, role=role)
     ms = MembershipService(MembershipRepository())
     context.membership = ms.new_membership(user_id=-1, end_date=context.start_date)
 
@@ -53,15 +49,6 @@ def step_impl(context, end_date: str):
     expected = date(int(y), int(m), int(d))
     membership = context.membership
     assert_that(membership.end_date, equal_to(expected))
-
-
-@given("a user profile with {role} role")
-def step_impl(context, role: str):
-    """
-    :type context: behave.runner.Context
-    :type role: str
-    """
-    context.role = Role[role]
 
 
 @given("a user profile with {points:d} points")

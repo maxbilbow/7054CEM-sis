@@ -1,7 +1,6 @@
 from behave import *
 
 from core.repository import mysql
-from core.repository.user import UserRepository
 from core.service.quote_service import QuoteService
 from core.service.user_service import UserService
 from core.test import test_db

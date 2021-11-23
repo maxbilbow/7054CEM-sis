@@ -740,17 +740,89 @@ components:
       properties:
         user_id:
           type: integer
-        name:
-          type: string
-        role:
-          $ref: '#/components/schemas/Role'
-        points:
-          type: integer
+        personal_details:
+          $ref: '#/components/schemas/PersonalDetails'
+        driver_history:
+          $ref: '#/components/schemas/DriverHistory'
       example:
-        role: Member
         user_id: 0
-        name: name
-        points: 6
+        driver_history:
+          licence_no: licence_no
+          licence_type: Full
+          previous_claims:
+          - date: 2000-01-23
+            driver_history_id: 2
+            fault: Self
+            claim_type: Accident
+          - date: 2000-01-23
+            driver_history_id: 2
+            fault: Self
+            claim_type: Accident
+          license_since: 2000-01-23
+          id: 5
+        personal_details:
+          full_name: full_name
+          address:
+            town: town
+            street: street
+            county: county
+            postcode: postcode
+            number_or_name: number_or_name
+            id: 1
+          relationship_status: Single
+          home_owner: true
+          dob: 2000-01-23
+          dependents: 5
+          id: 6
+          employment_status: FullTime
+    PersonalDetails:
+      properties:
+        id:
+          type: integer
+        full_name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        dob:
+          type: string
+          format: date
+        relationship_status:
+          type: string
+          nullable: true
+          enum:
+          - Single
+          - Married
+          - null
+        home_owner:
+          type: boolean
+        dependents:
+          type: integer
+          description: Number of dependents under the age of 16
+        employment_status:
+          type: string
+          nullable: true
+          enum:
+          - FullTime
+          - PartTime
+          - Unemployed
+          - Retired
+          - Student
+          - null
+      example:
+        full_name: full_name
+        address:
+          town: town
+          street: street
+          county: county
+          postcode: postcode
+          number_or_name: number_or_name
+          id: 1
+        relationship_status: Single
+        home_owner: true
+        dob: 2000-01-23
+        dependents: 5
+        id: 6
+        employment_status: FullTime
     Membership:
       required:
       - end_date
@@ -771,8 +843,8 @@ components:
           $ref: '#/components/schemas/MembershipType'
       example:
         end_date: 2000-01-23
-        user_id: 5
-        id: 1
+        user_id: 6
+        id: 0
         type: Smart
         start_date: 2000-01-23
     InsurancePolicy:
@@ -813,6 +885,10 @@ components:
           type: boolean
         price:
           type: number
+        sections:
+          oneOf:
+          - $ref: '#/components/schemas/VehicleQuoteSections'
+          - $ref: '#/components/schemas/HomeQuoteSections'
       example:
         user_id: 6
         created: 1
@@ -821,6 +897,171 @@ components:
         is_complete: true
         type: Home
         updated: 5
+        sections: ""
+    VehicleQuoteSections:
+      properties:
+        driver_details:
+          $ref: '#/components/schemas/DriverDetails'
+        vehicle_details:
+          $ref: '#/components/schemas/VehicleDetails'
+        vehicle_usage:
+          $ref: '#/components/schemas/VehicleUsage'
+        additional_drivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/DriverDetails'
+    HomeQuoteSections:
+      properties:
+        personal_details:
+          $ref: '#/components/schemas/UserProfile'
+        home_details:
+          $ref: '#/components/schemas/HomeDetails'
+    VehicleDetails:
+      properties:
+        quote_id:
+          type: integer
+        alarm_fitter:
+          type: boolean
+        immobilizer_fitted:
+          type: boolean
+        tracking_device_fitted:
+          type: boolean
+        is_import:
+          type: boolean
+        off_side_drive:
+          type: boolean
+        number_of_seats:
+          type: number
+        current_value:
+          type: number
+        is_modified:
+          type: boolean
+    VehicleUsage:
+      properties:
+        usage:
+          type: string
+          nullable: true
+          enum:
+          - SDP
+          - SDPC
+          - SDPCB
+          - null
+        annual_milage:
+          type: integer
+        day_storage:
+          type: string
+          nullable: true
+          enum:
+          - Home
+          - CarParkOffice
+          - CarParkPublic
+          - StreetAwayFromHome
+          - null
+        night_storage:
+          type: string
+          nullable: true
+          enum:
+          - Drive
+          - StreetOutsideHome
+          - StreetAwayFromHome
+          - Garage
+          - null
+        night_storage_at_home:
+          type: boolean
+        night_storage_address:
+          $ref: '#/components/schemas/Address'
+    DriverDetails:
+      properties:
+        id:
+          type: integer
+        personal_details:
+          $ref: '#/components/schemas/PersonalDetails'
+        driving_history:
+          $ref: '#/components/schemas/DriverHistory'
+    DriverHistory:
+      properties:
+        id:
+          type: integer
+        licence_type:
+          type: string
+          nullable: true
+          default: ""
+          enum:
+          - Full
+          - Provisional
+          - null
+        license_since:
+          type: string
+          format: date
+        licence_no:
+          type: string
+        previous_claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreviousClaim'
+      example:
+        licence_no: licence_no
+        licence_type: Full
+        previous_claims:
+        - date: 2000-01-23
+          driver_history_id: 2
+          fault: Self
+          claim_type: Accident
+        - date: 2000-01-23
+          driver_history_id: 2
+          fault: Self
+          claim_type: Accident
+        license_since: 2000-01-23
+        id: 5
+    PreviousClaim:
+      properties:
+        id:
+          type: integer
+        driver_history_id:
+          type: integer
+        date:
+          type: string
+          format: date
+        fault:
+          type: string
+          enum:
+          - Self
+          - ThirdParty
+        claim_type:
+          type: string
+          enum:
+          - Accident
+          - Theft
+      example:
+        date: 2000-01-23
+        driver_history_id: 2
+        fault: Self
+        claim_type: Accident
+    HomeDetails:
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+    Address:
+      properties:
+        id:
+          type: integer
+        number_or_name:
+          type: string
+        street:
+          type: string
+        town:
+          type: string
+        county:
+          type: string
+        postcode:
+          type: string
+      example:
+        town: town
+        street: street
+        county: county
+        postcode: postcode
+        number_or_name: number_or_name
+        id: 1
     Benefit:
       required:
       - min_membership
@@ -847,11 +1088,6 @@ components:
       enum:
       - Home
       - Motor
-    Role:
-      type: string
-      enum:
-      - Member
-      - Advisor
     inline_response_200:
       properties:
         user_id:
@@ -859,8 +1095,8 @@ components:
         authenticated:
           type: boolean
       example:
-        user_id: 0
         authenticated: true
+        user_id: 0
     inline_response_200_1:
       properties:
         user_id:

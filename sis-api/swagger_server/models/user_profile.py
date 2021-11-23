@@ -6,8 +6,8 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
-from swagger_server.models.membership import Membership  # noqa: F401,E501
-from swagger_server.models.role import Role  # noqa: F401,E501
+from swagger_server.models.driver_history import DriverHistory  # noqa: F401,E501
+from swagger_server.models.personal_details import PersonalDetails  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -16,40 +16,30 @@ class UserProfile(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, user_id: int=None, name: str=None, role: Role=None, points: int=None, membership: Membership=None):  # noqa: E501
+    def __init__(self, user_id: int=None, personal_details: PersonalDetails=None, driver_history: DriverHistory=None):  # noqa: E501
         """UserProfile - a model defined in Swagger
 
         :param user_id: The user_id of this UserProfile.  # noqa: E501
         :type user_id: int
-        :param name: The name of this UserProfile.  # noqa: E501
-        :type name: str
-        :param role: The role of this UserProfile.  # noqa: E501
-        :type role: Role
-        :param points: The points of this UserProfile.  # noqa: E501
-        :type points: int
-        :param membership: The membership of this UserProfile.  # noqa: E501
-        :type membership: Membership
+        :param personal_details: The personal_details of this UserProfile.  # noqa: E501
+        :type personal_details: PersonalDetails
+        :param driver_history: The driver_history of this UserProfile.  # noqa: E501
+        :type driver_history: DriverHistory
         """
         self.swagger_types = {
             'user_id': int,
-            'name': str,
-            'role': Role,
-            'points': int,
-            'membership': Membership
+            'personal_details': PersonalDetails,
+            'driver_history': DriverHistory
         }
 
         self.attribute_map = {
             'user_id': 'user_id',
-            'name': 'name',
-            'role': 'role',
-            'points': 'points',
-            'membership': 'membership'
+            'personal_details': 'personal_details',
+            'driver_history': 'driver_history'
         }
         self._user_id = user_id
-        self._name = name
-        self._role = role
-        self._points = points
-        self._membership = membership
+        self._personal_details = personal_details
+        self._driver_history = driver_history
 
     @classmethod
     def from_dict(cls, dikt) -> 'UserProfile':
@@ -84,85 +74,43 @@ class UserProfile(Model):
         self._user_id = user_id
 
     @property
-    def name(self) -> str:
-        """Gets the name of this UserProfile.
+    def personal_details(self) -> PersonalDetails:
+        """Gets the personal_details of this UserProfile.
 
 
-        :return: The name of this UserProfile.
-        :rtype: str
+        :return: The personal_details of this UserProfile.
+        :rtype: PersonalDetails
         """
-        return self._name
+        return self._personal_details
 
-    @name.setter
-    def name(self, name: str):
-        """Sets the name of this UserProfile.
+    @personal_details.setter
+    def personal_details(self, personal_details: PersonalDetails):
+        """Sets the personal_details of this UserProfile.
 
 
-        :param name: The name of this UserProfile.
-        :type name: str
+        :param personal_details: The personal_details of this UserProfile.
+        :type personal_details: PersonalDetails
         """
 
-        self._name = name
+        self._personal_details = personal_details
 
     @property
-    def role(self) -> Role:
-        """Gets the role of this UserProfile.
+    def driver_history(self) -> DriverHistory:
+        """Gets the driver_history of this UserProfile.
 
 
-        :return: The role of this UserProfile.
-        :rtype: Role
+        :return: The driver_history of this UserProfile.
+        :rtype: DriverHistory
         """
-        return self._role
+        return self._driver_history
 
-    @role.setter
-    def role(self, role: Role):
-        """Sets the role of this UserProfile.
-
-
-        :param role: The role of this UserProfile.
-        :type role: Role
-        """
-
-        self._role = role
-
-    @property
-    def points(self) -> int:
-        """Gets the points of this UserProfile.
+    @driver_history.setter
+    def driver_history(self, driver_history: DriverHistory):
+        """Sets the driver_history of this UserProfile.
 
 
-        :return: The points of this UserProfile.
-        :rtype: int
-        """
-        return self._points
-
-    @points.setter
-    def points(self, points: int):
-        """Sets the points of this UserProfile.
-
-
-        :param points: The points of this UserProfile.
-        :type points: int
+        :param driver_history: The driver_history of this UserProfile.
+        :type driver_history: DriverHistory
         """
 
-        self._points = points
-
-    @property
-    def membership(self) -> Membership:
-        """Gets the membership of this UserProfile.
-
-
-        :return: The membership of this UserProfile.
-        :rtype: Membership
-        """
-        return self._membership
-
-    @membership.setter
-    def membership(self, membership: Membership):
-        """Sets the membership of this UserProfile.
-
-
-        :param membership: The membership of this UserProfile.
-        :type membership: Membership
-        """
-
-        self._membership = membership
+        self._driver_history = driver_history
