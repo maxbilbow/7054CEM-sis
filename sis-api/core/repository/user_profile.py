@@ -25,10 +25,11 @@ class UserProfileRepository:
 
             profile.driver_history.id = dh_table.insert(profile.driver_history, dh_keys)
 
-            for claim in profile.driver_history.previous_claims:
-                claim.driver_history_id = profile.driver_history.id
-                claim_keys = get_keys(claim, exclude=["id"])
-                claim_table.insert(claim, claim_keys)
+            if profile.driver_history.previous_claims is not None:
+                for claim in profile.driver_history.previous_claims:
+                    claim.driver_history_id = profile.driver_history.id
+                    claim_keys = get_keys(claim, exclude=["id"])
+                    claim_table.insert(claim, claim_keys)
 
             profile_table.insert(profile, keys=["user_id", "personal_details_id", "driver_history_id"])
             con.commit()

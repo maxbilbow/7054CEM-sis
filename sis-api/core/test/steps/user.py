@@ -19,7 +19,7 @@ def step_impl(context):
     ProfileService().insert_profile({
         "user_id": context.user_id,
         "personal_details": to_dict(PersonalDetails(full_name="", relationship_status="", employment_status="",
-                                                    address=Address()))
+                                                    address={}))
     })
 
 

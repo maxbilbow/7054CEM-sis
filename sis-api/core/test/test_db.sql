@@ -7,6 +7,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+
 DROP TABLE IF EXISTS `address`;
 CREATE TABLE IF NOT EXISTS `address` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -21,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `address` (
 DROP TABLE IF EXISTS `driver_history`;
 CREATE TABLE IF NOT EXISTS `driver_history` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `licence_type` enum('Full','Provisional') DEFAULT NULL,
+  `licence_type` enum('Full','Provisional','') NOT NULL DEFAULT '',
   `license_since` date DEFAULT NULL,
   `licence_no` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -63,13 +64,13 @@ CREATE TABLE IF NOT EXISTS `membership` (
 DROP TABLE IF EXISTS `personal_details`;
 CREATE TABLE IF NOT EXISTS `personal_details` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `full_name` text NOT NULL,
+  `full_name` text NOT NULL DEFAULT '',
   `address_id` int(11) UNSIGNED DEFAULT NULL,
   `dob` date DEFAULT NULL,
-  `relationship_status` enum('Single','Married') DEFAULT NULL,
-  `home_owner` tinyint(1) NOT NULL,
-  `dependents` tinyint(4) NOT NULL DEFAULT 0,
-  `employment_status` enum('FullTime','PartTime','Unemployed','Retired','Student') DEFAULT NULL,
+  `relationship_status` enum('Single','Married','') NOT NULL DEFAULT '',
+  `home_owner` tinyint(1) DEFAULT NULL,
+  `dependents` tinyint(4) DEFAULT NULL,
+  `employment_status` enum('FullTime','PartTime','Unemployed','Retired','Student','') NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `personal_details_address` (`address_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -121,7 +122,7 @@ ALTER TABLE `insurance_policy`
   ADD CONSTRAINT `user_insurance_policy` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 ALTER TABLE `membership`
-  ADD CONSTRAINT `user_membership` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_membership` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE;
 
 ALTER TABLE `personal_details`
   ADD CONSTRAINT `personal_details_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
