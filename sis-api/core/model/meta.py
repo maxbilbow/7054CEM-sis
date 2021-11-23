@@ -1,0 +1,7 @@
+PK = "sql_pk"
+FK = "sql_foreign_key"
+GENERATED = "sql_auto_increment"
+NO_UPDATE = "sql_no_update"
+SQL_COLUMN = "sql_is_column"
+SQL_INSERT = "sql_insert"
+SQL_UPDATE = "sql_update"

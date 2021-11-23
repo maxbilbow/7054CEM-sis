@@ -6,7 +6,6 @@ from isodate import duration
 
 from core.model.membership import Membership
 from core.model.membership_type import MembershipType, get_membership_type
-from core.model.profile import Profile
 from core.repository.membership import MembershipRepository
 from core.service.membership_service import MembershipService
 

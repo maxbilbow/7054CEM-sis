@@ -2,8 +2,10 @@ from copy import copy
 from dataclasses import dataclass, field
 from datetime import date
 from enum import Enum
+from typing import Optional
 
 from core.model.base_model import BaseModel
+from core.model.meta import PK, GENERATED
 
 
 class InsuranceType(Enum):
@@ -13,7 +15,7 @@ class InsuranceType(Enum):
 
 @dataclass(frozen=True, eq=True)
 class InsurancePolicy(BaseModel):
-    id: int = field(metadata={"Key": True})
+    id: Optional[int] = field(metadata={PK: True, GENERATED: True})
     package_id: int
     user_id: int
     type: InsuranceType

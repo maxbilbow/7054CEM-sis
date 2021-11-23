@@ -2,16 +2,18 @@ import dataclasses
 from copy import copy
 from dataclasses import dataclass, field
 from datetime import date
+from typing import Optional
 
 from core.model import to_date
 from core.model.base_model import BaseModel
+from core.model.meta import PK, GENERATED, FK
 from core.model.membership_type import MembershipType
 
 
 @dataclass(frozen=True, eq=True)
 class Membership(BaseModel):
-    id: int = field(metadata={"Key": True})
-    user_id: int = field(metadata={"ForeignKey": True})
+    id: Optional[int] = field(metadata={PK: True, GENERATED: True})
+    user_id: int = field(metadata={FK: True})
     start_date: date
     end_date: date
     type: MembershipType

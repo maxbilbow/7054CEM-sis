@@ -1,4 +1,4 @@
-from core.model import to_dict
+# Meta Data:
 
 
 class BaseModel:
@@ -7,5 +7,3 @@ class BaseModel:
     def from_dict(cls, data: dict):
         return cls(**data)
 
-    def to_dict(self):
-        return to_dict(self)

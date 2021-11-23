@@ -4,11 +4,12 @@ from typing import Optional
 
 from swagger_server.models import DriverHistory, PersonalDetails, Address
 from .base_model import BaseModel
+from .meta import PK, FK
 
 
 @dataclass(frozen=True, eq=True)
 class Profile(BaseModel):
-    user_id: int = field(metadata={"Key": True}, default=-1)
+    user_id: int = field(metadata={PK: True, FK: True})
     personal_details_id: Optional[int] = field(init=False)
     driver_history_id: Optional[int] = field(init=False)
 

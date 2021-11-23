@@ -1,6 +1,6 @@
 import dataclasses
 import time
-from typing import Optional
+from typing import Optional, List
 
 from core.model.quote import Quote
 from core.repository import mysql
@@ -21,7 +21,7 @@ class QuoteRepository:
         return None if result is None else Quote.from_dict(result)
 
     @staticmethod
-    def find_by_userid(user_id: int) -> list[Quote]:
+    def find_by_userid(user_id: int) -> List[Quote]:
         rows = mysql.find_all_by(table_name="quote", key="user_id", key_value=user_id)
         return [Quote.from_dict(row) for row in rows]
 
