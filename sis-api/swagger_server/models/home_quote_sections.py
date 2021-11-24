@@ -7,7 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
 from swagger_server.models.home_details import HomeDetails  # noqa: F401,E501
-from swagger_server.models.user_profile import UserProfile  # noqa: F401,E501
+from swagger_server.models.personal_details import PersonalDetails  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -16,16 +16,16 @@ class HomeQuoteSections(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, personal_details: UserProfile=None, home_details: HomeDetails=None):  # noqa: E501
+    def __init__(self, personal_details: PersonalDetails=None, home_details: HomeDetails=None):  # noqa: E501
         """HomeQuoteSections - a model defined in Swagger
 
         :param personal_details: The personal_details of this HomeQuoteSections.  # noqa: E501
-        :type personal_details: UserProfile
+        :type personal_details: PersonalDetails
         :param home_details: The home_details of this HomeQuoteSections.  # noqa: E501
         :type home_details: HomeDetails
         """
         self.swagger_types = {
-            'personal_details': UserProfile,
+            'personal_details': PersonalDetails,
             'home_details': HomeDetails
         }
 
@@ -48,22 +48,22 @@ class HomeQuoteSections(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def personal_details(self) -> UserProfile:
+    def personal_details(self) -> PersonalDetails:
         """Gets the personal_details of this HomeQuoteSections.
 
 
         :return: The personal_details of this HomeQuoteSections.
-        :rtype: UserProfile
+        :rtype: PersonalDetails
         """
         return self._personal_details
 
     @personal_details.setter
-    def personal_details(self, personal_details: UserProfile):
+    def personal_details(self, personal_details: PersonalDetails):
         """Sets the personal_details of this HomeQuoteSections.
 
 
         :param personal_details: The personal_details of this HomeQuoteSections.
-        :type personal_details: UserProfile
+        :type personal_details: PersonalDetails
         """
 
         self._personal_details = personal_details

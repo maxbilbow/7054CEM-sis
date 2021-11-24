@@ -1,23 +1,27 @@
-import dataclasses
+import typing
 from dataclasses import dataclass, Field, asdict, fields, is_dataclass
 from datetime import date
 from enum import Enum
 from typing import List, Optional
 
 from core.model import to_dict
-
 # Meta Data:
-from core.model.base_model import BaseModel
 from core.model.meta import *
 from swagger_server.models.base_model_ import Model
+
+
+def is_list_type(t: type) -> bool:
+    return typing.get_origin(t) is list
 
 
 def _is_sql_column(f: Field) -> bool:
     if is_dataclass(f.type):
         return False
-    if f.type is list:
+    if is_list_type(f.type):
         return False
     if SQL_COLUMN in f.metadata and f.metadata[SQL_COLUMN] is False:
+        return False
+    if issubclass(f.type, Model):
         return False
     return True
 

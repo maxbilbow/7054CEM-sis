@@ -751,13 +751,15 @@ components:
           licence_type: Full
           previous_claims:
           - date: 2000-01-23
-            driver_history_id: 2
+            driver_history_id: 7
             fault: Self
             claim_type: Accident
+            id: 2
           - date: 2000-01-23
-            driver_history_id: 2
+            driver_history_id: 7
             fault: Self
             claim_type: Accident
+            id: 2
           license_since: 2000-01-23
           id: 5
         personal_details:
@@ -913,7 +915,7 @@ components:
     HomeQuoteSections:
       properties:
         personal_details:
-          $ref: '#/components/schemas/UserProfile'
+          $ref: '#/components/schemas/PersonalDetails'
         home_details:
           $ref: '#/components/schemas/HomeDetails'
     VehicleDetails:
@@ -984,8 +986,6 @@ components:
           type: integer
         licence_type:
           type: string
-          nullable: true
-          default: ""
           enum:
           - Full
           - Provisional
@@ -1004,13 +1004,15 @@ components:
         licence_type: Full
         previous_claims:
         - date: 2000-01-23
-          driver_history_id: 2
+          driver_history_id: 7
           fault: Self
           claim_type: Accident
+          id: 2
         - date: 2000-01-23
-          driver_history_id: 2
+          driver_history_id: 7
           fault: Self
           claim_type: Accident
+          id: 2
         license_since: 2000-01-23
         id: 5
     PreviousClaim:
@@ -1034,9 +1036,10 @@ components:
           - Theft
       example:
         date: 2000-01-23
-        driver_history_id: 2
+        driver_history_id: 7
         fault: Self
         claim_type: Accident
+        id: 2
     HomeDetails:
       properties:
         address:

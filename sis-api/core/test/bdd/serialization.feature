@@ -30,6 +30,20 @@ Feature: Serialization of dataclasses
     Then the property is omitted for sql update
     Then the property is included for json api responses
 
+  Scenario: Cannot insert dataclasses
+    Given a dataclass instance with property which is itself an openAPI generated model: "a_swagger_model"
+    When the instance is serialized
+    Then the property is omitted for sql insertion
+    Then the property is omitted for sql update
+    Then the property is included for json api responses
+
+  Scenario: List serialization
+    Given a dataclass instance with a list "a_list"
+    When the instance is serialized
+    Then the property is omitted for sql insertion
+    Then the property is omitted for sql update
+    Then the property is included for json api responses
+
   Scenario: date serialization
     Given a dataclass instance with date property "a_date"
     When the instance is serialized
@@ -41,6 +55,9 @@ Feature: Serialization of dataclasses
     Then the datetime was formatted as an ISO datetime string
 
   Scenario: Enum serialization
-     Given a dataclass instance with date property "an_enum"
+    Given a dataclass instance with date property "an_enum"
     When the instance is serialized
     Then the enum is serialized as its name
+
+
+

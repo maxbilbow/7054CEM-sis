@@ -15,7 +15,7 @@ class DriverHistory(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, licence_type: str='', license_since: date=None, licence_no: str=None, previous_claims: List[PreviousClaim]=None):  # noqa: E501
+    def __init__(self, id: int=None, licence_type: str=None, license_since: date=None, licence_no: str=None, previous_claims: List[PreviousClaim]=None):  # noqa: E501
         """DriverHistory - a model defined in Swagger
 
         :param id: The id of this DriverHistory.  # noqa: E501

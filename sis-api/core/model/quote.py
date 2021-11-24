@@ -3,15 +3,15 @@ from dataclasses import dataclass, field
 from typing import Optional, List
 
 from core.model.base_model import BaseModel
-from core.model.meta import PK
+from core.model.meta import *
 from core.model.insurance_policy import InsuranceType
 from core.model.quote_section import QuoteSection
 
 
 @dataclass(frozen=True, eq=True)
 class Quote(BaseModel):
-    id: Optional[int] = field(metadata={PK: True})
-    user_id: int
+    id: Optional[int] = field(metadata={PK: True, GENERATED: True})
+    user_id: int = field(metadata={FK: True})
     type: InsuranceType
     created: int = field(default=-1)
     updated: int = field(default=-1)
@@ -29,5 +29,3 @@ class Quote(BaseModel):
         data["type"] = InsuranceType[data["type"]]
         data["is_complete"] = True if data["is_complete"] else False
         return cls(**data)
-
-

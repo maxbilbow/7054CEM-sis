@@ -782,7 +782,7 @@ components:
     HomeQuoteSections:
       properties:
         personal_details:
-          $ref: '#/components/schemas/UserProfile'
+          $ref: '#/components/schemas/PersonalDetails'
         home_details:
           $ref: '#/components/schemas/HomeDetails'
     VehicleDetails:

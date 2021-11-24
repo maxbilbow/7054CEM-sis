@@ -20,3 +20,4 @@ encoder
 passlib
 pyyaml
 mysql-connector-python
+deprecated

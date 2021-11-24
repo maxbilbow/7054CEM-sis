@@ -1,38 +1,8 @@
-import dataclasses
-from datetime import date, datetime
-from enum import Enum
-
 from behave import *
 from hamcrest import *
 
-from core.model.meta import GENERATED, PK, SQL_COLUMN
+from core.test.bdd.a_dataclass import MyDataclass, DATE_STRING_TODAY, DATETIME_STRING_NOW, AnEnum
 from core.utils.serialization import serialize
-
-DATE_TODAY = date.today()
-DATE_STRING_TODAY = DATE_TODAY.isoformat()
-
-DATETIME_NOW = datetime.today()
-DATETIME_STRING_NOW = DATETIME_NOW.isoformat()
-
-
-class AnEnum(Enum):
-    Name = "Value"
-
-
-@dataclasses.dataclass
-class ADataclass:
-    p1: str = dataclasses.field(default="p1")
-
-
-@dataclasses.dataclass
-class X:
-    pk: str = dataclasses.field(metadata={PK: True}, default="pk")
-    pk_auto: int = dataclasses.field(metadata={PK: True, GENERATED: True}, default=42)
-    not_a_column: str = dataclasses.field(metadata={SQL_COLUMN: False}, default="not_a_column")
-    a_dataclass: ADataclass = dataclasses.field(default_factory=ADataclass)
-    a_date: date = dataclasses.field(default=DATE_TODAY)
-    a_datetime: date = dataclasses.field(default=DATETIME_NOW)
-    an_enum: AnEnum = dataclasses.field(default=AnEnum.Name)
 
 
 @given('a dataclass instance with {condition} "{property_name}"')
@@ -43,7 +13,7 @@ def step_impl(context, condition, property_name):
     :type context: behave.runner.Context
     """
     context.property_name = property_name
-    context.x_object = X()
+    context.x_object = MyDataclass()
 
 
 @when("the instance is serialized")
@@ -126,5 +96,5 @@ def step_impl(context):
     """
     sql_value = context.sql_insert[context.property_name]
     json_api_value = context.json_api[context.property_name]
-    assert_that(sql_value, equal_to(AnEnum.Name.Name))
-    assert_that(json_api_value, equal_to(AnEnum.Name.Name))
+    assert_that(sql_value, equal_to(AnEnum.Name.name))
+    assert_that(json_api_value, equal_to(AnEnum.Name.name))

@@ -1,10 +1,8 @@
-from copy import copy
-from dataclasses import asdict, is_dataclass, dataclass
+from dataclasses import is_dataclass, dataclass
 from datetime import date
 from enum import Enum
 from typing import Optional, Union, List
-
-from swagger_server import encoder
+from deprecated import deprecated
 from swagger_server.models.base_model_ import Model
 
 
@@ -20,15 +18,16 @@ def get_keys(o: Union[dict, dataclass, Model], exclude: Optional[List[str]] = No
     return keys
 
 
+@deprecated
 def to_dict(o) -> Optional[Union[list, dict]]:
     if o is None:
         return None
     if is_dataclass(o):
-        return asdict(o, dict_factory=_serializable_dict)
+        return to_dict(o)
     if isinstance(o, list):
         return [to_dict(each) for each in o]
     if isinstance(o, Model):
-        return encoder.JSONEncoder().default(o)
+        return o.to_dict()
     raise TypeError("{} is not a dict".format(type(o)))
 
 
