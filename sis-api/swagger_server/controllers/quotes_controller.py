@@ -31,7 +31,7 @@ def get_for_user(user_id):  # noqa: E501
     :rtype: Quotes
     """
     quotes = QuoteService().find_for_user(user_id)
-    return to_dict(quotes)
+    return quotes
 
 
 def get_quote(quote_id):  # noqa: E501
@@ -47,7 +47,7 @@ def get_quote(quote_id):  # noqa: E501
     quote = QuoteService().get_quote(quote_id)
     if quote is None:
         return {}, status.HTTP_204_NO_CONTENT
-    return to_dict(quote)
+    return quote
 
 
 def new_quote(body, user_id):  # noqa: E501
@@ -83,8 +83,5 @@ def update_quote(body, quote_id):  # noqa: E501
 
     :rtype: Quote
     """
-    if connexion.request.is_json:
-        data = connexion.request.get_json()  # noqa: E501
-        quote = QuoteService().update_quote(quote_id, data)
-        return to_dict(quote), status.HTTP_202_ACCEPTED
-    return {}, status.HTTP_400_BAD_REQUEST
+    quote = QuoteService().update_quote(quote_id, body)
+    return to_dict(quote), status.HTTP_202_ACCEPTED

@@ -17,9 +17,12 @@ class AnEnum(Enum):
     Name = "Value"
 
 
+A_DATACLASS_PK = "ADataclassPK"
+
+
 @dataclasses.dataclass
 class ADataclass:
-    p1: str = dataclasses.field(default="p1")
+    id: str = dataclasses.field(default=A_DATACLASS_PK, metadata={PK: True})
 
 
 class ASwaggerModel(swagger_server.models.User):
@@ -39,3 +42,4 @@ class MyDataclass:
     an_enum: AnEnum = dataclasses.field(default=AnEnum.Name)
     a_list: List[str] = dataclasses.field(default_factory=lambda: ["a_list", "of_things"])
     a_dataclass_list: List[ADataclass] = dataclasses.field(default_factory=lambda: [ADataclass()])
+    fk_dataclass: ADataclass = dataclasses.field(default_factory=ADataclass, metadata={FK: True})

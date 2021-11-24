@@ -19,16 +19,21 @@ Feature: Deserialization of dicts into dataclasses
     Then the property is set to None
 
   Scenario: Required properties with default
-    Given a serialized dataclass with an required property "required_with_default" that has a default value
+    Given a serialized dataclass with a required property "required_with_default" that has a default value
     When we deserialize it to the original dataclass
     Then the property is set to the default value
 
   Scenario: Optional properties with default factory
-    Given a serialized dataclass with an required property "required_with_factory" that has a default factory
+    Given a serialized dataclass with a required property "required_with_factory" that has a default factory
     When we deserialize it to the original dataclass
     Then the property is set to the default value
 
   Scenario: Optional properties without default
-    Given a serialized dataclass with an required property "required" that has no default
+    Given a serialized dataclass with a required property "required" that has no default
     When we deserialize it to the original dataclass
     Then the property is set to None
+
+  Scenario: Property with custom deserializer
+    Given a serialized dataclass with a property "with_custom_factory" that has a custom deserializer
+    When we deserialize it to the original dataclass
+    Then the property is parsed with the custom deserializer

@@ -16,30 +16,30 @@ class DriverDetails(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, personal_details: PersonalDetails=None, driving_history: DriverHistory=None):  # noqa: E501
+    def __init__(self, id: int=None, personal_details: PersonalDetails=None, driver_history: DriverHistory=None):  # noqa: E501
         """DriverDetails - a model defined in Swagger
 
         :param id: The id of this DriverDetails.  # noqa: E501
         :type id: int
         :param personal_details: The personal_details of this DriverDetails.  # noqa: E501
         :type personal_details: PersonalDetails
-        :param driving_history: The driving_history of this DriverDetails.  # noqa: E501
-        :type driving_history: DriverHistory
+        :param driver_history: The driver_history of this DriverDetails.  # noqa: E501
+        :type driver_history: DriverHistory
         """
         self.swagger_types = {
             'id': int,
             'personal_details': PersonalDetails,
-            'driving_history': DriverHistory
+            'driver_history': DriverHistory
         }
 
         self.attribute_map = {
             'id': 'id',
             'personal_details': 'personal_details',
-            'driving_history': 'driving_history'
+            'driver_history': 'driver_history'
         }
         self._id = id
         self._personal_details = personal_details
-        self._driving_history = driving_history
+        self._driver_history = driver_history
 
     @classmethod
     def from_dict(cls, dikt) -> 'DriverDetails':
@@ -95,22 +95,22 @@ class DriverDetails(Model):
         self._personal_details = personal_details
 
     @property
-    def driving_history(self) -> DriverHistory:
-        """Gets the driving_history of this DriverDetails.
+    def driver_history(self) -> DriverHistory:
+        """Gets the driver_history of this DriverDetails.
 
 
-        :return: The driving_history of this DriverDetails.
+        :return: The driver_history of this DriverDetails.
         :rtype: DriverHistory
         """
-        return self._driving_history
+        return self._driver_history
 
-    @driving_history.setter
-    def driving_history(self, driving_history: DriverHistory):
-        """Sets the driving_history of this DriverDetails.
+    @driver_history.setter
+    def driver_history(self, driver_history: DriverHistory):
+        """Sets the driver_history of this DriverDetails.
 
 
-        :param driving_history: The driving_history of this DriverDetails.
-        :type driving_history: DriverHistory
+        :param driver_history: The driver_history of this DriverDetails.
+        :type driver_history: DriverHistory
         """
 
-        self._driving_history = driving_history
+        self._driver_history = driver_history

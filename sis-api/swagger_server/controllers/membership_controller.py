@@ -88,6 +88,6 @@ def update_membership(body, user_id):  # noqa: E501
         membership = MembershipService().update_membership(user_id, membership.end_date, membership.type)
         if membership is None:
             return {}, status.HTTP_204_NO_CONTENT
-        return to_dict(membership)
+        return membership
         # noqa: E501
     return 'do some magic!'

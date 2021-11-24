@@ -7,6 +7,8 @@ from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
 from swagger_server.models.driver_details import DriverDetails  # noqa: F401,E501
+from swagger_server.models.insurance_type import InsuranceType  # noqa: F401,E501
+from swagger_server.models.quote_sections import QuoteSections  # noqa: F401,E501
 from swagger_server.models.vehicle_details import VehicleDetails  # noqa: F401,E501
 from swagger_server.models.vehicle_usage import VehicleUsage  # noqa: F401,E501
 from swagger_server import util
@@ -17,9 +19,13 @@ class VehicleQuoteSections(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, driver_details: DriverDetails=None, vehicle_details: VehicleDetails=None, vehicle_usage: VehicleUsage=None, additional_drivers: List[DriverDetails]=None):  # noqa: E501
+    def __init__(self, quote_id: int=None, quote_type: InsuranceType=None, driver_details: DriverDetails=None, vehicle_details: VehicleDetails=None, vehicle_usage: VehicleUsage=None, additional_drivers: List[DriverDetails]=None):  # noqa: E501
         """VehicleQuoteSections - a model defined in Swagger
 
+        :param quote_id: The quote_id of this VehicleQuoteSections.  # noqa: E501
+        :type quote_id: int
+        :param quote_type: The quote_type of this VehicleQuoteSections.  # noqa: E501
+        :type quote_type: InsuranceType
         :param driver_details: The driver_details of this VehicleQuoteSections.  # noqa: E501
         :type driver_details: DriverDetails
         :param vehicle_details: The vehicle_details of this VehicleQuoteSections.  # noqa: E501
@@ -30,6 +36,8 @@ class VehicleQuoteSections(Model):
         :type additional_drivers: List[DriverDetails]
         """
         self.swagger_types = {
+            'quote_id': int,
+            'quote_type': InsuranceType,
             'driver_details': DriverDetails,
             'vehicle_details': VehicleDetails,
             'vehicle_usage': VehicleUsage,
@@ -37,11 +45,15 @@ class VehicleQuoteSections(Model):
         }
 
         self.attribute_map = {
+            'quote_id': 'quote_id',
+            'quote_type': 'quote_type',
             'driver_details': 'driver_details',
             'vehicle_details': 'vehicle_details',
             'vehicle_usage': 'vehicle_usage',
             'additional_drivers': 'additional_drivers'
         }
+        self._quote_id = quote_id
+        self._quote_type = quote_type
         self._driver_details = driver_details
         self._vehicle_details = vehicle_details
         self._vehicle_usage = vehicle_usage
@@ -57,6 +69,48 @@ class VehicleQuoteSections(Model):
         :rtype: VehicleQuoteSections
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def quote_id(self) -> int:
+        """Gets the quote_id of this VehicleQuoteSections.
+
+
+        :return: The quote_id of this VehicleQuoteSections.
+        :rtype: int
+        """
+        return self._quote_id
+
+    @quote_id.setter
+    def quote_id(self, quote_id: int):
+        """Sets the quote_id of this VehicleQuoteSections.
+
+
+        :param quote_id: The quote_id of this VehicleQuoteSections.
+        :type quote_id: int
+        """
+
+        self._quote_id = quote_id
+
+    @property
+    def quote_type(self) -> InsuranceType:
+        """Gets the quote_type of this VehicleQuoteSections.
+
+
+        :return: The quote_type of this VehicleQuoteSections.
+        :rtype: InsuranceType
+        """
+        return self._quote_type
+
+    @quote_type.setter
+    def quote_type(self, quote_type: InsuranceType):
+        """Sets the quote_type of this VehicleQuoteSections.
+
+
+        :param quote_type: The quote_type of this VehicleQuoteSections.
+        :type quote_type: InsuranceType
+        """
+
+        self._quote_type = quote_type
 
     @property
     def driver_details(self) -> DriverDetails:

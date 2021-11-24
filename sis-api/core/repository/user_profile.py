@@ -1,92 +1,112 @@
-from core.model import get_keys, to_dict
+from typing import Optional
+
+from core.model.driver_history import DriverHistory
 from core.model.profile import Profile
 from core.repository import mysql
-from swagger_server.models import PersonalDetails, DriverHistory, Address
+from core.repository.mysql import _Session
+from core.utils.deserialization import deserialize
 
 
 class UserProfileRepository:
 
     @staticmethod
     def insert(profile: Profile):
-        with mysql.session() as con:
-            pd_table = con.on_table("personal_details")
-            address_table = con.on_table("address")
-            dh_table = con.on_table("driver_history")
-            profile_table = con.on_table("user_profile")
-            claim_table = con.on_table("previous_claim")
+        with mysql.session() as s:
+            profile.personal_details.address.id = s.on_table("address").insert(profile.personal_details.address)
 
-            address_keys = get_keys(profile.personal_details.address, exclude=["id"])
-            profile.personal_details.address.id = address_table.insert(profile.personal_details.address, address_keys)
+            profile.personal_details.id = s.on_table("personal_details").insert(profile.personal_details)
 
-            pd_keys = get_keys(profile.personal_details, exclude=["id", "address"])
-            profile.personal_details.id = pd_table.insert(profile.personal_details, pd_keys)
+            profile.driver_history.id = s.on_table("driver_history").insert(profile.driver_history)
 
-            dh_keys = get_keys(profile.driver_history, exclude=["id", "previous_claims"])
+            UserProfileRepository._update_claims(s, profile.driver_history)
 
-            profile.driver_history.id = dh_table.insert(profile.driver_history, dh_keys)
-
-            if profile.driver_history.previous_claims is not None:
-                for claim in profile.driver_history.previous_claims:
-                    claim.driver_history_id = profile.driver_history.id
-                    claim_keys = get_keys(claim, exclude=["id"])
-                    claim_table.insert(claim, claim_keys)
-
-            profile_table.insert(profile, keys=["user_id", "personal_details_id", "driver_history_id"])
-            con.commit()
+            s.on_table("user_profile").insert(profile)
+            s.commit()
 
     @staticmethod
-    def find_by_user_id(user_id: int):
+    def find_by_user_id(user_id: int) -> Optional[Profile]:
         with mysql.session() as s:
             profile = s.on_table("user_profile").find_by(["user_id", user_id]).fetchone()
             if profile is None:
-                return None
+                return deserialize({}, Profile)
 
-            if profile["personal_details_id"] is None:
-                profile["personal_details"] = to_dict(PersonalDetails(relationship_status="", employment_status=""))
-            else:
-                profile["personal_details"] = s.on_table("personal_details").find_by(
-                    ["id", profile["personal_details_id"]]
-                ).fetchone()
-                address_id = profile["personal_details"]["address_id"]
-                address = to_dict(Address()) if address_id is None else s.on_table("address").find_by(
-                    ["id", address_id]
-                )
-                profile["personal_details"]["address"] = address
+            profile["personal_details"] = UserProfileRepository._find_personal_details(s, profile)
 
-            if profile["driver_history_id"] is not None:
-                profile["driver_history"] = s.on_table("driver_history").find_by(
-                    ["id", profile["driver_history_id"]]).fetchone()
-                profile["driver_history"]["previous_claims"] = s.on_table("previous_claim").find_by(
-                    ["driver_history_id", profile["driver_history_id"]]
-                ).fetchall()
-            else:
-                profile["driver_history"] = DriverHistory(licence_type="").to_dict()
+            profile["driver_history"] = UserProfileRepository._find_driver_history(s, profile)
 
-            return Profile.from_dict(profile)
+            return deserialize(profile, to_class=Profile)
+
+    @staticmethod
+    def _update_claims(s: _Session, driver_history: DriverHistory):
+        s.on_table("previous_claim").delete(["driver_history_id", driver_history.id])
+        for claim in driver_history.previous_claims:
+            claim.driver_history_id = driver_history.id
+            claim.id = s.on_table("previous_claim").insert(claim)
 
     @staticmethod
     def update(profile: Profile):
         with mysql.session() as s:
             if profile.personal_details.address.id is None:
-                keys = get_keys(profile.personal_details.address, exclude=["id"])
-                s.on_table("address").insert(profile.personal_details.address, keys=keys)
+                profile.personal_details.address.id = s.on_table("address").insert(profile.personal_details.address)
             else:
                 s.on_table("address").update(profile.personal_details.address)
-            pd_keys = get_keys(profile.personal_details, exclude=["address"])
-            s.on_table("personal_details").update(profile.personal_details, pd_keys)
-            keys = get_keys(profile.driver_history, exclude=["previous_claims"])
-            s.on_table("driver_history").update(profile.driver_history, keys)
+
+            if profile.personal_details.id is None:
+                profile.personal_details.id = s.on_table("personal_details").insert(profile.personal_details)
+            else:
+                s.on_table("personal_details").update(profile.personal_details)
+
+            if profile.driver_history.id is None:
+                profile.driver_history.id = s.on_table("driver_history").insert(profile.personal_details)
+            else:
+                s.on_table("driver_history").update(profile.driver_history)
+
+            UserProfileRepository._update_claims(s, profile.driver_history)
+
+            s.on_table("user_profile").update(profile)
             s.commit()
 
     @staticmethod
     def delete(user_id: int):
         profile = UserProfileRepository.find_by_user_id(user_id)
-        address_id = profile.personal_details.address.id
-        pd_id = profile.personal_details_id
-        dh_id = profile.driver_history_id
+        pd_id = profile.personal_details.id
+        dh_id = profile.driver_history.id
+        address = profile.personal_details.address
         with mysql.session() as s:
             s.on_table("user_profile").delete(["user_id", user_id])
-            s.on_table("personal_details").delete(pd_id)
-            s.on_table("address").delete(address_id)
-            s.on_table("driver_history").delete(dh_id)
+            if pd_id is not None:
+                s.on_table("personal_details").delete(pd_id)
+            if address.id is not None:
+                s.on_table("address").delete(address.id)
+            if dh_id is not None:
+                s.on_table("driver_history").delete(dh_id)
             s.commit()
+
+    @staticmethod
+    def _find_personal_details(s: _Session, profile: dict) -> Optional[dict]:
+        if profile["personal_details_id"] is None:
+            return None
+
+        personal_details = s.on_table("personal_details").find_by(["id", profile["personal_details_id"]]).fetchone()
+        if personal_details is None:
+            return None
+
+        address_id = personal_details["address_id"]
+        if address_id is not None:
+            personal_details["address"] = s.on_table("address").find_by(["id", address_id]).fetchone()
+
+        return personal_details
+
+    @staticmethod
+    def _find_driver_history(s: _Session, profile: dict) -> Optional[dict]:
+        if profile["driver_history_id"] is None:
+            return None
+
+        driver_history = s.on_table("driver_history").find_by(["id", profile["driver_history_id"]]).fetchone()
+
+        if driver_history is not None:
+            driver_history["previous_claims"] = s.on_table("previous_claim") \
+                .find_by(["driver_history_id", profile["driver_history_id"]]) \
+                .fetchall()
+
+        return driver_history

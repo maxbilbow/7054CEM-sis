@@ -797,6 +797,7 @@ components:
           - null
         home_owner:
           type: boolean
+          nullable: true
         dependents:
           type: integer
           description: Number of dependents under the age of 16
@@ -887,7 +888,10 @@ components:
           type: boolean
         price:
           type: number
+          nullable: true
         sections:
+          discriminator:
+            propertyName: quote_type
           oneOf:
           - $ref: '#/components/schemas/VehicleQuoteSections'
           - $ref: '#/components/schemas/HomeQuoteSections'
@@ -900,44 +904,67 @@ components:
         type: Home
         updated: 5
         sections: ""
+    QuoteSections:
+      type: object
+      properties:
+        quote_id:
+          type: integer
+        quote_type:
+          $ref: '#/components/schemas/InsuranceType'
+      discriminator:
+        propertyName: quote_type
     VehicleQuoteSections:
-      properties:
-        driver_details:
-          $ref: '#/components/schemas/DriverDetails'
-        vehicle_details:
-          $ref: '#/components/schemas/VehicleDetails'
-        vehicle_usage:
-          $ref: '#/components/schemas/VehicleUsage'
-        additional_drivers:
-          type: array
-          items:
+      allOf:
+      - $ref: '#/components/schemas/QuoteSections'
+      - type: object
+        properties:
+          driver_details:
             $ref: '#/components/schemas/DriverDetails'
+          vehicle_details:
+            $ref: '#/components/schemas/VehicleDetails'
+          vehicle_usage:
+            $ref: '#/components/schemas/VehicleUsage'
+          additional_drivers:
+            type: array
+            items:
+              $ref: '#/components/schemas/DriverDetails'
     HomeQuoteSections:
-      properties:
-        personal_details:
-          $ref: '#/components/schemas/PersonalDetails'
-        home_details:
-          $ref: '#/components/schemas/HomeDetails'
+      allOf:
+      - $ref: '#/components/schemas/QuoteSections'
+      - type: object
+        properties:
+          personal_details:
+            $ref: '#/components/schemas/PersonalDetails'
+          home_details:
+            $ref: '#/components/schemas/HomeDetails'
     VehicleDetails:
       properties:
         quote_id:
           type: integer
         alarm_fitter:
           type: boolean
+          nullable: true
         immobilizer_fitted:
           type: boolean
+          nullable: true
         tracking_device_fitted:
           type: boolean
+          nullable: true
         is_import:
           type: boolean
+          nullable: true
         off_side_drive:
           type: boolean
+          nullable: true
         number_of_seats:
           type: number
+          nullable: true
         current_value:
           type: number
+          nullable: true
         is_modified:
           type: boolean
+          nullable: true
     VehicleUsage:
       properties:
         usage:
@@ -970,6 +997,7 @@ components:
           - null
         night_storage_at_home:
           type: boolean
+          nullable: true
         night_storage_address:
           $ref: '#/components/schemas/Address'
     DriverDetails:
@@ -978,7 +1006,7 @@ components:
           type: integer
         personal_details:
           $ref: '#/components/schemas/PersonalDetails'
-        driving_history:
+        driver_history:
           $ref: '#/components/schemas/DriverHistory'
     DriverHistory:
       properties:

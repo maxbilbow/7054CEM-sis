@@ -3,6 +3,7 @@ from typing import Optional
 from injector import singleton, inject
 from passlib.hash import pbkdf2_sha256
 
+from core.model.user import User
 from core.repository.user import UserRepository
 from core.exceptions import BadRequest
 
@@ -32,13 +33,13 @@ class UserService:
 
         return False
 
-    def get_user(self, user_id: int):
+    def get_user(self, user_id: int) -> Optional[User]:
         return self.repository.find_by_id(user_id)
 
     def find_by_email(self, email: str):
         return self.repository.find_by_email(email)
 
-    def update_user(self, user_id: int, email: Optional[str], password: Optional[str]):
+    def update_user(self, user_id: int, email: Optional[str], password: Optional[str]) -> User:
         # Create the user object
         if password is not None:
             password = pbkdf2_sha256.encrypt(password)

@@ -44,6 +44,14 @@ Feature: Serialization of dataclasses
     Then the property is omitted for sql update
     Then the property is included for json api responses
 
+  Scenario: Dataclasses with Foreign Keys
+    Given a dataclass instance with a dataclass property marked with FK "fk_dataclass"
+    When the instance is serialized
+    Then the property is omitted for sql insertion
+    And the property is omitted for sql update
+    And the property is included for json api responses
+    And the property's primary key is included as "fk_dataclass_id" for sql
+
   Scenario: date serialization
     Given a dataclass instance with date property "a_date"
     When the instance is serialized

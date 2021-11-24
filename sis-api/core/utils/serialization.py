@@ -1,3 +1,4 @@
+import logging
 import typing
 from dataclasses import dataclass, Field, asdict, fields, is_dataclass
 from datetime import date
@@ -10,18 +11,32 @@ from core.model.meta import *
 from swagger_server.models.base_model_ import Model
 
 
+def is_optional(t: type) -> bool:
+    return typing.get_origin(t) is typing.Union and type(None) in typing.get_args(t)
+
+
 def is_list_type(t: type) -> bool:
     return typing.get_origin(t) is list
 
 
+def get_type(f: Field) -> type:
+    if isinstance(f.type, type):
+        return f.type
+    if is_optional(f.type):
+        return typing.get_args(f.type)[0]
+    print(f"WARNING: Not sure what type this is: {f.type}")
+    return f.type
+
+
 def _is_sql_column(f: Field) -> bool:
-    if is_dataclass(f.type):
-        return False
-    if is_list_type(f.type):
+    t = get_type(f)
+    if is_dataclass(t):
+        return FK in f.metadata and f.metadata[FK]
+    if is_list_type(t):
         return False
     if SQL_COLUMN in f.metadata and f.metadata[SQL_COLUMN] is False:
         return False
-    if issubclass(f.type, Model):
+    if issubclass(t, Model):
         return False
     return True
 
@@ -51,10 +66,49 @@ def _get_sql_fields(model: dataclass) -> List[Field]:
     return dataclass_fields
 
 
+def _is_pk(f: Field) -> bool:
+    return PK in f.metadata and f.metadata[PK]
+
+
+def _get_sql_name(f: Field) -> typing.Tuple[str, typing.Callable]:
+    t = get_type(f)
+    if not is_dataclass(t):
+        return f.name, lambda v: v[f.name]
+
+    if FK not in f.metadata:
+        raise Exception("Dataclass is not specified as a foreign key. Cannot determine SLQ column name")
+
+    if isinstance(f.metadata[FK], str):
+        return f.metadata[FK], lambda v: "TODO"
+
+    sub_field: Field = list(filter(_is_pk, list(fields(t))))[0]
+    return f"{f.name}_{sub_field.name}", lambda v:  v[f.name][sub_field.name]
+
+
+def _get_sql_entry(value: typing.Any, f: Field) -> typing.Tuple[str, typing.Any]:
+    t = get_type(f)
+    if not is_dataclass(t):
+        return f.name, value
+
+    if FK not in f.metadata:
+        raise Exception("Dataclass is not specified as a foreign key. Cannot determine SLQ column name")
+
+    if isinstance(f.metadata[FK], str):
+        return f.metadata[FK]
+
+    sub_field: Field = list(filter(_is_pk, list(fields(t))))[0]
+    key = f"{f.name}_{sub_field.name}"
+
+    if value is None:
+        return key, None
+
+    return key, getattr(value, sub_field.name)
+
+
 def _to_sql_dict(model: dataclass, dataclass_fields: List[Field]) -> dict:
-    keys = list(map(lambda f: f.name, dataclass_fields))
+    keys = list(map(_get_sql_name, dataclass_fields))
     result = asdict(model, dict_factory=_get_sql_asdict_factory(dataclass_fields))
-    return {key: result[key] for key in keys}
+    return {key: get(result) for key, get in keys}
 
 
 def _to_json_api_dict(model: dataclass) -> dict:
@@ -73,10 +127,17 @@ def _get_sql_asdict_factory(dataclass_fields: List[Field]):
             if isinstance(obj, date):
                 return obj.isoformat()  # f"{obj.year}-{obj.month}-{obj.day}"
             if isinstance(obj, Model):
-                return to_dict(obj)
+                return obj.to_dict()
             return obj
 
-        return dict((k, convert_value(v, _get_field(dataclass_fields, k))) for k, v in data)
+        res = dict()
+        for k, v in data:
+            # this_field = _get_field(dataclass_fields, k)
+            # k, v = _get_sql_entry(v, this_field)
+            res[k] = convert_value(v, None)
+
+        return res
+        # return dict((k, convert_value(v, _get_field(dataclass_fields, k))) for k, v in data)
 
     return factory
 
@@ -103,5 +164,46 @@ class _Serializer:
         return _to_json_api_dict(self._model)
 
 
+class _SwaggerModelSerializer(_Serializer):
+    _model: Model
+
+    def __init__(self, model: Model):
+        super().__init__(model)
+
+    def for_sql_insert(self):
+        logging.warning(f"SQL serialization may not work for {type(self._model)}")
+        return self.for_api()
+
+    def for_sql_update(self):
+        logging.warning(f"SQL serialization may not work for {type(self._model)}")
+        return self.for_api()
+
+    def for_api(self):
+        logging.warning(f"SQL serialization may not work for {type(self._model)}")
+        from swagger_server import encoder
+        o = encoder.JSONEncoder().default(self._model)
+        return o
+
+
+class _Dict(_Serializer):
+    _model: Model
+
+    def __init__(self, model: Model):
+        super().__init__(model)
+
+    def for_sql_insert(self):
+        return self.for_api()
+
+    def for_sql_update(self):
+        return self.for_api()
+
+    def for_api(self):
+        return self._model
+
+
 def serialize(o: dataclass) -> _Serializer:
+    if isinstance(o, dict):
+        return _Dict(o)
+    if isinstance(o, Model):
+        return _SwaggerModelSerializer(o)
     return _Serializer(o)

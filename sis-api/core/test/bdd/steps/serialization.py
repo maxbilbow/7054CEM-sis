@@ -1,7 +1,8 @@
 from behave import *
 from hamcrest import *
 
-from core.test.bdd.a_dataclass import MyDataclass, DATE_STRING_TODAY, DATETIME_STRING_NOW, AnEnum
+from core.test.bdd.a_dataclass import MyDataclass, DATE_STRING_TODAY, DATETIME_STRING_NOW, AnEnum, ADataclass, \
+    A_DATACLASS_PK
 from core.utils.serialization import serialize
 
 
@@ -13,7 +14,8 @@ def step_impl(context, condition, property_name):
     :type context: behave.runner.Context
     """
     context.property_name = property_name
-    context.x_object = MyDataclass()
+    context.x_object = MyDataclass(fk_dataclass=ADataclass(id=A_DATACLASS_PK))
+    context.fk_dataclass_id = A_DATACLASS_PK
 
 
 @when("the instance is serialized")
@@ -98,3 +100,16 @@ def step_impl(context):
     json_api_value = context.json_api[context.property_name]
     assert_that(sql_value, equal_to(AnEnum.Name.name))
     assert_that(json_api_value, equal_to(AnEnum.Name.name))
+
+
+@then('the property\'s primary key is included as "{fk_property_name}" for sql')
+def step_impl(context, fk_property_name: str):
+    """
+    :type fk_property_name: str
+    :type context: behave.runner.Context
+    """
+    sql_insert = context.sql_insert[fk_property_name]
+    sql_update = context.sql_update[fk_property_name]
+
+    assert_that(sql_insert, equal_to(context.fk_dataclass_id))
+    assert_that(sql_update, equal_to(context.fk_dataclass_id))

@@ -1,6 +1,11 @@
 from core.model.insurance_policy import InsuranceType
 from core.model.quote import Quote
+from core.model.quote_sections import VehicleQuoteSections, HomeQuoteSections
 from core.repository.quote import QuoteRepository
+from core.repository.user_profile import UserProfileRepository
+from core.service.profile_service import ProfileService
+from core.utils.deserialization import deserialize
+from core.utils.serialization import serialize
 
 
 class QuoteService:
@@ -15,12 +20,16 @@ class QuoteService:
     def find_for_user(self, user_id: int):
         return self.__repo.find_by_userid(user_id)
 
-    def new_quote(self, user_id: int, insurance_type: str):
-        return self.__repo.insert(Quote(-1, user_id, InsuranceType[insurance_type]))
+    def new_quote(self, user_id: int, insurance_type: str) -> Quote:
+        profile = ProfileService().get_profile(user_id)
+        if InsuranceType[insurance_type] == InsuranceType.Motor:
+            return self.__repo.new_motor_quote(user_id, profile)
+        else:
+            return self.__repo.new_home_quote(user_id, profile)
 
-    def update_quote(self, quote_id: int, data: dict):
+    def update_quote(self, quote_id: int, data: dict) -> Quote:
         data["id"] = quote_id
-        quote = Quote.from_dict(data)
+        quote = deserialize(data, Quote)
         return self.__repo.update(quote)
 
     def delete_quote(self, quote_id):

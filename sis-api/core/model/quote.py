@@ -1,11 +1,21 @@
-from copy import copy
-from dataclasses import dataclass, field
-from typing import Optional, List
+import logging
+import time
+from typing import Optional
 
-from core.model.base_model import BaseModel
 from core.model.meta import *
-from core.model.insurance_policy import InsuranceType
-from core.model.quote_section import QuoteSection
+from core.model.quote_sections import *
+from core.utils.deserialization import deserialize
+
+from dataclasses import dataclass, field
+
+
+def quote_sections_factory(data: dict) -> QuoteSections:
+    if data is not None:
+        if data["quote_type"] == InsuranceType.Motor.name:
+            return deserialize(data, VehicleQuoteSections)
+        elif data["quote_type"] == InsuranceType.Home.name:
+            return deserialize(data, HomeQuoteSections)
+    logging.warning(f"Unable to determine sections type for {data}")
 
 
 @dataclass(frozen=True, eq=True)
@@ -13,19 +23,8 @@ class Quote(BaseModel):
     id: Optional[int] = field(metadata={PK: True, GENERATED: True})
     user_id: int = field(metadata={FK: True})
     type: InsuranceType
-    created: int = field(default=-1)
-    updated: int = field(default=-1)
+    sections: QuoteSections = field(metadata={DESERIALIZER: quote_sections_factory, SQL_COLUMN: False})
+    created: int = field(default_factory=lambda: int(time.time() * 1000))
+    updated: int = field(default_factory=lambda: int(time.time() * 1000))
     is_complete: bool = field(default=False)
     price: Optional[float] = field(default=None)
-    sections: List[QuoteSection] = field(default_factory=list)
-
-    def __post_init__(self):
-        if isinstance(self.type, str):
-            raise TypeError("Insurance type is not an enum")
-
-    @classmethod
-    def from_dict(cls, data: dict):
-        data = copy(data)
-        data["type"] = InsuranceType[data["type"]]
-        data["is_complete"] = True if data["is_complete"] else False
-        return cls(**data)

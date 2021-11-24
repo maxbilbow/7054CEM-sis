@@ -21,6 +21,7 @@ from swagger_server.models.one_of_quote_sections import OneOfQuoteSections
 from swagger_server.models.personal_details import PersonalDetails
 from swagger_server.models.previous_claim import PreviousClaim
 from swagger_server.models.quote import Quote
+from swagger_server.models.quote_sections import QuoteSections
 from swagger_server.models.quotes import Quotes
 from swagger_server.models.user import User
 from swagger_server.models.user_profile import UserProfile

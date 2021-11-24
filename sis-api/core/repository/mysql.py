@@ -1,14 +1,16 @@
 import dataclasses
 from typing import Any, Optional, List, Union, Tuple
 
+from deprecated import deprecated
 from mysql import connector
 from mysql.connector import MySQLConnection
 from mysql.connector.cursor import MySQLCursor
 
 from core import config
-from core.model import to_dict
-
 # _db: connector.connection.MySQLConnection = None
+from core.model import meta
+from core.model.base_model import BaseModel
+from core.utils.serialization import serialize
 from swagger_server.models.base_model_ import Model
 
 
@@ -37,7 +39,7 @@ Matchers = Union[List[Matcher], Matcher]
 
 
 def _get_matchers(matchers: Matchers) -> Tuple[List[Matcher], str]:
-    if not isinstance(matchers[0], list):
+    if isinstance(matchers[0], str):
         matchers = [matchers]
     return matchers, " AND ".join([f"{key}={value}" for key, value in matchers])
 
@@ -55,14 +57,19 @@ class _Table:
         self._cur.execute(f"SELECT * FROM `{self._table_name}` WHERE {where_clause}")
         return self._cur
 
-    def insert(self, o: Entity, keys: Optional[List[str]] = None) -> int:
-        o = to_dict(o)
+    def insert(self, dc: dataclasses.dataclass, keys: Optional[List[str]] = None,
+               exclude_keys: Optional[List[str]] = None) -> int:
+        data = serialize(dc).for_sql_insert()
         if keys is None:
-            keys = list(o.keys())
+            keys = list(data.keys())
         elif isinstance(keys, dict):
             keys = list(keys.keys())
 
-        values = [o[key] if key in o else None for key in keys]
+        if exclude_keys is not None:
+            for ex in exclude_keys:
+                keys.remove(ex)
+
+        values = [data[key] if key in data else None for key in keys]
         placeholder = ", ".join(["%s"] * len(keys))
         table_name = self._table_name
         qry = "INSERT INTO {table_name} ({columns}) VALUES ({values})" \
@@ -71,24 +78,25 @@ class _Table:
         self._cur.execute(qry, values)
         return self._cur.lastrowid
 
-    def update(self, o: Entity, keys: Optional[List[str]] = None,
+    def update(self, dc: dataclasses.dataclass, keys: Optional[List[str]] = None,
                matchers: Optional[Matchers] = None):
         def update_value(name: str) -> str:
             return '{name}=%s'.format(name=name)
 
-        o = to_dict(o)
+        data: dict = serialize(dc).for_sql_update()
         if keys is None:
-            keys = list(o.keys())
+            keys = list(data.keys())
         if isinstance(keys, dict):
             keys = list(keys.keys())
 
         if matchers is None:
-            matchers = list([list(o.keys())[0], list(o.values())[0]])
+            matchers = [meta.get_pk(dc)]
+            # del data[matchers[0][0]]
 
         matchers, where_clause = _get_matchers(matchers)
 
         table_name = self._table_name
-        values = [o[key] for key in keys]
+        values = [data[key] for key in keys]
 
         update_values = map(update_value, keys)
         qry = "UPDATE {table_name} SET {update_values} WHERE {where_clause}" \
@@ -141,6 +149,7 @@ def table(table_name):
     return session().on_table(table_name)
 
 
+@deprecated("Use 'with session()'", action="always")
 def insert(table_name: str,
            entity: dataclasses.dataclass,
            exclude_keys: Optional[List[str]] = None):
@@ -151,7 +160,7 @@ def insert(table_name: str,
     cur = con.cursor(dictionary=True)
 
     try:
-        o = to_dict(entity)
+        o = serialize(entity).for_sql_insert()
         for ex in exclude_keys:
             if ex in o:
                 del o[ex]
@@ -183,7 +192,7 @@ def update_by_pk(table_name: str,
         return '{name}=%s'.format(name=name)
 
     try:
-        data = to_dict(entity)
+        data = serialize(entity).for_sql_update()
         del data[pk_name]
         for ex in exclude_keys:
             if ex in data:

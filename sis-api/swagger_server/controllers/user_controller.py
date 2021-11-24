@@ -2,6 +2,7 @@ import connexion
 # from swagger_server.models.user import User  # noqa: E501
 from flask_api import status
 
+from core.exceptions import BadRequest
 from core.model import to_dict
 from core.model.user import User
 from core.service.user_service import UserService
@@ -113,6 +114,6 @@ def update_user(user_id):  # noqa: E501
     if connexion.request.is_json:
         data = connexion.request.get_json()
         user = UserService().update_user(user_id, data["email"], data["password"])
-        return to_dict(user), status.HTTP_202_ACCEPTED
+        return user, status.HTTP_202_ACCEPTED
 
     return {}, status.HTTP_400_BAD_REQUEST

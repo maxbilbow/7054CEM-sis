@@ -41,7 +41,7 @@ def get_profile(user_id):  # noqa: E501
     profile = UserProfileRepository.find_by_user_id(user_id)
     if profile is None:
         return "Profile not found", status.HTTP_204_NO_CONTENT
-    return model.to_dict(profile)
+    return profile
 
 
 def remove_profile(user_id):  # noqa: E501
@@ -74,6 +74,5 @@ def update_profile(body, user_id):  # noqa: E501
         return {}, status.HTTP_400_BAD_REQUEST
     else:
         body["user_id"] = user_id
-        profile = Profile.from_dict(body)
-        UserProfileRepository.update(profile)
-        return model.to_dict(profile), status.HTTP_202_ACCEPTED
+        profile = ProfileService().update_profile(body)
+        return profile, status.HTTP_202_ACCEPTED

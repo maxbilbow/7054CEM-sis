@@ -15,7 +15,7 @@ class UserRepository:
         return User(id=id, email=email, password_hash=password_hash)
 
     @staticmethod
-    def find_by_id(user_id: int):
+    def find_by_id(user_id: int) -> Optional[User]:
         result = mysql.find_by(table_name="user", key_value=user_id)
         if not result:
             return None

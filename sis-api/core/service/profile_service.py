@@ -2,6 +2,7 @@ from injector import singleton, inject
 
 from core.model.profile import Profile
 from core.repository.user_profile import UserProfileRepository
+from core.utils.deserialization import deserialize
 
 
 @singleton
@@ -14,14 +15,16 @@ class ProfileService:
 
     def get_profile(self, user_id) -> Profile:
         profile = self.__profile.find_by_user_id(user_id)
-        return Profile() if not profile else profile
+        return Profile(user_id) if not profile else profile
 
     def insert_profile(self, data: dict) -> Profile:
-        self.__profile.insert(Profile.from_dict(data))
+        profile = deserialize(data, Profile)
+        self.__profile.insert(profile)
         return self.get_profile(data["user_id"])
 
     def update_profile(self, data: dict) -> Profile:
-        self.__profile.update(Profile.from_dict(data))
+        profile = deserialize(data, Profile)
+        self.__profile.update(profile)
         return self.get_profile(data["user_id"])
 
     def delete_profile(self, user_id: int):

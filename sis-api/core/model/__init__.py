@@ -1,4 +1,4 @@
-from dataclasses import is_dataclass, dataclass
+from dataclasses import is_dataclass, dataclass, asdict
 from datetime import date
 from enum import Enum
 from typing import Optional, Union, List
@@ -18,12 +18,12 @@ def get_keys(o: Union[dict, dataclass, Model], exclude: Optional[List[str]] = No
     return keys
 
 
-@deprecated
+@deprecated(reason="Not good enough", action="always")
 def to_dict(o) -> Optional[Union[list, dict]]:
     if o is None:
         return None
     if is_dataclass(o):
-        return to_dict(o)
+        return asdict(o, dict_factory=_serializable_dict)
     if isinstance(o, list):
         return [to_dict(each) for each in o]
     if isinstance(o, Model):
