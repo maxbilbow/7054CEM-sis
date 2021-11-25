@@ -60,7 +60,10 @@ class _Table:
         return self._cur
 
     def insert(self, dc: dataclasses.dataclass, keys: Optional[List[str]] = None,
-               exclude_keys: Optional[List[str]] = None) -> int:
+               exclude_keys: Optional[List[str]] = None, replace: bool = False) -> int:
+        if replace and self.find_by(meta.get_pk(dc)).rowcount > 0: # TODO: better written as sql
+            self.delete(meta.get_pk(dc))
+
         data = serialize(dc).for_sql_insert()
         if keys is None:
             keys = list(data.keys())
@@ -72,6 +75,7 @@ class _Table:
                 keys.remove(ex)
 
         values = [data[key] if key in data else None for key in keys]
+
         placeholder = ", ".join(["%s"] * len(keys))
         table_name = self._table_name
         qry = "INSERT INTO {table_name} ({columns}) VALUES ({values})" \

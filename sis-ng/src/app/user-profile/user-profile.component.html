@@ -1,6 +1,36 @@
-<mat-card *ngIf="profile">
-  <app-personal-details [personalDetails]="profile.personalDetails!"></app-personal-details>
-  <app-driver-history [driverHistory]="profile.driverHistory!"></app-driver-history>
-  <!-- Send button -->
-  <button mat-raised-button color="primary" (click)="save()">Save</button>
-</mat-card>
+<div class="quote-sections">
+  <mat-accordion class="example-headers-align" >
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Personal Information
+        </mat-panel-title>
+        <mat-panel-description>
+          50% complete
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-personal-details *ngIf="profile.personalDetails"
+                            [personalDetails]="profile.personalDetails"
+                            (onSave)="save()" [isOpen]="step == 0"></app-personal-details>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Driver Information
+        </mat-panel-title>
+        <mat-panel-description>
+          20% complete
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <app-driver-history *ngIf="profile.driverHistory"
+                          [driverHistory]="profile.driverHistory"></app-driver-history>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>
+
+

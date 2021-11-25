@@ -1,14 +1,42 @@
-<div *ngIf="isMotor()">
-  <app-driver-history *ngIf="sections.driverDetails?.driverHistory"
-                      [driverHistory]="sections.driverDetails!.driverHistory!"></app-driver-history>
-  <app-personal-details *ngIf="sections.driverDetails?.personalDetails"
-                        [personalDetails]="sections.driverDetails!.personalDetails!"></app-personal-details>
-</div>
-<div *ngIf="isHome()">
-  <app-personal-details *ngIf="sections.personalDetails" [personalDetails]="sections.personalDetails!"></app-personal-details>
-</div>
-<button mat-raised-button color="primary" (click)="save()">Save</button>
+<div *ngIf="isMotor()" class="quote-sections">
+  <mat-accordion class="example-headers-align">
 
-<pre>
-{{show()}}
-</pre>
+
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Personal Information
+        </mat-panel-title>
+        <mat-panel-description>
+          50% complete
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-personal-details *ngIf="sections.driverDetails?.personalDetails"
+                            [personalDetails]="sections.driverDetails!.personalDetails!"
+                            (onSave)="save()" [isOpen]="step == 0"></app-personal-details>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Driver Information
+        </mat-panel-title>
+        <mat-panel-description>
+          20% complete
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <app-driver-history *ngIf="sections.driverDetails?.driverHistory"
+                          [driverHistory]="sections.driverDetails!.driverHistory!"></app-driver-history>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+</div>
+<div *ngIf="isHome()" class="quote-sections">
+  <app-personal-details *ngIf="sections.personalDetails"
+                        [personalDetails]="sections.personalDetails!"></app-personal-details>
+</div>
+

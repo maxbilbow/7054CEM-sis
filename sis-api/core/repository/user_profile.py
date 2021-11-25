@@ -20,7 +20,7 @@ class UserProfileRepository:
 
             UserProfileRepository._update_claims(s, profile.driver_history)
 
-            s.on_table("user_profile").insert(profile)
+            s.on_table("user_profile").insert(profile, replace=True)
             s.commit()
 
     @staticmethod
@@ -57,7 +57,7 @@ class UserProfileRepository:
                 s.on_table("personal_details").update(profile.personal_details)
 
             if profile.driver_history.id is None:
-                profile.driver_history.id = s.on_table("driver_history").insert(profile.personal_details)
+                profile.driver_history.id = s.on_table("driver_history").insert(profile.driver_history)
             else:
                 s.on_table("driver_history").update(profile.driver_history)
 

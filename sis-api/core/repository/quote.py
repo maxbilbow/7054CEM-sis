@@ -99,10 +99,12 @@ class QuoteRepository:
                 s.on_table("driver_details").update(sections.driver_details)
                 s.on_table("vehicle_details").update(sections.vehicle_details)
                 s.on_table("vehicle_usage").update(sections.vehicle_usage)
+                s.on_table("address").update(sections.driver_details.personal_details.address)
             else:
                 sections: HomeQuoteSections = quote.sections
                 s.on_table("home_details").update(sections.home_details)
                 s.on_table("personal_details").update(sections.personal_details)
+                s.on_table("address").update(sections.personal_details.address)
             s.on_table("quote_sections").update(quote.sections)
             s.commit()
         return QuoteRepository.find_by_id(quote.id)

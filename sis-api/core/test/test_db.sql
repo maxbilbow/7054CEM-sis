@@ -83,7 +83,7 @@ DROP TABLE IF EXISTS `personal_details`;
 CREATE TABLE IF NOT EXISTS `personal_details` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `full_name` text DEFAULT NULL,
-  `address_id` int(11) UNSIGNED DEFAULT NULL,
+  `address_id` int(11) UNSIGNED NOT NULL,
   `dob` date DEFAULT NULL,
   `relationship_status` enum('Single','Married') DEFAULT NULL,
   `home_owner` tinyint(1) DEFAULT NULL,
@@ -190,7 +190,7 @@ ALTER TABLE `membership`
   ADD CONSTRAINT `user_membership` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE;
 
 ALTER TABLE `personal_details`
-  ADD CONSTRAINT `personal_details_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `personal_details_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON UPDATE CASCADE;
 
 ALTER TABLE `quote`
   ADD CONSTRAINT `user_quote` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

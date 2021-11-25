@@ -9,6 +9,7 @@ import {UserProfile} from "../model/userProfile";
 })
 export class UserProfileComponent implements OnInit {
   profile!: UserProfile
+  step = -1;
 
   constructor(private readonly userProfileService: UserProfileService) {
   }
@@ -17,6 +18,7 @@ export class UserProfileComponent implements OnInit {
     this.userProfileService.fetchProfile()
       .then(profile => {
         this.profile = profile
+        this.setStep(0)
       })
   }
 
@@ -24,6 +26,11 @@ export class UserProfileComponent implements OnInit {
     this.userProfileService.updateProfile(this.profile!)
       .then(profile => {
         this.profile = profile
+        this.step++
       })
+  }
+
+  setStep(number: number) {
+    this.step = number
   }
 }

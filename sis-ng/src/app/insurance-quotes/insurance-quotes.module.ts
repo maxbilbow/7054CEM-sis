@@ -23,13 +23,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   imports: [
     CommonModule,
     InsuranceQuoteModule,
-    MatGridListModule,
-    MatIconModule,
-    RouterModule,
-    MatNativeDateModule,
-    MatTableModule,
-    ReactiveFormsModule,
-    FormsModule
+    RouterModule
   ]
 })
 export class InsuranceQuotesModule {

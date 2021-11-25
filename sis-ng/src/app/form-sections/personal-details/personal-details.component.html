@@ -1,14 +1,92 @@
-<!-- Default form contact -->
-<div class="text-center border border-light p-5">
-  <p>
-    <mat-form-field matFormFieldCtrl=ctrl appearance="standard">
-      <mat-label>Full Name</mat-label>
-      <input matInput placeholder="Full Name" [(ngModel)]="personalDetails.fullName">
-      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      <mat-hint>Hint</mat-hint>
-    </mat-form-field>
-  </p>
+<form [formGroup]="personalDetailsForm" (ngSubmit)="save()">
 
+  <div id="pd-main">
+    <div class="pd-form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Full name</mat-label>
+        <input matInput id="first-name" type="text" formControlName="fullName" required>
+      </mat-form-field>
 
-</div>
-<!-- Default form contact -->
+      <mat-form-field appearance="fill">
+        <mat-label>Dependents</mat-label>
+        <input matInput id="dependents" type="number" formControlName="dependents">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Date of birth</mat-label>
+        <input matInput [matDatepicker]="picker" (focus)="picker.open()" (dateChange)="setDob($event)" id="dob"
+               formControlName="dob">
+      </mat-form-field>
+      <mat-datepicker #picker></mat-datepicker>
+
+      <p>
+        <mat-label>Employment Status</mat-label>
+      </p>
+      <p>
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" id="employmentStatus" formControlName="employmentStatus">
+          <mat-button-toggle value="FullTime">Full Time</mat-button-toggle>
+          <mat-button-toggle value="PartTime">Part Time</mat-button-toggle>
+          <mat-button-toggle value="Unemployed">Unemployed</mat-button-toggle>
+          <mat-button-toggle value="Retired">Retired</mat-button-toggle>
+          <mat-button-toggle value="Student">Student</mat-button-toggle>
+
+        </mat-button-toggle-group>
+      </p>
+
+      <p>
+       <mat-label>Do you own your own home?</mat-label>
+      </p>
+      <p>
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" id="homeOwner" formControlName="homeOwner">
+          <mat-button-toggle value="true">Yes</mat-button-toggle>
+          <mat-button-toggle value="false">No</mat-button-toggle>
+        </mat-button-toggle-group>
+      </p>
+    </div>
+  </div>
+  <div formGroupName="address" id="pd-address">
+    <mat-panel-title>Address</mat-panel-title>
+    <p>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>House Name/Number</mat-label>
+        <input matInput id="numberOrName" type="text" formControlName="numberOrName">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Street</mat-label>
+        <input matInput id="street" type="text" formControlName="street">
+      </mat-form-field>
+    </p>
+
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Town</mat-label>
+            <input matInput id="town" type="text" formControlName="town">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>County</mat-label>
+            <input matInput id="county" type="text" formControlName="county">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Postcode</mat-label>
+            <input matInput #postalCode maxlength="8" id="postcode" type="text" formControlName="postcode">
+            <!--            <mat-hint align="end">{{postalCode.value.length}} / 8</mat-hint>-->
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="mat-button">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!personalDetailsForm.valid"
+            *ngIf="personalDetailsForm.enabled">Save
+    </button>
+  </div>
+</form>
+

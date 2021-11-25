@@ -1,19 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {QuoteService} from "../quote.service";
 import {Quote} from "../../model/quote";
 import {HomeQuoteSections} from "../../model/homeQuoteSections";
 import {VehicleQuoteSections} from "../../model/vehicleQuoteSections";
 import {InsuranceType} from "../../model/insuranceType";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-insurance-quote',
   templateUrl: './insurance-quote.component.html',
   styleUrls: ['./insurance-quote.component.less']
 })
-export class InsuranceQuoteComponent implements OnInit {
+export class InsuranceQuoteComponent implements OnInit, OnDestroy {
 
+  activeSection = ""
   quote!: Quote;
+  subscription?: Subscription;
+  step = 0;
 
   get sections() {
     return this.quote.sections as VehicleQuoteSections & HomeQuoteSections
@@ -30,7 +34,10 @@ export class InsuranceQuoteComponent implements OnInit {
         this.quote = await this.quoteService.get(id)
       }
     })
+  }
 
+  ngOnDestroy() {
+    this.subscription?.unsubscribe()
   }
 
   show() {
@@ -41,18 +48,23 @@ export class InsuranceQuoteComponent implements OnInit {
   }
 
   isMotor() {
-    return this.quote.type === InsuranceType.Motor
+    return this.quote?.type === InsuranceType.Motor
   }
 
   isHome() {
-    return this.quote.type === InsuranceType.Home
+    return this.quote?.type === InsuranceType.Home
   }
 
   save() {
     this.quoteService.save(this.quote)
       .then((q) => {
         this.quote = q;
+        this.step++
       })
       .catch(console.error)
+  }
+
+  setStep(number: number) {
+    this.step = number
   }
 }

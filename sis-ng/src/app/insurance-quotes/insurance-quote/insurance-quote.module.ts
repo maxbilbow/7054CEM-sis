@@ -9,7 +9,8 @@ import {FormSectionsModule} from "../../form-sections/form-sections.module";
     InsuranceQuoteComponent
   ],
   exports: [
-    InsuranceQuoteComponent
+    InsuranceQuoteComponent,
+    FormSectionsModule
   ],
   imports: [
     CommonModule,

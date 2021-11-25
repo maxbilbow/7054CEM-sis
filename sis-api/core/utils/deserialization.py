@@ -75,5 +75,7 @@ def _parse_with_field(value: Any, f: Field):
         return datetime.fromisoformat(value) if "T" in value else date.fromisoformat(value)
     if issubclass(t, Enum):
         return t[value]
+    if t != str:
+        return t(value)
 
     return value
