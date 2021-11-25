@@ -1,0 +1,8 @@
+<div *ngIf="isLoading()">
+  <p>Calculating prices now...</p>
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!isLoading()">
+  <p>Special Black Friday Deal: £{{quote.price}}</p>
+</div>

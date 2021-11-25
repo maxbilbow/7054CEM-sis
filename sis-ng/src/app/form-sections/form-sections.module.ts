@@ -64,7 +64,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     MatExpansionModule,
 
     MatSlideToggleModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}

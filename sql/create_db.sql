@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 25, 2021 at 01:27 PM
+-- Generation Time: Nov 25, 2021 at 03:12 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.2.34
 
@@ -125,6 +125,14 @@ CREATE TABLE IF NOT EXISTS `home_details` (
   PRIMARY KEY (`quote_id`),
   KEY `home_details_address` (`address_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `home_details`
+--
+
+INSERT INTO `home_details` (`quote_id`, `address_id`) VALUES
+(60, 50),
+(61, 50);
 
 -- --------------------------------------------------------
 
@@ -283,14 +291,16 @@ CREATE TABLE IF NOT EXISTS `quote` (
   `price` float DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_quote` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `quote`
 --
 
 INSERT INTO `quote` (`id`, `user_id`, `type`, `created`, `updated`, `is_complete`, `price`) VALUES
-(59, 9, 'Motor', 1637837949424, 1637837949424, 0, NULL);
+(59, 9, 'Motor', 1637837949424, 1637849345641, 1, 948.99),
+(60, 9, 'Home', 1637845412195, 1637845412195, 0, NULL),
+(61, 9, 'Home', 1637845416681, 1637845416681, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -313,7 +323,9 @@ CREATE TABLE IF NOT EXISTS `quote_sections` (
 --
 
 INSERT INTO `quote_sections` (`quote_id`, `quote_type`, `personal_details_id`, `home_details_id`) VALUES
-(59, 'Motor', NULL, NULL);
+(59, 'Motor', NULL, NULL),
+(60, 'Home', NULL, NULL),
+(61, 'Home', NULL, NULL);
 
 -- --------------------------------------------------------
 

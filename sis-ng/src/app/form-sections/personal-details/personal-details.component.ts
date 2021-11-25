@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, DoCheck, EventEmitter, Input, KeyValueDiffer, KeyValueDiffers, OnInit, Output} from '@angular/core';
 import {PersonalDetails} from "../../model/personalDetails";
 import {FormBuilder, Validators} from "@angular/forms";
 import {add} from "lodash";
@@ -10,10 +10,9 @@ import {$e} from "@angular/compiler/src/chars";
   templateUrl: './personal-details.component.html',
   styleUrls: ['./personal-details.component.less']
 })
-export class PersonalDetailsComponent implements OnInit {
-  panelOpenState = false;
+export class PersonalDetailsComponent implements DoCheck {
+  private personalDetailsCopy!: PersonalDetails;
   @Input() personalDetails!: PersonalDetails
-  @Input() isOpen = false;
   @Output() private readonly onSave = new EventEmitter<void>()
 
   personalDetailsForm = this.fb.group({
@@ -37,11 +36,11 @@ export class PersonalDetailsComponent implements OnInit {
   constructor(private readonly fb: FormBuilder) {
   }
 
-  ngOnInit(): void {
-    if (this.personalDetails.fullName === undefined) {
-      this.personalDetails.fullName = ""
+  ngDoCheck(): void {
+    if (this.personalDetailsCopy !== this.personalDetails) {
+      this.personalDetailsCopy = this.personalDetails
+      this.updateForm()
     }
-    this.updateProfile()
   }
 
   save(): void {
@@ -56,7 +55,7 @@ export class PersonalDetailsComponent implements OnInit {
     this.onSave.emit()
   }
 
-  updateProfile() {
+  updateForm() {
     const pd = {...this.personalDetails};
     pd.dob = new Date(pd.dob!)
     this.personalDetailsForm.patchValue(pd)

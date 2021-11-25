@@ -12,7 +12,7 @@
       </mat-expansion-panel-header>
       <app-personal-details *ngIf="profile.personalDetails"
                             [personalDetails]="profile.personalDetails"
-                            (onSave)="save()" [isOpen]="step == 0"></app-personal-details>
+                            (onSave)="save()"></app-personal-details>
     </mat-expansion-panel>
 
     <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>

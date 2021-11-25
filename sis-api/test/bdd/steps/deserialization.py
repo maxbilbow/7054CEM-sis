@@ -5,7 +5,7 @@ from behave import *
 from hamcrest import *
 
 from core.model.meta import DESERIALIZER
-from core.test.bdd.a_dataclass import MyDataclass
+from test.bdd.a_dataclass import MyDataclass
 from core.utils.deserialization import deserialize
 from core.utils.serialization import serialize
 

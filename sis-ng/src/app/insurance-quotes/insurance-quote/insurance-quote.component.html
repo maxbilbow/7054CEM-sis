@@ -1,8 +1,8 @@
-<div *ngIf="isMotor()" class="quote-sections">
+<div class="quote-sections">
   <mat-accordion class="example-headers-align">
 
 
-    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+    <mat-expansion-panel *ngIf="sections.personalDetails" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Personal Information
@@ -12,31 +12,115 @@
           <mat-icon>account_circle</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <app-personal-details *ngIf="sections.driverDetails?.personalDetails"
-                            [personalDetails]="sections.driverDetails!.personalDetails!"
-                            (onSave)="save()" [isOpen]="step == 0"></app-personal-details>
+      <app-personal-details [personalDetails]="sections.personalDetails"
+                            (onSave)="save()"></app-personal-details>
+
     </mat-expansion-panel>
 
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+    <mat-expansion-panel *ngIf="sections.driverHistory" [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Driver Information
+          Driver History
         </mat-panel-title>
         <mat-panel-description>
-          20% complete
+          25% complete
           <mat-icon>account_circle</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <app-driver-history *ngIf="sections.driverDetails?.driverHistory"
-                          [driverHistory]="sections.driverDetails!.driverHistory!"></app-driver-history>
+      <app-driver-history
+                          [driverHistory]="sections.driverHistory"
+                          (onSave)="save()"></app-driver-history>
     </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="sections.homeDetails" [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Home Info
+        </mat-panel-title>
+        <mat-panel-description>
+          ??% complete
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <p>TODO: Home Details Step</p>
+      {{ sections.homeDetails | json }}
+      <div class="mat-button">
+        <button mat-raised-button color="primary" (click)="save()">Save
+        </button>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="sections.vehicleDetails" [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Vehicle Details
+        </mat-panel-title>
+        <mat-panel-description>
+          ??% complete
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <p>TODO: Vehicle Details Step</p>
+      {{ sections.vehicleDetails | json }}
+      <div class="mat-button">
+        <button mat-raised-button color="primary" (click)="save()">Save
+        </button>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="sections.vehicleUsage" [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Vehicle Usage
+        </mat-panel-title>
+        <mat-panel-description>
+          ??% complete
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <p>TODO: Vehicle Usage Step</p>
+      {{ sections.vehicleUsage | json }}}
+      <div class="mat-button">
+        <button mat-raised-button color="primary" (click)="save()">Save
+        </button>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Additional Drivers
+        </mat-panel-title>
+        <mat-panel-description>
+          ??% complete
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <p>TODO: Additional Drivers Step</p>
+      {{ sections.additionalDrivers | json }}}
+      <div class="mat-button">
+        <button mat-raised-button color="primary" (click)="save()">Save
+        </button>
+      </div>
+    </mat-expansion-panel>
+
+  <mat-expansion-panel *ngIf="isComplete()" [expanded]="step >= 5" (opened)="setStep(5)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        See offers!
+      </mat-panel-title>
+      <mat-panel-description>
+        Based on the information we hold
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-quote-offers [quote]="quote" (onPrice)="save()"></app-quote-offers>
+  </mat-expansion-panel>
   </mat-accordion>
-
-
-</div>
-<div *ngIf="isHome()" class="quote-sections">
-  <app-personal-details *ngIf="sections.personalDetails"
-                        [personalDetails]="sections.personalDetails!"></app-personal-details>
 </div>
 

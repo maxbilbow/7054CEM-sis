@@ -1,7 +1,7 @@
 from behave import *
 from hamcrest import *
 
-from core.test.bdd.a_dataclass import MyDataclass, DATE_STRING_TODAY, DATETIME_STRING_NOW, AnEnum, ADataclass, \
+from test.bdd.a_dataclass import MyDataclass, DATE_STRING_TODAY, DATETIME_STRING_NOW, AnEnum, ADataclass, \
     A_DATACLASS_PK
 from core.utils.serialization import serialize
 

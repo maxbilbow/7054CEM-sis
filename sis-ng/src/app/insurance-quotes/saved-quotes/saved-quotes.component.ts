@@ -9,7 +9,7 @@ import {Quote} from "../../model/quote";
   styleUrls: ['./saved-quotes.component.less']
 })
 export class SavedQuotesComponent implements OnInit {
-  readonly displayedColumns = ['type', 'updated', 'price', 'actions'];
+  readonly displayedColumns = ['type', 'created', 'updated', 'price', 'actions'];
   quotes: Quotes = []
 
   constructor(private readonly quoteService: QuoteService) {

@@ -4,7 +4,7 @@ from core.repository import mysql
 from core.service.profile_service import ProfileService
 from core.service.quote_service import QuoteService
 from core.service.user_service import UserService
-from core.test import test_db
+from test import test_db
 
 unique_id = 0
 

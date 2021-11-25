@@ -6,6 +6,7 @@ import {HomeQuoteSections} from "../../model/homeQuoteSections";
 import {VehicleQuoteSections} from "../../model/vehicleQuoteSections";
 import {InsuranceType} from "../../model/insuranceType";
 import {Subscription} from "rxjs";
+import {DriverDetails} from "../../model/driverDetails";
 
 @Component({
   selector: 'app-insurance-quote',
@@ -20,7 +21,11 @@ export class InsuranceQuoteComponent implements OnInit, OnDestroy {
   step = 0;
 
   get sections() {
-    return this.quote.sections as VehicleQuoteSections & HomeQuoteSections
+    const sections = this.quote.sections as VehicleQuoteSections & HomeQuoteSections
+    return {
+      ...sections,
+      ...sections.driverDetails ?? {}
+    } as VehicleQuoteSections & HomeQuoteSections & DriverDetails
   }
 
   constructor(private readonly route: ActivatedRoute, private readonly quoteService: QuoteService) {
@@ -66,5 +71,9 @@ export class InsuranceQuoteComponent implements OnInit, OnDestroy {
 
   setStep(number: number) {
     this.step = number
+  }
+
+  isComplete() {
+    return this.step > 4
   }
 }
