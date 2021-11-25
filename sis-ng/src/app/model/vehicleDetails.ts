@@ -9,12 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
 
-export interface Membership { 
-    id?: number;
-    userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
+export interface VehicleDetails { 
+    sectionComplete?: boolean;
+    quoteId?: number;
+    alarmFitter?: boolean;
+    immobilizerFitted?: boolean;
+    trackingDeviceFitted?: boolean;
+    isImport?: boolean;
+    offSideDrive?: boolean;
+    numberOfSeats?: number;
+    currentValue?: number;
+    isModified?: boolean;
 }

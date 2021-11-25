@@ -9,12 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
+import { HomeDetails } from './homeDetails';
+import { InsuranceType } from './insuranceType';
+import { PersonalDetails } from './personalDetails';
+import { QuoteSections } from './quoteSections';
 
-export interface Membership { 
-    id?: number;
-    userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
+export interface HomeQuoteSections extends QuoteSections { 
+    personalDetails?: PersonalDetails;
+    homeDetails?: HomeDetails;
 }

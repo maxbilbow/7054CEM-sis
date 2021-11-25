@@ -9,12 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
 
-export interface Membership { 
+export interface Address { 
     id?: number;
-    userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
+    numberOrName?: string;
+    street?: string;
+    town?: string;
+    county?: string;
+    postcode?: string;
 }

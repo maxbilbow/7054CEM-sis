@@ -9,12 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
+import { Quote } from './quote';
 
-export interface Membership { 
-    id?: number;
-    userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
+export interface Quotes extends Array<Quote> { 
 }

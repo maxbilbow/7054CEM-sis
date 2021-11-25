@@ -9,12 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
 
-export interface Membership { 
-    id?: number;
-    userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
-}
+export type MembershipType = 'Smart' | 'Silver' | 'Gold';
+
+export const MembershipType = {
+    Smart: 'Smart' as MembershipType,
+    Silver: 'Silver' as MembershipType,
+    Gold: 'Gold' as MembershipType
+};

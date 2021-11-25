@@ -9,12 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
+import { InsuranceType } from './insuranceType';
 
-export interface Membership { 
+export interface InsurancePolicy { 
     id?: number;
     userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
+    type?: InsuranceType;
+    startDate?: string;
+    endDate?: string;
 }

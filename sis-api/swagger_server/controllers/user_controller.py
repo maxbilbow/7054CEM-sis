@@ -84,7 +84,7 @@ def get_user(user_id):  # noqa: E501
     :rtype: User
     """
 
-    return to_dict(UserService().get_user(user_id))
+    return UserService().get_user(user_id)
 
 
 def remove_user(user_id):  # noqa: E501

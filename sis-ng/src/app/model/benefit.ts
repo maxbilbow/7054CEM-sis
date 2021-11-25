@@ -11,10 +11,8 @@
  */
 import { MembershipType } from './membershipType';
 
-export interface Membership { 
-    id?: number;
-    userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
+export interface Benefit { 
+    name: string;
+    minMembership: MembershipType;
+    maxMembership?: MembershipType;
 }

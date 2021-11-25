@@ -9,12 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
 
-export interface Membership { 
-    id?: number;
-    userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
-}
+export type InsuranceType = 'Home' | 'Motor';
+
+export const InsuranceType = {
+    Home: 'Home' as InsuranceType,
+    Motor: 'Motor' as InsuranceType
+};

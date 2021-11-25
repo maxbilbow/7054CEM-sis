@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {InsuranceQuote} from "../insurance-quote";
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {QuoteService} from "../quote.service";
+import {Quote} from "../../model/quote";
+import {HomeQuoteSections} from "../../model/homeQuoteSections";
 
 @Component({
   selector: 'app-insurance-quote',
@@ -10,7 +11,7 @@ import {QuoteService} from "../quote.service";
 })
 export class InsuranceQuoteComponent implements OnInit {
 
-  quote!: InsuranceQuote;
+  quote!: Quote;
 
   constructor(private readonly route: ActivatedRoute, private readonly quoteService: QuoteService) {
 
@@ -31,5 +32,9 @@ export class InsuranceQuoteComponent implements OnInit {
       return "Nothing to show yet";
     }
     return JSON.stringify(this.quote);
+  }
+
+  hasPersonalDetails() {
+    return (this.quote.sections as HomeQuoteSections)?.personalDetails
   }
 }

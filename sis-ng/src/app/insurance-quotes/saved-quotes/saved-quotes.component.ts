@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {InsuranceQuote} from "../insurance-quote";
 import {QuoteService} from "../quote.service";
+import {Quotes} from "../../model/quotes";
+import {Quote} from "../../model/quote";
 
 @Component({
   selector: 'app-saved-quotes',
@@ -9,7 +10,7 @@ import {QuoteService} from "../quote.service";
 })
 export class SavedQuotesComponent implements OnInit {
   readonly displayedColumns = ['type', 'updated', 'price', 'actions'];
-  quotes: InsuranceQuote[] = []
+  quotes: Quotes = []
 
   constructor(private readonly quoteService: QuoteService) {
   }
@@ -26,12 +27,12 @@ export class SavedQuotesComponent implements OnInit {
       .catch(console.error)
   }
 
-  open({id}: InsuranceQuote) {
-    this.quoteService.open(id).catch(console.error)
+  open({id}: Quote) {
+    this.quoteService.open(id!).catch(console.error)
   }
 
-  delete({id}: InsuranceQuote) {
-    this.quoteService.delete(id).catch(console.error)
+  delete({id}: Quote) {
+    this.quoteService.delete(id!).catch(console.error)
       .then(() => this.loadQuotes())
   }
 }

@@ -17,9 +17,9 @@ export class MembershipService {
     );
   }
 
-  create({end_date}: Partial<Membership>) {
+  create({endDate}: Partial<Membership>) {
     return new Promise<Membership>((resolve, reject) =>
-      this.httpClient.post<Membership>("api/membership", {end_date})
+      this.httpClient.post<Membership>("api/membership", {endDate})
         .subscribe({next: resolve, error: reject})
     );
   }

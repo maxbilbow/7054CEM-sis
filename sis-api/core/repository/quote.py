@@ -14,7 +14,10 @@ from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.model.vehicle_details import VehicleDetails
 from core.model.vehicle_usage import VehicleUsage
 from core.repository import mysql
+from core.repository.mysql import _Session
+from core.repository.user_profile import UserProfileRepository
 from core.utils.deserialization import deserialize
+from core.utils.serialization import serialize
 
 
 class QuoteRepository:
@@ -25,8 +28,7 @@ class QuoteRepository:
         with mysql.session() as s:
             quote_id = s.on_table("quote").insert(quote)
             driver_history = DriverHistory()
-            driver_history_id = s.on_table("driver_history").insert(driver_history)
-            driver_history = dataclasses.replace(driver_history, id=driver_history_id)
+            driver_history.id = s.on_table("driver_history").insert(driver_history)
             driver_details = DriverDetails(quote_id, personal_details=profile.personal_details,
                                            driver_history=driver_history)
 
@@ -65,23 +67,28 @@ class QuoteRepository:
             if quote is None:
                 return None
 
-            quote["quote_sections"] = s.on_table("quote_sections").find_by(quote_matcher).fetchone()
-            quote["quote_sections"]["driver_details"] = s.on_table("driver_details").find_by(quote_matcher).fetchone()
-            personal_details_id = quote["quote_sections"]["driver_details"]["personal_details_id"]
-            driver_history_id = quote["quote_sections"]["driver_details"]["driver_history_id"]
-            quote["quote_sections"]["driver_details"]["personal_details"] = \
-                s.on_table("personal_details").find_by( personal_details_id).fetchone()
-            quote["quote_sections"]["driver_details"]["driver_history"] = \
-                s.on_table("driver_history").find_by(driver_history_id).fetchone()
-            quote["quote_sections"]["vehicle_details"] = s.on_table("vehicle_details").find_by(quote_matcher).fetchone()
-            quote["quote_sections"]["vehicle_usage"] = s.on_table("vehicle_usage").find_by(quote_matcher).fetchone()
+            sections = s.on_table("quote_sections").find_by(quote_matcher).fetchone()
+            if quote["type"] == InsuranceType.Motor.name:
+                sections["driver_details"] = s.on_table("driver_details").find_by(quote_matcher).fetchone()
+                personal_details_id = sections["driver_details"]["personal_details_id"]
+                driver_history_id = sections["driver_details"]["driver_history_id"]
+                sections["driver_details"]["personal_details"] = UserProfileRepository.find_personal_details(s,
+                                                                                                             personal_details_id)
+                sections["driver_details"]["driver_history"] = \
+                    s.on_table("driver_history").find_by(driver_history_id).fetchone()
+                sections["vehicle_details"] = s.on_table("vehicle_details").find_by(quote_matcher).fetchone()
+                sections["vehicle_usage"] = s.on_table("vehicle_usage").find_by(quote_matcher).fetchone()
+            else:
+                sections["personal_details"] = UserProfileRepository.find_personal_details(s, sections[
+                    "personal_details_id"])
 
+            quote["sections"] = sections
             return deserialize(quote, Quote)
 
     @staticmethod
     def find_by_userid(user_id: int) -> List[Quote]:
         rows = mysql.find_all_by(table_name="quote", key="user_id", key_value=user_id)
-        return [Quote.from_dict(row) for row in rows]
+        return [deserialize(row, Quote) for row in rows]
 
     @staticmethod
     def update(quote: Quote):
@@ -95,3 +102,9 @@ class QuoteRepository:
     @staticmethod
     def delete(id: int):
         return mysql.delete_by(table_name="quote", key="id", key_value=id)
+
+    @staticmethod
+    def get_personal_details(s: _Session, personal_details_id: int) -> Optional[dict]:
+        personal_details = s.on_table("personal_details").find_by(personal_details_id).fetchone()
+        if personal_details is None:
+            return None

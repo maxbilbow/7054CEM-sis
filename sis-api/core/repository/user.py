@@ -31,7 +31,6 @@ class UserRepository:
             data = s.on_table("user").find_by(["email", email]).fetchone()
             if data is None:
                 return None
-            del data["password_hash"]
             return deserialize(data, User)
 
     @staticmethod

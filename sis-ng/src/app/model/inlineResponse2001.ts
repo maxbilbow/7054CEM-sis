@@ -9,12 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
 
-export interface Membership { 
-    id?: number;
+export interface InlineResponse2001 { 
     userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
 }

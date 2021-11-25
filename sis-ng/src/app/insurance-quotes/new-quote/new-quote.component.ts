@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {InsurancePackageType} from "../insurance-quote";
 import {QuoteService} from "../quote.service";
+import {InsuranceType} from "../../model/insuranceType";
 
 
 @Component({
@@ -17,10 +17,10 @@ export class NewQuoteComponent implements OnInit {
   }
 
   startHome() {
-    this.quoteService.newQuote(InsurancePackageType.Home);
+    this.quoteService.newQuote(InsuranceType.Home);
   }
 
   startMotor() {
-    this.quoteService.newQuote(InsurancePackageType.Motor);
+    this.quoteService.newQuote(InsuranceType.Motor);
   }
 }

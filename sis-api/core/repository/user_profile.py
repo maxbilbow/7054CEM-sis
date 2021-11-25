@@ -30,7 +30,7 @@ class UserProfileRepository:
             if profile is None:
                 return None
 
-            profile["personal_details"] = UserProfileRepository._find_personal_details(s, profile)
+            profile["personal_details"] = UserProfileRepository.find_personal_details(s, profile["personal_details_id"])
 
             profile["driver_history"] = UserProfileRepository._find_driver_history(s, profile)
 
@@ -83,11 +83,11 @@ class UserProfileRepository:
             s.commit()
 
     @staticmethod
-    def _find_personal_details(s: _Session, profile: dict) -> Optional[dict]:
-        if profile["personal_details_id"] is None:
+    def find_personal_details(s: _Session, personal_details_id: Optional[int]) -> Optional[dict]:
+        if personal_details_id is None:
             return None
 
-        personal_details = s.on_table("personal_details").find_by(["id", profile["personal_details_id"]]).fetchone()
+        personal_details = s.on_table("personal_details").find_by(["id", personal_details_id]).fetchone()
         if personal_details is None:
             return None
 

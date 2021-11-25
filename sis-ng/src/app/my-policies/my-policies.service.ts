@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {InsurancePolicy} from "../model/insurance-policy";
+import {InsurancePolicy} from "../model/insurancePolicy";
 
 @Injectable({
   providedIn: 'root'

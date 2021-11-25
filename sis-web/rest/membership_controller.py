@@ -1,12 +1,14 @@
 from flask import jsonify, request, current_app as app
 from flask_api import status
 
+from rest.decorators import handle_errors
 from web_exceptions import BadRequest
 from service.membership_service import MembershipService
 from service.user_profile_service import UserProfileService
 
 
 @app.route("/api/membership", methods=["GET"])
+@handle_errors
 def get_membership(membership_service: MembershipService):
     try:
         membership = membership_service.get()
@@ -18,6 +20,7 @@ def get_membership(membership_service: MembershipService):
 
 
 @app.route("/api/membership", methods=["POST"])
+@handle_errors
 def create_membership(membership_service: MembershipService):
     try:
         end_date = request.json["end_date"]
@@ -30,6 +33,7 @@ def create_membership(membership_service: MembershipService):
 
 
 @app.route("/api/membership", methods=["PUT"])
+@handle_errors
 def update_membership(membership_service: MembershipService):
     try:
         start_date = request.json["start_date"]
@@ -42,6 +46,7 @@ def update_membership(membership_service: MembershipService):
 
 
 @app.route("/api/membership", methods=["DELETE"])
+@handle_errors
 def cancel_membership(membership_service: MembershipService):
     try:
         membership = membership_service.cancel_membership()
@@ -54,6 +59,7 @@ def cancel_membership(membership_service: MembershipService):
 
 
 @app.route("/api/membership/get_eligible_type", methods=["GET"])
+@handle_errors
 def get_eligible_type(profile_service: UserProfileService):
     profile = profile_service.get()
     return get_membership_type(points=profile["points"]), status.HTTP_200_OK

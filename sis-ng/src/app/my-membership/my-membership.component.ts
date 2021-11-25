@@ -28,7 +28,7 @@ export class MyMembershipComponent implements OnInit {
   }
 
   create() {
-    this.membershipService.create({end_date: this.endDate})
+    this.membershipService.create({endDate: this.endDate})
       .then(membership => {
         this.membership = membership
       })

@@ -9,12 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MembershipType } from './membershipType';
+import { DriverHistory } from './driverHistory';
+import { PersonalDetails } from './personalDetails';
 
-export interface Membership { 
-    id?: number;
+export interface UserProfile { 
     userId?: number;
-    startDate: string;
-    endDate: string;
-    type: MembershipType;
+    personalDetails?: PersonalDetails;
+    driverHistory?: DriverHistory;
 }

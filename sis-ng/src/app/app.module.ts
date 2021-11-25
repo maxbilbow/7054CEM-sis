@@ -8,6 +8,8 @@ import {PageHeaderModule} from "./page-header/page-header.module";
 import {MyMembershipModule} from "./my-membership/my-membership.module";
 import {MyPoliciesModule} from "./my-policies/my-policies.module";
 import {InsuranceQuotesModule} from "./insurance-quotes/insurance-quotes.module";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthenticationInterceptor} from "./authentication.interceptor";
 
 @NgModule({
   declarations: [
@@ -20,10 +22,18 @@ import {InsuranceQuotesModule} from "./insurance-quotes/insurance-quotes.module"
     UserProfileModule,
     MyMembershipModule,
     MyPoliciesModule,
-    InsuranceQuotesModule
+    InsuranceQuotesModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AuthenticationInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
 }

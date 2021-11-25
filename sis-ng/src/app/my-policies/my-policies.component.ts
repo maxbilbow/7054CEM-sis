@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {InsurancePolicy} from "../model/insurance-policy";
 import {MyPoliciesService} from "./my-policies.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort, Sort} from "@angular/material/sort";
 import {LiveAnnouncer} from "@angular/cdk/a11y";
+import {InsurancePolicy} from "../model/insurancePolicy";
 
 @Component({
   selector: 'app-my-policies',
@@ -17,11 +17,12 @@ export class MyPoliciesComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private readonly myPolicyService: MyPoliciesService,
-              private readonly liveAnnouncer: LiveAnnouncer) { }
+              private readonly liveAnnouncer: LiveAnnouncer) {
+  }
 
   getStatus(policy: InsurancePolicy) {
-    const end_date = Date.parse(policy.end_date);
-    const today = new Date().setHours(0,0,0,0)
+    const end_date = Date.parse(policy.endDate!);
+    const today = new Date().setHours(0, 0, 0, 0)
     return end_date > today ? "Active" : "Expired"
   }
 
