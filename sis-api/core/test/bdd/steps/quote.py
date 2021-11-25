@@ -8,6 +8,7 @@ from core.model import to_dict
 from core.model.quote import Quote
 from core.service.profile_service import ProfileService
 from core.service.quote_service import QuoteService
+from core.utils.serialization import serialize
 
 FOREIGN_KEY_CONSTRAINT_ERROR = 1452
 
@@ -116,7 +117,7 @@ def step_impl(context):
     quote: Quote = context.quote
     updated_quote = dataclasses.replace(quote, is_complete=True, created=0, updated=0)
     context.updated_quote = updated_quote
-    quote_dict = to_dict(updated_quote)
+    quote_dict = serialize(updated_quote).for_api()
     context.quote_service.update_quote(quote_id=quote.id, data=quote_dict)
 
 

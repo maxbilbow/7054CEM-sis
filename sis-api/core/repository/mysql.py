@@ -1,4 +1,5 @@
 import dataclasses
+import logging
 from typing import Any, Optional, List, Union, Tuple
 
 from deprecated import deprecated
@@ -80,7 +81,7 @@ class _Table:
         table_name = self._table_name
         qry = "INSERT INTO {table_name} ({columns}) VALUES ({values})" \
             .format(table_name=table_name, columns=",".join(keys), values=placeholder)
-        print(qry)
+        logging.debug(qry)
         self._cur.execute(qry, values)
         return self._cur.lastrowid
 
@@ -107,7 +108,7 @@ class _Table:
         update_values = map(update_value, keys)
         qry = "UPDATE {table_name} SET {update_values} WHERE {where_clause}" \
             .format(table_name=table_name, update_values=",".join(update_values), where_clause=where_clause)
-        print(qry)
+        logging.debug(qry)
         return self._cur.execute(qry, values)
 
     def delete(self, matchers: Union[Matchers, int]):
@@ -120,7 +121,7 @@ class _Table:
             where_clause = f"{key}={value}"
 
         sql = f"DELETE FROM `{self._table_name}` WHERE {where_clause}"
-        print(sql)
+        logging.debug(sql)
         return self._cur.execute(sql)
 
 
@@ -174,7 +175,7 @@ def insert(table_name: str,
         placeholder = ", ".join(["%s"] * len(o))
         qry = "INSERT INTO {table_name} ({columns}) VALUES ({values})" \
             .format(table_name=table_name, columns=",".join(o.keys()), values=placeholder)
-        print(qry)
+        logging.debug(qry)
         cur.execute(qry, list(o.values()))
         con.commit()
         return cur.lastrowid
@@ -207,7 +208,7 @@ def update_by_pk(table_name: str,
         update_values = map(update_value, data.keys())
         qry = "UPDATE {table_name} SET {update_values} WHERE {pk_name}={pk_value}" \
             .format(table_name=table_name, update_values=",".join(update_values), pk_name=pk_name, pk_value=pk)
-        print(qry)
+        logging.debug(qry)
         values = list(data.values())
         cur.execute(qry, values)
         con.commit()

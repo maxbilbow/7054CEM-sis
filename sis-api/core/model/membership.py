@@ -33,9 +33,3 @@ class Membership(BaseModel):
         args["end_date"] = to_date(args["end_date"])
         args["type"] = MembershipType[args["type"]]
         return cls(**args)
-
-
-if __name__ == '__main__':
-    m = Membership(1, 2, date.today(), date.today(), MembershipType.Smart)
-    d = dataclasses.asdict(m)
-    print(d)
