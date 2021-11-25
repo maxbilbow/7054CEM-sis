@@ -2,6 +2,7 @@ import requests
 from flask_api import status
 
 import config
+from web_exceptions import BadRequest
 
 URL = config.get("api.path")
 
@@ -9,10 +10,14 @@ URL = config.get("api.path")
 def _json(response):
     if response.status_code == status.HTTP_204_NO_CONTENT:
         return None
-    if response.status_code < 200 or response.status_code >= 300:
-        raise Exception(response.status_code, response.text)
-    else:
+    if 200 <= response.status_code < 300:
         return response.json()
+
+    msg = f"{response.status_code}: {response.text}"
+    if 400 <= response.status_code < 500:
+        raise BadRequest(msg)
+    else:
+        raise Exception(msg)
 
 
 class Api:

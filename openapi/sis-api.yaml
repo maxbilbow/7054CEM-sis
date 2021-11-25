@@ -608,13 +608,13 @@ paths:
         required: true
       responses:
         200:
-          description: Successfully retrived user
+          description: Successfully updated quoter
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Quote'
         404:
-          description: User doesn't exist
+          description: Quote doesn't exist
           content: { }
     delete:
       tags:
@@ -766,6 +766,7 @@ components:
           nullable: true
           type: number
         sections:
+          type: object
           oneOf:
             - $ref: '#/components/schemas/VehicleQuoteSections'
             - $ref: '#/components/schemas/HomeQuoteSections'

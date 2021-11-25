@@ -6,18 +6,6 @@ from deprecated import deprecated
 from swagger_server.models.base_model_ import Model
 
 
-def get_keys(o: Union[dict, dataclass, Model], exclude: Optional[List[str]] = None) -> List[str]:
-    keys: List[str]
-    if isinstance(o, Model):
-        keys = [o.attribute_map[key] for key in list(o.swagger_types.keys())]
-    else:
-        keys = list(to_dict(o).keys())
-
-    if exclude is not None:
-        keys = list(filter(lambda x: x not in exclude, keys))
-    return keys
-
-
 @deprecated(reason="Not good enough", action="always")
 def to_dict(o) -> Optional[Union[list, dict]]:
     if o is None:

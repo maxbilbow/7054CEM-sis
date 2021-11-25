@@ -26,7 +26,7 @@ export class InsuranceQuoteComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe({
       next: async (params) => {
-        const id = Number(params["quote_id"]);
+        const id = Number(params["quoteId"]);
         this.quote = await this.quoteService.get(id)
       }
     })
@@ -37,7 +37,7 @@ export class InsuranceQuoteComponent implements OnInit {
     if (!this.quote) {
       return "Nothing to show yet";
     }
-    return JSON.stringify(this.quote);
+    return JSON.stringify(this.quote, null, 2);
   }
 
   isMotor() {
@@ -46,5 +46,13 @@ export class InsuranceQuoteComponent implements OnInit {
 
   isHome() {
     return this.quote.type === InsuranceType.Home
+  }
+
+  save() {
+    this.quoteService.save(this.quote)
+      .then((q) => {
+        this.quote = q;
+      })
+      .catch(console.error)
   }
 }

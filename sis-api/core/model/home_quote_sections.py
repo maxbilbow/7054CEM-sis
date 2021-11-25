@@ -13,7 +13,3 @@ class HomeQuoteSections(QuoteSections):
     quote_type: InsuranceType = field(default=InsuranceType.Home)
     personal_details: PersonalDetails = field(default_factory=PersonalDetails)
     home_details: HomeDetails = field(default_factory=HomeDetails)
-
-    @property
-    def personal_details_id(self) -> int:
-        return self.personal_details.id

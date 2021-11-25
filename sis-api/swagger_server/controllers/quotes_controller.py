@@ -84,4 +84,4 @@ def update_quote(body, quote_id):  # noqa: E501
     :rtype: Quote
     """
     quote = QuoteService().update_quote(quote_id, body)
-    return to_dict(quote), status.HTTP_202_ACCEPTED
+    return quote, status.HTTP_202_ACCEPTED

@@ -18,7 +18,7 @@ const routes: Routes = [
     path: "saved-quotes", component: SavedQuotesComponent
   },
   {
-    path: "saved-quote/:quote_id", component: InsuranceQuoteComponent,
+    path: "saved-quote/:quoteId", component: InsuranceQuoteComponent,
   },
   {
     path: "profile", component: UserProfileComponent

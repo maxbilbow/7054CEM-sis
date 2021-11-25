@@ -27,7 +27,7 @@ class QuoteService:
         })
 
     def update_quote(self, quote: dict):
-        return self.__api.put(f"/quote/{quote['id']}", quote)
+        return self.__api.put(f"/quote/{quote['id']}", json=quote)
 
     def delete_quote(self, quote_id: int):
         return self.__api.delete(f"/quote/{quote_id}")

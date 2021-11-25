@@ -7,5 +7,5 @@ from core.model.quote_sections import QuoteSection
 
 @dataclass
 class HomeDetails(QuoteSection):
-    quote_id: int = field(metadata={PK: True, FK: True})
+    quote_id: int = field(metadata={PK: True, FK: True},default=-1)
     address: Address = field(default_factory=Address, metadata={FK: True})

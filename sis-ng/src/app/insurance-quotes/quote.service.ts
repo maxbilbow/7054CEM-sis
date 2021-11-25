@@ -14,9 +14,9 @@ export class QuoteService {
   }
 
   newQuote(type: InsuranceType): Promise<boolean> {
-    return new Promise((resolve, reject) => this.http.post<{ quote_id: number }>(`/api/quote`, {type})
+    return new Promise((resolve, reject) => this.http.post<{ quoteId: number }>(`/api/quote`, {type})
       .subscribe({
-        next: ({quote_id}) => resolve(this.open(quote_id)),
+        next: ({quoteId}) => resolve(this.open(quoteId)),
         error: reject
       })
     );

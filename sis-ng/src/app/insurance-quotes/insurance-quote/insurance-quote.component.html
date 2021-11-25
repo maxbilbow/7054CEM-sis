@@ -7,4 +7,8 @@
 <div *ngIf="isHome()">
   <app-personal-details *ngIf="sections.personalDetails" [personalDetails]="sections.personalDetails!"></app-personal-details>
 </div>
+<button mat-raised-button color="primary" (click)="save()">Save</button>
+
+<pre>
 {{show()}}
+</pre>

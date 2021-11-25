@@ -1,23 +1,21 @@
 import dataclasses
-import time
 from typing import Optional, List
 
 from core.model.driver_details import DriverDetails
 from core.model.driver_history import DriverHistory
 from core.model.home_details import HomeDetails
+from core.model.home_quote_sections import HomeQuoteSections
 from core.model.insurance_policy import InsuranceType
 from core.model.profile import Profile
 from core.model.quote import Quote
 from core.model.quote_sections import QuoteSections
-from core.model.home_quote_sections import HomeQuoteSections
-from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.model.vehicle_details import VehicleDetails
+from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.model.vehicle_usage import VehicleUsage
 from core.repository import mysql
 from core.repository.mysql import _Session
 from core.repository.user_profile import UserProfileRepository
 from core.utils.deserialization import deserialize
-from core.utils.serialization import serialize
 
 
 class QuoteRepository:
@@ -91,17 +89,29 @@ class QuoteRepository:
         return [deserialize(row, Quote) for row in rows]
 
     @staticmethod
-    def update(quote: Quote):
-        quote = dataclasses.replace(quote, updated=int(time.time() * 1000))
-        return mysql.update_by_pk(pk_name="id",
-                                  pk=quote.id,
-                                  table_name="quote",
-                                  entity=quote,
-                                  exclude_keys=["created"])
+    def update(quote: Quote) -> Quote:
+        with mysql.session() as s:
+            s.on_table("quote").update(quote)
+            if quote.type is InsuranceType.Motor:
+                sections: VehicleQuoteSections = quote.sections
+                s.on_table("driver_history").update(sections.driver_details.driver_history)
+                s.on_table("personal_details").update(sections.driver_details.personal_details)
+                s.on_table("driver_details").update(sections.driver_details)
+                s.on_table("vehicle_details").update(sections.vehicle_details)
+                s.on_table("vehicle_usage").update(sections.vehicle_usage)
+            else:
+                sections: HomeQuoteSections = quote.sections
+                s.on_table("home_details").update(sections.home_details)
+                s.on_table("personal_details").update(sections.personal_details)
+            s.on_table("quote_sections").update(quote.sections)
+            s.commit()
+        return QuoteRepository.find_by_id(quote.id)
 
     @staticmethod
     def delete(id: int):
-        return mysql.delete_by(table_name="quote", key="id", key_value=id)
+        with mysql.session() as s:
+            s.on_table("quote").delete(id)
+            s.commit()
 
     @staticmethod
     def get_personal_details(s: _Session, personal_details_id: int) -> Optional[dict]:

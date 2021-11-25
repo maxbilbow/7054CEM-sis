@@ -668,6 +668,7 @@ paths:
         schema:
           type: integer
       requestBody:
+        description: Blah
         content:
           application/json:
             schema:
@@ -890,6 +891,7 @@ components:
           type: number
           nullable: true
         sections:
+          type: object
           discriminator:
             propertyName: quote_type
           oneOf:
@@ -903,7 +905,7 @@ components:
         is_complete: true
         type: Home
         updated: 5
-        sections: ""
+        sections: {}
     QuoteSections:
       type: object
       properties:
