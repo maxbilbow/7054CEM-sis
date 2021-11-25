@@ -5,6 +5,7 @@ from behave import *
 from core.model import to_dict
 from core.model.membership import Membership
 from core.model.membership_type import MembershipType
+from core.utils.serialization import serialize
 
 use_step_matcher("re")
 
@@ -14,7 +15,7 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    context.dict = to_dict(context.membership)
+    context.dict = serialize(context.membership).for_api()
 
 
 @given("a membership is created with date (?P<date_string>.+)")

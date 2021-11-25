@@ -15,11 +15,13 @@ class VehicleUsage(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, usage: str=None, annual_milage: int=None, day_storage: str=None, night_storage: str=None, night_storage_at_home: bool=None, night_storage_address: Address=None):  # noqa: E501
+    def __init__(self, quote_id: int=None, usage_type: str=None, annual_milage: int=None, day_storage: str=None, night_storage: str=None, night_storage_at_home: bool=None, night_storage_address: Address=None):  # noqa: E501
         """VehicleUsage - a model defined in Swagger
 
-        :param usage: The usage of this VehicleUsage.  # noqa: E501
-        :type usage: str
+        :param quote_id: The quote_id of this VehicleUsage.  # noqa: E501
+        :type quote_id: int
+        :param usage_type: The usage_type of this VehicleUsage.  # noqa: E501
+        :type usage_type: str
         :param annual_milage: The annual_milage of this VehicleUsage.  # noqa: E501
         :type annual_milage: int
         :param day_storage: The day_storage of this VehicleUsage.  # noqa: E501
@@ -32,7 +34,8 @@ class VehicleUsage(Model):
         :type night_storage_address: Address
         """
         self.swagger_types = {
-            'usage': str,
+            'quote_id': int,
+            'usage_type': str,
             'annual_milage': int,
             'day_storage': str,
             'night_storage': str,
@@ -41,14 +44,16 @@ class VehicleUsage(Model):
         }
 
         self.attribute_map = {
-            'usage': 'usage',
+            'quote_id': 'quote_id',
+            'usage_type': 'usage_type',
             'annual_milage': 'annual_milage',
             'day_storage': 'day_storage',
             'night_storage': 'night_storage',
             'night_storage_at_home': 'night_storage_at_home',
             'night_storage_address': 'night_storage_address'
         }
-        self._usage = usage
+        self._quote_id = quote_id
+        self._usage_type = usage_type
         self._annual_milage = annual_milage
         self._day_storage = day_storage
         self._night_storage = night_storage
@@ -67,31 +72,52 @@ class VehicleUsage(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def usage(self) -> str:
-        """Gets the usage of this VehicleUsage.
+    def quote_id(self) -> int:
+        """Gets the quote_id of this VehicleUsage.
 
 
-        :return: The usage of this VehicleUsage.
+        :return: The quote_id of this VehicleUsage.
+        :rtype: int
+        """
+        return self._quote_id
+
+    @quote_id.setter
+    def quote_id(self, quote_id: int):
+        """Sets the quote_id of this VehicleUsage.
+
+
+        :param quote_id: The quote_id of this VehicleUsage.
+        :type quote_id: int
+        """
+
+        self._quote_id = quote_id
+
+    @property
+    def usage_type(self) -> str:
+        """Gets the usage_type of this VehicleUsage.
+
+
+        :return: The usage_type of this VehicleUsage.
         :rtype: str
         """
-        return self._usage
+        return self._usage_type
 
-    @usage.setter
-    def usage(self, usage: str):
-        """Sets the usage of this VehicleUsage.
+    @usage_type.setter
+    def usage_type(self, usage_type: str):
+        """Sets the usage_type of this VehicleUsage.
 
 
-        :param usage: The usage of this VehicleUsage.
-        :type usage: str
+        :param usage_type: The usage_type of this VehicleUsage.
+        :type usage_type: str
         """
-        allowed_values = ["SDP", "SDPC", "SDPCB", ""]  # noqa: E501
-        if usage not in allowed_values:
+        allowed_values = ["SDP", "SDPC", "SDPCB"]  # noqa: E501
+        if usage_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `usage` ({0}), must be one of {1}"
-                .format(usage, allowed_values)
+                "Invalid value for `usage_type` ({0}), must be one of {1}"
+                .format(usage_type, allowed_values)
             )
 
-        self._usage = usage
+        self._usage_type = usage_type
 
     @property
     def annual_milage(self) -> int:
@@ -132,7 +158,7 @@ class VehicleUsage(Model):
         :param day_storage: The day_storage of this VehicleUsage.
         :type day_storage: str
         """
-        allowed_values = ["Home", "CarParkOffice", "CarParkPublic", "StreetAwayFromHome", ""]  # noqa: E501
+        allowed_values = ["Home", "CarParkOffice", "CarParkPublic", "StreetAwayFromHome"]  # noqa: E501
         if day_storage not in allowed_values:
             raise ValueError(
                 "Invalid value for `day_storage` ({0}), must be one of {1}"
@@ -159,7 +185,7 @@ class VehicleUsage(Model):
         :param night_storage: The night_storage of this VehicleUsage.
         :type night_storage: str
         """
-        allowed_values = ["Drive", "StreetOutsideHome", "StreetAwayFromHome", "Garage", ""]  # noqa: E501
+        allowed_values = ["Drive", "StreetOutsideHome", "StreetAwayFromHome", "Garage"]  # noqa: E501
         if night_storage not in allowed_values:
             raise ValueError(
                 "Invalid value for `night_storage` ({0}), must be one of {1}"

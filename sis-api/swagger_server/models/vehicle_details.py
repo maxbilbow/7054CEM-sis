@@ -14,9 +14,11 @@ class VehicleDetails(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, quote_id: int=None, alarm_fitter: bool=None, immobilizer_fitted: bool=None, tracking_device_fitted: bool=None, is_import: bool=None, off_side_drive: bool=None, number_of_seats: float=None, current_value: float=None, is_modified: bool=None):  # noqa: E501
+    def __init__(self, section_complete: bool=None, quote_id: int=None, alarm_fitter: bool=None, immobilizer_fitted: bool=None, tracking_device_fitted: bool=None, is_import: bool=None, off_side_drive: bool=None, number_of_seats: float=None, current_value: float=None, is_modified: bool=None):  # noqa: E501
         """VehicleDetails - a model defined in Swagger
 
+        :param section_complete: The section_complete of this VehicleDetails.  # noqa: E501
+        :type section_complete: bool
         :param quote_id: The quote_id of this VehicleDetails.  # noqa: E501
         :type quote_id: int
         :param alarm_fitter: The alarm_fitter of this VehicleDetails.  # noqa: E501
@@ -37,6 +39,7 @@ class VehicleDetails(Model):
         :type is_modified: bool
         """
         self.swagger_types = {
+            'section_complete': bool,
             'quote_id': int,
             'alarm_fitter': bool,
             'immobilizer_fitted': bool,
@@ -49,6 +52,7 @@ class VehicleDetails(Model):
         }
 
         self.attribute_map = {
+            'section_complete': 'section_complete',
             'quote_id': 'quote_id',
             'alarm_fitter': 'alarm_fitter',
             'immobilizer_fitted': 'immobilizer_fitted',
@@ -59,6 +63,7 @@ class VehicleDetails(Model):
             'current_value': 'current_value',
             'is_modified': 'is_modified'
         }
+        self._section_complete = section_complete
         self._quote_id = quote_id
         self._alarm_fitter = alarm_fitter
         self._immobilizer_fitted = immobilizer_fitted
@@ -79,6 +84,27 @@ class VehicleDetails(Model):
         :rtype: VehicleDetails
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def section_complete(self) -> bool:
+        """Gets the section_complete of this VehicleDetails.
+
+
+        :return: The section_complete of this VehicleDetails.
+        :rtype: bool
+        """
+        return self._section_complete
+
+    @section_complete.setter
+    def section_complete(self, section_complete: bool):
+        """Sets the section_complete of this VehicleDetails.
+
+
+        :param section_complete: The section_complete of this VehicleDetails.
+        :type section_complete: bool
+        """
+
+        self._section_complete = section_complete
 
     @property
     def quote_id(self) -> int:

@@ -4,11 +4,10 @@ Feature: Insurance Quote API
 
   Background:
     Given a clean database has been created
-    And registered users exist in the database
+    And registered users exist in the database with profiles
     And a QuoteService instance
 
  Scenario Outline: New Quote with valid params
-   Given a registered user
    Given requested insurance type "<insurance_type>"
    When a new quote is requested for a user
    Then the quote has the correct type attribute

@@ -19,13 +19,31 @@ CREATE TABLE IF NOT EXISTS `address` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS `driver_details`;
+CREATE TABLE IF NOT EXISTS `driver_details` (
+  `quote_id` int(11) UNSIGNED NOT NULL,
+  `driver_history_id` int(11) UNSIGNED NOT NULL,
+  `personal_details_id` int(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`quote_id`),
+  KEY `driver_history_driver_details` (`driver_history_id`),
+  KEY `personal_details_driver_details` (`personal_details_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 DROP TABLE IF EXISTS `driver_history`;
 CREATE TABLE IF NOT EXISTS `driver_history` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `licence_type` enum('Full','Provisional','') NOT NULL DEFAULT '',
+  `licence_type` enum('Full','Provisional','') DEFAULT '',
   `license_since` date DEFAULT NULL,
   `licence_no` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `home_details`;
+CREATE TABLE IF NOT EXISTS `home_details` (
+  `quote_id` int(11) UNSIGNED NOT NULL,
+  `address_id` int(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`quote_id`),
+  KEY `home_details_address` (`address_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `insurance_package`;
@@ -64,13 +82,13 @@ CREATE TABLE IF NOT EXISTS `membership` (
 DROP TABLE IF EXISTS `personal_details`;
 CREATE TABLE IF NOT EXISTS `personal_details` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `full_name` text NOT NULL DEFAULT '',
+  `full_name` text DEFAULT NULL,
   `address_id` int(11) UNSIGNED DEFAULT NULL,
   `dob` date DEFAULT NULL,
-  `relationship_status` enum('Single','Married','') NOT NULL DEFAULT '',
+  `relationship_status` enum('Single','Married') DEFAULT NULL,
   `home_owner` tinyint(1) DEFAULT NULL,
   `dependents` tinyint(4) DEFAULT NULL,
-  `employment_status` enum('FullTime','PartTime','Unemployed','Retired','Student','') NOT NULL DEFAULT '',
+  `employment_status` enum('FullTime','PartTime','Unemployed','Retired','Student') DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `personal_details_address` (`address_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -99,6 +117,16 @@ CREATE TABLE IF NOT EXISTS `quote` (
   KEY `user_quote` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS `quote_sections`;
+CREATE TABLE IF NOT EXISTS `quote_sections` (
+  `quote_id` int(11) UNSIGNED NOT NULL,
+  `quote_type` enum('Home','Motor') NOT NULL,
+  `personal_details_id` int(11) UNSIGNED DEFAULT NULL,
+  `home_details_id` int(11) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`quote_id`),
+  KEY `personal_details_quote_sections` (`personal_details_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -116,6 +144,43 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS `vehicle_details`;
+CREATE TABLE IF NOT EXISTS `vehicle_details` (
+  `quote_id` int(11) UNSIGNED NOT NULL,
+  `alarm_fitter` tinyint(1) DEFAULT NULL,
+  `immobilizer_fitted` tinyint(1) DEFAULT NULL,
+  `tracking_device_fitted` tinyint(1) DEFAULT NULL,
+  `is_import` tinyint(1) DEFAULT NULL,
+  `off_side_drive` tinyint(1) DEFAULT NULL,
+  `number_of_seats` tinyint(4) DEFAULT NULL,
+  `current_value` decimal(10,0) DEFAULT NULL,
+  `is_modified` tinyint(4) DEFAULT NULL,
+  `section_complete` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`quote_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `vehicle_usage`;
+CREATE TABLE IF NOT EXISTS `vehicle_usage` (
+  `quote_id` int(11) UNSIGNED NOT NULL,
+  `usage_type` enum('SDP','SDPC','SDPCB') DEFAULT NULL,
+  `annual_milage` int(11) DEFAULT NULL,
+  `day_storage` enum('Home','CarParkOffice','CarParkPublic','StreetAwayFromHome') DEFAULT NULL,
+  `night_storage` enum('Drive','StreetOutsideHome','StreetAwayFromHome','Garage') DEFAULT NULL,
+  `night_storage_at_home` tinyint(1) DEFAULT NULL,
+  `night_storage_address` int(11) UNSIGNED DEFAULT NULL,
+  `section_complete` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`quote_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+ALTER TABLE `driver_details`
+  ADD CONSTRAINT `driver_details_quote` FOREIGN KEY (`quote_id`) REFERENCES `quote` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `driver_history_driver_details` FOREIGN KEY (`driver_history_id`) REFERENCES `driver_history` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `personal_details_driver_details` FOREIGN KEY (`personal_details_id`) REFERENCES `personal_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `home_details`
+  ADD CONSTRAINT `home_details_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `quote_home_details` FOREIGN KEY (`quote_id`) REFERENCES `quote` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `insurance_policy`
   ADD CONSTRAINT `insurance_package_insurance_policy` FOREIGN KEY (`package_id`) REFERENCES `insurance_package` (`id`) ON UPDATE CASCADE,
@@ -127,14 +192,21 @@ ALTER TABLE `membership`
 ALTER TABLE `personal_details`
   ADD CONSTRAINT `personal_details_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
-ALTER TABLE `previous_claim`
-  ADD CONSTRAINT `driver_history_previous_claim` FOREIGN KEY (`driver_history_id`) REFERENCES `driver_history` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 ALTER TABLE `quote`
   ADD CONSTRAINT `user_quote` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `quote_sections`
+  ADD CONSTRAINT `personal_details_quote_sections` FOREIGN KEY (`personal_details_id`) REFERENCES `personal_details` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `quote_quote_sections` FOREIGN KEY (`quote_id`) REFERENCES `quote` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ALTER TABLE `user_profile`
   ADD CONSTRAINT `user_user_profile` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `vehicle_details`
+  ADD CONSTRAINT `quote_vehicle_details` FOREIGN KEY (`quote_id`) REFERENCES `quote` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `vehicle_usage`
+  ADD CONSTRAINT `quote_vehicle_usage` FOREIGN KEY (`quote_id`) REFERENCES `quote` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

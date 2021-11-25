@@ -4,10 +4,13 @@ from typing import Optional, List
 
 from core.model.driver_details import DriverDetails
 from core.model.driver_history import DriverHistory
+from core.model.home_details import HomeDetails
 from core.model.insurance_policy import InsuranceType
 from core.model.profile import Profile
 from core.model.quote import Quote
-from core.model.quote_sections import VehicleQuoteSections, HomeQuoteSections, QuoteSections
+from core.model.quote_sections import QuoteSections
+from core.model.home_quote_sections import HomeQuoteSections
+from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.model.vehicle_details import VehicleDetails
 from core.model.vehicle_usage import VehicleUsage
 from core.repository import mysql
@@ -31,39 +34,47 @@ class QuoteRepository:
                 quote_id=quote_id, driver_details=driver_details, vehicle_details=VehicleDetails(quote_id),
                 vehicle_usage=VehicleUsage(quote_id)
             )
-
+            quote = dataclasses.replace(quote, sections=sections, id=quote_id)
             s.on_table("quote_sections").insert(sections)
             s.on_table("driver_details").insert(driver_details)
             s.on_table("vehicle_details").insert(sections.vehicle_details)
             s.on_table("vehicle_usage").insert(sections.vehicle_usage)
-            s.on_table("vehicle_usage").insert(sections.vehicle_usage)
+            s.commit()
+        return QuoteRepository.find_by_id(quote.id)
+
+    @staticmethod
+    def new_home_quote(user_id: int, profile: Profile):
+        quote = Quote(id=None, user_id=user_id, type=InsuranceType.Home, sections=QuoteSections())
+        with mysql.session() as s:
+            quote_id = s.on_table("quote").insert(quote)
+            sections = HomeQuoteSections(
+                quote_id=quote_id, personal_details=profile.personal_details,
+                home_details=HomeDetails(quote_id, address=profile.personal_details.address)
+            )
+            quote = dataclasses.replace(quote, sections=sections, id=quote_id)
+            s.on_table("home_details").insert(sections.home_details)
+            s.on_table("quote_sections").insert(sections)
             s.commit()
             return quote  # QuoteRepository.find_by_id(quote_id)
 
     @staticmethod
-    def new_home_quote(user_id: int, profile: Profile):
-        pass
-
-    @staticmethod
     def find_by_id(id: int) -> Optional[Quote]:
         with mysql.session() as s:
-            quote_matcher = ["quote_id", id]
-            quote = s.on_table("quote").find_by(quote_matcher)
+            quote_matcher = "quote_id", id
+            quote = s.on_table("quote").find_by(id).fetchone()
             if quote is None:
                 return None
 
-            quote["quote_sections"] = s.on_table("quote_sections").find_by(quote_matcher)
-            quote["quote_sections"]["driver_details"] = s.on_table("driver_details").find_by(quote_matcher)
+            quote["quote_sections"] = s.on_table("quote_sections").find_by(quote_matcher).fetchone()
+            quote["quote_sections"]["driver_details"] = s.on_table("driver_details").find_by(quote_matcher).fetchone()
             personal_details_id = quote["quote_sections"]["driver_details"]["personal_details_id"]
             driver_history_id = quote["quote_sections"]["driver_details"]["driver_history_id"]
-            quote["quote_sections"]["driver_details"]["personal_details"] = s.on_table("personal_details").find_by(
-                ["personal_details_id", personal_details_id]
-            )
-            quote["quote_sections"]["driver_details"]["driver_history"] = s.on_table("driver_history").find_by(
-                ["driver_history_id", driver_history_id]
-            )
-            quote["quote_sections"]["vehicle_details"] = s.on_table("vehicle_details").find_by(quote_matcher)
-            quote["quote_sections"]["vehicle_usage"] = s.on_table("vehicle_usage").find_by(quote_matcher)
+            quote["quote_sections"]["driver_details"]["personal_details"] = \
+                s.on_table("personal_details").find_by( personal_details_id).fetchone()
+            quote["quote_sections"]["driver_details"]["driver_history"] = \
+                s.on_table("driver_history").find_by(driver_history_id).fetchone()
+            quote["quote_sections"]["vehicle_details"] = s.on_table("vehicle_details").find_by(quote_matcher).fetchone()
+            quote["quote_sections"]["vehicle_usage"] = s.on_table("vehicle_usage").find_by(quote_matcher).fetchone()
 
             return deserialize(quote, Quote)
 

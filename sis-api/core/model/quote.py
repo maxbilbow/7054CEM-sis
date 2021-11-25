@@ -2,8 +2,10 @@ import logging
 import time
 from typing import Optional
 
+from core.model.home_quote_sections import HomeQuoteSections
 from core.model.meta import *
 from core.model.quote_sections import *
+from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.utils.deserialization import deserialize
 
 from dataclasses import dataclass, field
@@ -23,7 +25,7 @@ class Quote(BaseModel):
     id: Optional[int] = field(metadata={PK: True, GENERATED: True})
     user_id: int = field(metadata={FK: True})
     type: InsuranceType
-    sections: QuoteSections = field(metadata={DESERIALIZER: quote_sections_factory, SQL_COLUMN: False})
+    sections: Optional[QuoteSections] = field(metadata={DESERIALIZER: quote_sections_factory, SQL_COLUMN: False})
     created: int = field(default_factory=lambda: int(time.time() * 1000))
     updated: int = field(default_factory=lambda: int(time.time() * 1000))
     is_complete: bool = field(default=False)

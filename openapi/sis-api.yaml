@@ -807,6 +807,8 @@ components:
 
     VehicleDetails:
       properties:
+        section_complete:
+          type: boolean
         quote_id:
           type: integer
         alarm_fitter:
@@ -835,16 +837,18 @@ components:
           nullable: true
     VehicleUsage:
       properties:
-        usage:
+        quote_id:
+          type: integer
+        usage_type:
           type: string
           nullable: true
           enum:
             - SDP
             - SDPC
             - SDPCB
-            - null
         annual_milage:
           type: integer
+          nullable: true
         day_storage:
           type: string
           nullable: true
@@ -853,7 +857,6 @@ components:
             - CarParkOffice
             - CarParkPublic
             - StreetAwayFromHome
-            - null
         night_storage:
           type: string
           nullable: true
@@ -862,7 +865,6 @@ components:
             - StreetOutsideHome
             - StreetAwayFromHome
             - Garage
-            - null
         night_storage_at_home:
           type: boolean
           nullable: true

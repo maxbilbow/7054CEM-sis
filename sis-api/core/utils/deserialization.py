@@ -71,10 +71,10 @@ def _parse_with_field(value: Any, f: Field):
     if not isinstance(value, str):
         logging.info(f"Already deserialized: {value}")
         return value
-    if isinstance(t, datetime):
+    if t == datetime:
         return datetime.fromisoformat(value)
-    if isinstance(t, date):
-        return date.fromisoformat(value)
+    if t == date:
+        return datetime.fromisoformat(value) if "T" in value else date.fromisoformat(value)
     if issubclass(t, Enum):
         return t[value]
 

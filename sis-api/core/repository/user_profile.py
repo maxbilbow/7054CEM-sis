@@ -28,7 +28,7 @@ class UserProfileRepository:
         with mysql.session() as s:
             profile = s.on_table("user_profile").find_by(["user_id", user_id]).fetchone()
             if profile is None:
-                return deserialize({}, Profile)
+                return None
 
             profile["personal_details"] = UserProfileRepository._find_personal_details(s, profile)
 

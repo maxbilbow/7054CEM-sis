@@ -3,37 +3,54 @@ from typing import Optional
 
 from core.repository import mysql
 from core.model.user import User
+from core.utils.deserialization import deserialize
 
 
 class UserRepository:
 
     @staticmethod
     def insert_user(email: str, password_hash: str):
-        id = mysql.insert(table_name="user",
-                          exclude_keys=["id"],
-                          entity=User(id=-1, email=email, password_hash=password_hash))
-        return User(id=id, email=email, password_hash=password_hash)
+        with mysql.session() as s:
+            user = User(None, email, password_hash)
+            id = s.on_table("user").insert(user)
+            s.commit()
+            return dataclasses.replace(user, id=id)
 
     @staticmethod
     def find_by_id(user_id: int) -> Optional[User]:
-        result = mysql.find_by(table_name="user", key_value=user_id)
-        if not result:
-            return None
-        return dataclasses.replace(User(**result), password_hash=None)
+        with mysql.session() as s:
+            data = s.on_table("user").find_by(user_id).fetchone()
+            if data is None:
+                return None
+            del data["password_hash"]
+            return deserialize(data, User)
 
     @staticmethod
     def find_by_email(email: str):
-        result = mysql.find_by(table_name="user", key="email", key_value=email)
-        return None if result is None else User(**result)
+        with mysql.session() as s:
+            data = s.on_table("user").find_by(["email", email]).fetchone()
+            if data is None:
+                return None
+            del data["password_hash"]
+            return deserialize(data, User)
 
     @staticmethod
     def update(user_id: int, email: Optional[str], password: Optional[str]) -> User:
-        exclude = ["password_hash"] if password is None else list()
-        if email is None:
-            exclude.append("email")
+        keys = list()
+        if password is not None:
+            keys.append("password_hash")
+        if email is not None:
+            keys.append("email")
         user = User(user_id, email, password)
-        return mysql.update_by_pk(pk=user_id, table_name="user", entity=user, exclude_keys=exclude)
+
+        with mysql.session() as s:
+            s.on_table("user").update(user, keys=keys)
+            s.commit()
+
+        return UserRepository.find_by_id(user_id)
 
     @staticmethod
     def delete(user_id: int):
-        return mysql.delete_by(table_name="user", key="id", key_value=user_id)
+        with mysql.session() as s:
+            s.on_table("user").delete(user_id)
+            s.commit()

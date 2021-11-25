@@ -6,21 +6,10 @@ from core.repository.user_profile import UserProfileRepository
 from core.service.profile_service import ProfileService
 from core.service.quote_service import QuoteService
 from core.service.user_service import UserService
+from core.utils.serialization import serialize
 from swagger_server.models import PersonalDetails, Address
 
 use_step_matcher("re")
-
-
-@step("a user profile was created")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    ProfileService().insert_profile({
-        "user_id": context.user_id,
-        "personal_details": to_dict(PersonalDetails(full_name="", relationship_status="", employment_status="",
-                                                    address={}))
-    })
 
 
 @when("a request to delete the user is made")
@@ -67,5 +56,5 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    user = UserService().get_user(context.user_id)
+    user = UserProfileRepository.find_by_user_id(context.user_id)
     assert_that(user, not_none())

@@ -1,6 +1,7 @@
 from behave import *
 
 from core.repository import mysql
+from core.service.profile_service import ProfileService
 from core.service.quote_service import QuoteService
 from core.service.user_service import UserService
 from core.test import test_db
@@ -24,7 +25,7 @@ def step_impl(context):
     context.quote_service = QuoteService()
 
 
-@step("registered users exist in the database")
+@step("registered users exist in the database with profiles")
 def step_impl(context):
     """
     :type context: behave.runner.Context
@@ -38,6 +39,8 @@ def step_impl(context):
     ).id
     context.user_id = context.registered_user_id
     unique_id += 1
+
+    context.profile = ProfileService().insert_profile({"user_id": context.registered_user_id})
 
 
 @step("insurance packages are defined")

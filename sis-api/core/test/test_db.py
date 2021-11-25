@@ -1,4 +1,5 @@
 import atexit
+import logging
 from os.path import dirname
 
 from mysql import connector
@@ -25,7 +26,7 @@ def tear_down():
     con = _get_db()
     try:
         res = con.cmd_query(f'DROP DATABASE IF EXISTS {config.get("db.name")}')
-        print(f'Dropped database "{config.get("db.name")}"', res)
+        logging.debug(f'Dropped database "{config.get("db.name")}"', res)
     finally:
         con.close()
 
@@ -45,12 +46,12 @@ def set_up():
                 if sql.strip(" ") == "":
                     continue
                 res = con.cmd_query(sql)
-                print(sql, res)
+                logging.debug(sql, res)
 
-            print(f'Created database "{config.get("db.name")}"')
+            logging.info(f'Created database "{config.get("db.name")}"')
         except Exception as e:
-            print("DB Setup Failed")
-            print(e)
+            logging.error("DB Setup Failed")
+            logging.error(e)
             raise e
         finally:
             con.close()

@@ -38,10 +38,12 @@ Matcher = Tuple[str, Any]
 Matchers = Union[List[Matcher], Matcher]
 
 
-def _get_matchers(matchers: Matchers) -> Tuple[List[Matcher], str]:
-    if isinstance(matchers[0], str):
+def _get_matchers(matchers: Union[Matchers, int]) -> Tuple[List[Matcher], str]:
+    if isinstance(matchers, int):
+        matchers = [("id", matchers)]
+    elif isinstance(matchers[0], str):
         matchers = [matchers]
-    return matchers, " AND ".join([f"{key}={value}" for key, value in matchers])
+    return matchers, " AND ".join([f"{key}='{value}'" for key, value in matchers])
 
 
 class _Table:
@@ -52,7 +54,7 @@ class _Table:
         self._cur = cur
         self._table_name = table_name
 
-    def find_by(self, matchers: Matchers) -> MySQLCursor:
+    def find_by(self, matchers: Union[Matchers, int]) -> MySQLCursor:
         matchers, where_clause = _get_matchers(matchers)
         self._cur.execute(f"SELECT * FROM `{self._table_name}` WHERE {where_clause}")
         return self._cur

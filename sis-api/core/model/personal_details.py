@@ -4,10 +4,11 @@ from typing import Optional
 
 from core.model.address import Address
 from core.model.meta import GENERATED, PK, FK
+from core.model.quote_sections import QuoteSection
 
 
 @dataclass(frozen=False, eq=True)
-class PersonalDetails:
+class PersonalDetails(QuoteSection):
     id: Optional[int] = field(metadata={PK: True, GENERATED: True}, default=None)
     full_name: Optional[str] = field(default=None)
     address: Address = field(default_factory=Address, metadata={FK: True})

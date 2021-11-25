@@ -203,7 +203,9 @@ class _Dict(_Serializer):
 
 def serialize(o: dataclass) -> _Serializer:
     if isinstance(o, dict):
+        logging.warning("Serialize used for dict")
         return _Dict(o)
     if isinstance(o, Model):
+        logging.warning("Serialize used for swagger model")
         return _SwaggerModelSerializer(o)
     return _Serializer(o)

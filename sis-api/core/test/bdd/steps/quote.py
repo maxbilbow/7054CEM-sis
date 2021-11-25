@@ -1,10 +1,12 @@
 import dataclasses
+import logging
 
 from behave import *
 from hamcrest import *
 
 from core.model import to_dict
 from core.model.quote import Quote
+from core.service.profile_service import ProfileService
 from core.service.quote_service import QuoteService
 
 FOREIGN_KEY_CONSTRAINT_ERROR = 1452
@@ -31,6 +33,7 @@ def step_impl(context):
     try:
         context.quote = quote_service.new_quote(user_id=user_id, insurance_type=insurance_type)
     except Exception as e:
+        logging.error(e)
         context.new_quote_error = e
 
 
@@ -73,14 +76,6 @@ def step_impl(context):
     """
     assert_that(context.quote, is_(None))
     assert_that(context.new_quote_error, not_none())
-
-
-@given("a registered user")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    context.user_id = context.registered_user_id
 
 
 @step("a key constraint error is thrown")

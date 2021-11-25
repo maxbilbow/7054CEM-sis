@@ -1,6 +1,7 @@
 from core.model.insurance_policy import InsuranceType
 from core.model.quote import Quote
-from core.model.quote_sections import VehicleQuoteSections, HomeQuoteSections
+from core.model.home_quote_sections import HomeQuoteSections
+from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.repository.quote import QuoteRepository
 from core.repository.user_profile import UserProfileRepository
 from core.service.profile_service import ProfileService
