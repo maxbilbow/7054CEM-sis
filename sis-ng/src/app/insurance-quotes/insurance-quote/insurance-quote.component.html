@@ -1,3 +1,10 @@
-<app-personal-details *ngIf="hasPersonalDetails()"></app-personal-details>
-
-<app-address></app-address>
+<div *ngIf="isMotor()">
+  <app-driver-history *ngIf="sections.driverDetails?.driverHistory"
+                      [driverHistory]="sections.driverDetails!.driverHistory!"></app-driver-history>
+  <app-personal-details *ngIf="sections.driverDetails?.personalDetails"
+                        [personalDetails]="sections.driverDetails!.personalDetails!"></app-personal-details>
+</div>
+<div *ngIf="isHome()">
+  <app-personal-details *ngIf="sections.personalDetails" [personalDetails]="sections.personalDetails!"></app-personal-details>
+</div>
+{{show()}}

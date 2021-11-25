@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DriverHistory} from "./driver-history";
+import {DriverHistory} from "../../model/driverHistory";
 
 @Component({
   selector: 'app-driver-history',

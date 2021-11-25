@@ -16,7 +16,7 @@ def is_optional(t: type) -> bool:
 
 
 def is_list_type(t: type) -> bool:
-    return typing.get_origin(t) is list
+    return t is list or typing.get_origin(t) is list
 
 
 def get_type(f: Field) -> type:
@@ -24,7 +24,9 @@ def get_type(f: Field) -> type:
         return f.type
     if is_optional(f.type):
         return typing.get_args(f.type)[0]
-    print(f"WARNING: Not sure what type this is: {f.type}")
+    if is_list_type(f.type):
+        return f.type
+    logging.warning(f"Not sure what type this is: {f.type}")
     return f.type
 
 

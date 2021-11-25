@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PersonalDetails} from "./personal-details";
+import {PersonalDetails} from "../../model/personalDetails";
 
 @Component({
   selector: 'app-personal-details',
@@ -14,6 +14,9 @@ export class PersonalDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.personalDetails.fullName === undefined) {
+      this.personalDetails.fullName = ""
+    }
   }
 
   save(): void {

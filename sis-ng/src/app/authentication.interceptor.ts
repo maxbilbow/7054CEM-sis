@@ -3,9 +3,10 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor, HttpResponse
 } from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
+
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -15,9 +16,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
-      tap(value => {
-
-        }, error => {
+      tap(undefined, error => {
           if (error.status === 401) {
             window.location.href = "/login"
           }
@@ -26,3 +25,5 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     )
   }
 }
+
+

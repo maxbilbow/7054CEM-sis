@@ -3,6 +3,8 @@ import {ActivatedRoute} from "@angular/router";
 import {QuoteService} from "../quote.service";
 import {Quote} from "../../model/quote";
 import {HomeQuoteSections} from "../../model/homeQuoteSections";
+import {VehicleQuoteSections} from "../../model/vehicleQuoteSections";
+import {InsuranceType} from "../../model/insuranceType";
 
 @Component({
   selector: 'app-insurance-quote',
@@ -12,6 +14,10 @@ import {HomeQuoteSections} from "../../model/homeQuoteSections";
 export class InsuranceQuoteComponent implements OnInit {
 
   quote!: Quote;
+
+  get sections() {
+    return this.quote.sections as VehicleQuoteSections & HomeQuoteSections
+  }
 
   constructor(private readonly route: ActivatedRoute, private readonly quoteService: QuoteService) {
 
@@ -34,7 +40,11 @@ export class InsuranceQuoteComponent implements OnInit {
     return JSON.stringify(this.quote);
   }
 
-  hasPersonalDetails() {
-    return (this.quote.sections as HomeQuoteSections)?.personalDetails
+  isMotor() {
+    return this.quote.type === InsuranceType.Motor
+  }
+
+  isHome() {
+    return this.quote.type === InsuranceType.Home
   }
 }

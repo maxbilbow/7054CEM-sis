@@ -1,6 +1,6 @@
 <mat-card *ngIf="profile">
-  <app-personal-details [personalDetails]="profile.personal_details"></app-personal-details>
-  <app-driver-history [driverHistory]="profile.driver_history"></app-driver-history>
+  <app-personal-details [personalDetails]="profile.personalDetails!"></app-personal-details>
+  <app-driver-history [driverHistory]="profile.driverHistory!"></app-driver-history>
   <!-- Send button -->
   <button mat-raised-button color="primary" (click)="save()">Save</button>
 </mat-card>

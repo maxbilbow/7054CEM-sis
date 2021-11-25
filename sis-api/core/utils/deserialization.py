@@ -51,11 +51,11 @@ def _get_parser_for_type(cls: type) -> Optional[Parser]:
 def _parse_with_field(value: Any, f: Field):
     if DESERIALIZER in f.metadata:
         return f.metadata[DESERIALIZER](value)
-    t = get_type(f)
-    if is_list_type(t):
-        list_item_type = typing.get_args(t)[0]
+    if is_list_type(f.type):
+        list_item_type = typing.get_args(f.type)[0]
         parse_item = _get_parser_for_type(list_item_type)
         return [parse_item(item) for item in value] if value is not None else list()
+    t = get_type(f)
 
     if not isinstance(t, type):
         raise TypeError(f"Unable to determine type for {f}")

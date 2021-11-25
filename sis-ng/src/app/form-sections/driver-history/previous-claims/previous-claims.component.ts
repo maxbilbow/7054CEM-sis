@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PreviousClaim} from "../../previous-claims/previous-claim";
+import {PreviousClaim} from "../../../model/previousClaim";
 
 @Component({
   selector: 'app-previous-claims',
@@ -9,6 +9,7 @@ import {PreviousClaim} from "../../previous-claims/previous-claim";
 export class PreviousClaimsComponent implements OnInit {
 
   @Input() previousClaims: PreviousClaim[] = []
+
   constructor() { }
 
   ngOnInit(): void {

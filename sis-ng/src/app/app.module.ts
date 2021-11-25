@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -10,6 +10,7 @@ import {MyPoliciesModule} from "./my-policies/my-policies.module";
 import {InsuranceQuotesModule} from "./insurance-quotes/insurance-quotes.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthenticationInterceptor} from "./authentication.interceptor";
+import {JsonApiInterceptor} from "./json-api.interceptor";
 
 @NgModule({
   declarations: [
@@ -30,10 +31,15 @@ import {AuthenticationInterceptor} from "./authentication.interceptor";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
       multi: true
+    },
+    JsonApiInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JsonApiInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-
 }
