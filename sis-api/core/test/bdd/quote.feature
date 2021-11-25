@@ -29,6 +29,7 @@ Feature: Insurance Quote API
    When new quote data is sent
    Then the quote is updated
    And the updated timestamp did increase
+   And the created timestamp is unchanged
 
  Scenario: Delete a quote
    Given that a new quote was created

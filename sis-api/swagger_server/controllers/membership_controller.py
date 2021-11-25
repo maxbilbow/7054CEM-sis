@@ -14,7 +14,7 @@ def get_current(user_id):
     membership = MembershipService().get_for_user(user_id)
     if membership is None:
         return {}, status.HTTP_204_NO_CONTENT
-    return to_dict(membership)
+    return membership
 
 
 def cancel_membership(user_id):  # noqa: E501
@@ -31,7 +31,7 @@ def cancel_membership(user_id):  # noqa: E501
     if membership is None:
         return {}, status.HTTP_204_NO_CONTENT
     else:
-        return to_dict(membership)
+        return membership
 
 
 def create_membership(body, user_id):  # noqa: E501

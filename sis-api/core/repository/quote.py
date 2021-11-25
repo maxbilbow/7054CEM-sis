@@ -1,4 +1,5 @@
 import dataclasses
+import time
 from typing import Optional, List
 
 from core.model.driver_details import DriverDetails
@@ -90,6 +91,7 @@ class QuoteRepository:
 
     @staticmethod
     def update(quote: Quote) -> Quote:
+        quote = dataclasses.replace(quote, updated=int(time.time() * 1000))
         with mysql.session() as s:
             s.on_table("quote").update(quote)
             if quote.type is InsuranceType.Motor:

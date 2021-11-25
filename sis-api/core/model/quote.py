@@ -26,7 +26,7 @@ class Quote(BaseModel):
     user_id: int = field(metadata={FK: True})
     type: InsuranceType
     sections: Optional[QuoteSections] = field(metadata={DESERIALIZER: quote_sections_factory, SQL_COLUMN: False})
-    created: int = field(default_factory=lambda: int(time.time() * 1000))
+    created: int = field(default_factory=lambda: int(time.time() * 1000), metadata={SQL_UPDATE: False})
     updated: int = field(default_factory=lambda: int(time.time() * 1000))
     is_complete: bool = field(default=False)
     price: Optional[float] = field(default=None)

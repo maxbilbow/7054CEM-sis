@@ -114,7 +114,7 @@ def step_impl(context):
     :type context: behave.runner.Context
     """
     quote: Quote = context.quote
-    updated_quote = dataclasses.replace(quote, is_complete=True)
+    updated_quote = dataclasses.replace(quote, is_complete=True, created=0, updated=0)
     context.updated_quote = updated_quote
     quote_dict = to_dict(updated_quote)
     context.quote_service.update_quote(quote_id=quote.id, data=quote_dict)
@@ -162,3 +162,15 @@ def step_impl(context):
     """
     qs: QuoteService = context.quote_service
     assert_that(qs.get_quote(context.quote.id), is_(None))
+
+
+@step("the created timestamp is unchanged")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    updated_quote = context.updated_quote
+    original_quote = context.quote
+    retrieved_quote = context.quote_service.get_quote(context.quote.id)
+    assert_that(retrieved_quote.created, equal_to(original_quote.created))
+    assert_that(retrieved_quote.created, not_(equal_to(updated_quote.created)))
