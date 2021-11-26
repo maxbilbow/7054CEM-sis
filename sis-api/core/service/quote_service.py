@@ -1,12 +1,10 @@
+from typing import Union
+
 from core.model.insurance_policy import InsuranceType
 from core.model.quote import Quote
-from core.model.home_quote_sections import HomeQuoteSections
-from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.repository.quote import QuoteRepository
-from core.repository.user_profile import UserProfileRepository
 from core.service.profile_service import ProfileService
 from core.utils.deserialization import deserialize
-from core.utils.serialization import serialize
 
 
 class QuoteService:
@@ -28,9 +26,13 @@ class QuoteService:
         else:
             return self.__repo.new_home_quote(user_id, profile)
 
-    def update_quote(self, quote_id: int, data: dict) -> Quote:
-        data["id"] = quote_id
-        quote = deserialize(data, Quote)
+    def update_quote(self, quote_id: int, data: Union[dict, Quote]) -> Quote:
+        quote: Quote
+        if isinstance(data, Quote):
+            quote = data
+        else:
+            data["id"] = quote_id
+            quote = deserialize(data, Quote)
         return self.__repo.update(quote)
 
     def delete_quote(self, quote_id):

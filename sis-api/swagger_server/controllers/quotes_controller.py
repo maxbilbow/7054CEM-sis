@@ -1,8 +1,11 @@
+import dataclasses
+
 import connexion
 import six
 from flask_api import status
 
 from core.model import to_dict
+from core.service import quote_price
 from core.service.quote_service import QuoteService
 
 
@@ -85,3 +88,23 @@ def update_quote(body, quote_id):  # noqa: E501
     """
     quote = QuoteService().update_quote(quote_id, body)
     return quote, status.HTTP_202_ACCEPTED
+
+
+def calculate_price(quote_id, body=None):  # noqa: E501
+    """Calculate and store a price for a quote
+
+     # noqa: E501
+
+    :param quote_id: The id of the quote to update
+    :type quote_id: int
+    :param body:
+    :type body: dict | bytes
+
+    :rtype: Quote
+    """
+    qs = QuoteService()
+    quote = qs.get_quote(quote_id)
+    if quote is None:
+        return "Quote not found", status.HTTP_404_NOT_FOUND
+    dataclasses.replace(quote, price=quote_price.calculate(quote))
+    return qs.update_quote(quote_id, quote)

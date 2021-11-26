@@ -5,12 +5,12 @@ info:
 servers:
 - url: /api/v1
 tags:
-- name: Authorization
 - name: User
 - name: User Profile
-- name: Membership
 - name: Quotes
+- name: Membership
 - name: Insurance Policy
+- name: Authorization
 paths:
   /secret:
     get:
@@ -668,7 +668,6 @@ paths:
         schema:
           type: integer
       requestBody:
-        description: Blah
         content:
           application/json:
             schema:
@@ -676,13 +675,13 @@ paths:
         required: true
       responses:
         "200":
-          description: Successfully retrived user
+          description: Successfully updated quoter
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Quote'
         "404":
-          description: User doesn't exist
+          description: Quote doesn't exist
           content: {}
       x-openapi-router-controller: swagger_server.controllers.quotes_controller
     delete:
@@ -705,6 +704,41 @@ paths:
           content: {}
         "404":
           description: Policy doesn't exist
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.quotes_controller
+  /quote/{quote_id}/calculate-price:
+    post:
+      tags:
+      - Quotes
+      summary: Calculate and store a price for a quote
+      operationId: calculate_price
+      parameters:
+      - name: quote_id
+        in: path
+        description: The id of the quote to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: false
+      responses:
+        "200":
+          description: Successfully calculated quote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        "400":
+          description: Quote is not complete
+          content: {}
+        "404":
+          description: Quote doesn't exist
           content: {}
       x-openapi-router-controller: swagger_server.controllers.quotes_controller
 components:
@@ -905,7 +939,7 @@ components:
         is_complete: true
         type: Home
         updated: 5
-        sections: {}
+        sections: ""
     QuoteSections:
       type: object
       properties:

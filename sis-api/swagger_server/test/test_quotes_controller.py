@@ -13,6 +13,20 @@ from swagger_server.test import BaseTestCase
 class TestQuotesController(BaseTestCase):
     """QuotesController integration test stubs"""
 
+    def test_calculate_price(self):
+        """Test case for calculate_price
+
+        Calculate and store a price for a quote
+        """
+        body = None
+        response = self.client.open(
+            '/quote/{quote_id}/calculate-price'.format(quote_id=56),
+            method='POST',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
     def test_delete_quote(self):
         """Test case for delete_quote
 
