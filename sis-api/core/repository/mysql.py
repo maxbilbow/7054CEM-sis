@@ -62,6 +62,7 @@ class _Table:
             self.delete(meta.get_pk(dc))
 
         data = serialize(dc).for_sql_insert()
+
         if keys is None:
             keys = list(data.keys())
         elif isinstance(keys, dict):

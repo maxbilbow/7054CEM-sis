@@ -238,9 +238,9 @@ def _get_asdict_factory(include_nulls: bool):
             if isinstance(obj, Enum):
                 return obj.name
             if isinstance(obj, date):
-                return obj.isoformat()  # f"{obj.year}-{obj.month}-{obj.day}"
+                return obj.isoformat()
             if isinstance(obj, SwaggerModel):
-                return obj.to_dict()
+                return serialize(obj).for_api(include_nulls)
             return obj
 
         res = dict()

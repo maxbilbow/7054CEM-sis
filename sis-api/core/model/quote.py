@@ -8,10 +8,8 @@ from core.model.quote_sections import *
 from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.utils.deserialization import deserialize
 
-from dataclasses import dataclass, field
 
-
-def quote_sections_factory(data: dict) -> QuoteSections:
+def _quote_sections_factory(data: dict) -> QuoteSections:
     if data is not None:
         if data["quote_type"] == InsuranceType.Motor.name:
             return deserialize(data, VehicleQuoteSections)
@@ -20,13 +18,20 @@ def quote_sections_factory(data: dict) -> QuoteSections:
     logging.warning(f"Unable to determine sections type for {data}")
 
 
+def _timestamp_millis() -> int:
+    return int(time.time() * 1000)
+
+
 @dataclass(frozen=True, eq=True)
-class Quote(BaseModel):
+class Quote:
     id: Optional[int] = field(metadata={PK: True, GENERATED: True})
     user_id: int = field(metadata={FK: True})
     type: InsuranceType
-    sections: Optional[QuoteSections] = field(metadata={DESERIALIZER: quote_sections_factory, SQL_COLUMN: False})
-    created: int = field(default_factory=lambda: int(time.time() * 1000), metadata={SQL_UPDATE: False})
-    updated: int = field(default_factory=lambda: int(time.time() * 1000))
-    is_complete: bool = field(default=False)
+    sections: Optional[QuoteSections] = field(metadata={
+        DESERIALIZER: _quote_sections_factory, SQL_COLUMN: False
+    })
+    updated: int = field(default_factory=_timestamp_millis)
+    created: int = field(default_factory=_timestamp_millis,
+                         metadata={SQL_UPDATE: False})
     price: Optional[float] = field(default=None)
+    is_complete: bool = field(default=False)
