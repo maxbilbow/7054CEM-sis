@@ -1,6 +1,7 @@
 # Created by maxbilbow at 23/11/2021
 Feature: Deserialization of dicts into dataclasses
-  # Enter feature description here
+  Ensures the correct behaviour when converting a dictionary
+  into an annotated dataclass
 
   Scenario: Correct json api deserialization
     Given a dataclass with a variety of data types

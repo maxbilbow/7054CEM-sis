@@ -1,44 +1,36 @@
-<p>Claims:</p>
 <form [formGroup]="form" (ngSubmit)="save()">
 
   <div id="pd-main">
     <div class="pd-form-group">
+
+      <p>
+        <mat-label>Type of licence held:</mat-label>
+      </p>
+      <p>
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" id="licenceType"
+                                 formControlName="licenceType">
+          <mat-button-toggle value="Full">Full</mat-button-toggle>
+          <mat-button-toggle value="Provisional">Provisional</mat-button-toggle>
+        </mat-button-toggle-group>
+      </p>
       <mat-form-field appearance="fill">
-        <mat-label>Full name</mat-label>
-        <input matInput id="first-name" type="text" formControlName="fullName" required>
+        <mat-label>Licence Number</mat-label>
+        <input matInput id="licenceNo" type="text" formControlName="licenceNo" required>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Date of birth</mat-label>
-        <input matInput [matDatepicker]="picker" (focus)="picker.open()" id="dob"
-               formControlName="dob">
+        <mat-label>Licence Since:</mat-label>
+        <input matInput [matDatepicker]="picker" (focus)="picker.open()" id="licenceSince"
+               formControlName="licenceSince">
       </mat-form-field>
       <mat-datepicker #picker></mat-datepicker>
 
-      <p>
-        <mat-label>Employment Status</mat-label>
-      </p>
-      <p>
-        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" id="employmentStatus" formControlName="employmentStatus">
-          <mat-button-toggle value="FullTime">Full Time</mat-button-toggle>
-          <mat-button-toggle value="PartTime">Part Time</mat-button-toggle>
-          <mat-button-toggle value="Unemployed">Unemployed</mat-button-toggle>
-          <mat-button-toggle value="Retired">Retired</mat-button-toggle>
-          <mat-button-toggle value="Student">Student</mat-button-toggle>
-
-        </mat-button-toggle-group>
-      </p>
 
     </div>
   </div>
-
+  <app-previous-claims [previousClaims]="driverHistory!.previousClaims!"></app-previous-claims>
   <div class="mat-button">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid"
-            *ngIf="form.enabled">Save
+    <button mat-raised-button color="primary" type="submit" (click)="save()">Save
     </button>
   </div>
 </form>
-
-
-<app-previous-claims *ngIf="driverHistory.previousClaims"
-                     [previousClaims]="driverHistory.previousClaims!"></app-previous-claims>

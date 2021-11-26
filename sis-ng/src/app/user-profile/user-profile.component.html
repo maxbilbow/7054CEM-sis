@@ -1,12 +1,15 @@
 <div class="quote-sections">
-  <mat-accordion class="example-headers-align" >
-    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+  <div class="example-action-buttons" align="right">
+    <button mat-button (click)="accordion.openAll()">Expand All</button>
+    <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+  </div>
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Personal Information
         </mat-panel-title>
         <mat-panel-description>
-          50% complete
           <mat-icon>account_circle</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
@@ -15,19 +18,18 @@
                             (onSave)="save()"></app-personal-details>
     </mat-expansion-panel>
 
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+    <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Driver Information
         </mat-panel-title>
         <mat-panel-description>
-          20% complete
           <mat-icon>account_circle</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
 
       <app-driver-history *ngIf="profile.driverHistory"
-                          [driverHistory]="profile.driverHistory"></app-driver-history>
+                          [driverHistory]="profile.driverHistory" (onSave)="save()"></app-driver-history>
     </mat-expansion-panel>
   </mat-accordion>
 

@@ -1,20 +1,23 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, DoCheck, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DriverHistory} from "../../model/driverHistory";
 import {FormBuilder} from "@angular/forms";
+import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-driver-history',
   templateUrl: './driver-history.component.html',
   styleUrls: ['./driver-history.component.less']
 })
-export class DriverHistoryComponent implements OnInit {
-
+export class DriverHistoryComponent implements DoCheck {
+  private modelCopy!: DriverHistory;
 
   @Input() driverHistory!: DriverHistory
   @Output() private readonly onSave = new EventEmitter<void>()
-  @Output() private readonly onEdit = new EventEmitter<string>()
 
   form = this.fb.group({
+    licenceType: [''],
+    licenceNo: [''],
+    licenceSince: ['']
     // aliases: this.fb.array([
     //   this.fb.control('')
     // ])
@@ -23,24 +26,35 @@ export class DriverHistoryComponent implements OnInit {
   constructor(private readonly fb: FormBuilder) {
   }
 
-  ngOnInit(): void {
-    this.updateForm()
-  }
-
-  edit() {
-    this.form.enable()
-  }
-  save(): void {
-    const driverHistory = {...this.form.value}
-    Object.assign(this.form, driverHistory)
-
-    this.onSave.emit()
-    this.form.disable()
+  ngDoCheck(): void {
+    if (this.modelCopy !== this.driverHistory) {
+      this.modelCopy = this.driverHistory
+      this.updateForm()
+    }
   }
 
   @Input() onSubmit!: () => void
 
+  save(): void {
+    console.log(this.form)
+    const driverHistory = {...this.form.value}
+    driverHistory.licenceSince = (driverHistory.licenceSince as Date).toISOString().split("T")[0] // FIXME Why is date one day out?
+    const address = driverHistory.previousClaims
+    delete driverHistory.previousClaims
+    Object.assign(this.driverHistory.previousClaims, address)
+    Object.assign(this.driverHistory, driverHistory)
+    this.onSave.emit()
+  }
+
   updateForm() {
-    this.form.patchValue(this.driverHistory)
+    const pd = {...this.driverHistory};
+    pd.licenseSince = new Date(pd.licenseSince!)
+    this.form.patchValue(pd)
+  }
+
+  setDob($event: MatDatepickerInputEvent<unknown, unknown | null>) {
+    console.log($event)
+    console.log(this.form.value.dob)
+    // this.personalDetails.dob = $event.value
   }
 }

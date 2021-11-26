@@ -1,6 +1,7 @@
 # Created by maxbilbow at 23/11/2021
 Feature: Serialization of dataclasses
-  # Enter feature description here
+  Ensures correct behaviour when converting an annotated dataclass
+  into a dictionary that can be converted to JSON or SQL columns
 
   Scenario: Auto-Generated PK
     Given a dataclass instance with a auto-generated primary key "pk_auto"

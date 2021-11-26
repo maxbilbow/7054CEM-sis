@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Start" type="CompoundRunConfigurationType">
-    <toRun name="Start" type="CompoundRunConfigurationType" />
+    <toRun name="app" type="PythonConfigurationType" />
+    <toRun name="api" type="PythonConfigurationType" />
     <toRun name="build webapp" type="js.build_tools.npm" />
     <method v="2" />
   </configuration>

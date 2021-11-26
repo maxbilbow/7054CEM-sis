@@ -34,7 +34,7 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    assert_that(context.property_name not in context.sql_insert)
+    assert_that(context.property_name, not_(is_in(context.sql_insert)))
 
 
 @then('the property is included for sql update')
@@ -42,7 +42,7 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    assert_that(context.property_name in context.sql_update)
+    assert_that(context.property_name, is_in(context.sql_update))
 
 
 @then('the property is included for json api responses')
@@ -50,7 +50,7 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    assert_that(context.property_name in context.json_api)
+    assert_that(context.property_name, is_in(context.json_api))
 
 
 @then('the property is included for sql insertion')
@@ -58,7 +58,7 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    assert_that(context.property_name in context.sql_insert)
+    assert_that(context.property_name, is_in(context.sql_insert))
 
 
 @then("the property is omitted for sql update")
@@ -66,7 +66,7 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
-    assert_that(context.property_name not in context.sql_update)
+    assert_that(context.property_name, not_(is_in(context.sql_update)))
 
 
 @then("the date was formatted as an ISO date string")

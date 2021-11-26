@@ -13,10 +13,3 @@ class DriverDetails(QuoteSection):
     personal_details: PersonalDetails = field(metadata={FK: True})
     driver_history: DriverHistory = field(default_factory=lambda: DriverHistory(None), metadata={FK: True})
 
-    @property
-    def personal_details_id(self) -> int:
-        return self.personal_details.id
-
-    @property
-    def driver_history_id(self) -> int:
-        return self.driver_history.id

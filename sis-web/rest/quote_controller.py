@@ -4,7 +4,6 @@ from flask import jsonify, request, current_app as app
 from flask_api import status
 
 from rest.decorators import handle_errors
-from web_exceptions import BadRequest
 from service.quote_service import QuoteService
 
 
