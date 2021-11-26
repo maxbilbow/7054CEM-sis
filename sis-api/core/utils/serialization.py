@@ -1,14 +1,104 @@
 import logging
 import typing
-from dataclasses import dataclass, Field, asdict, fields, is_dataclass
+from abc import abstractmethod, ABC
+from dataclasses import asdict, is_dataclass
 from datetime import date
 from enum import Enum
 from typing import List, Optional
 
-from core.model import to_dict
-# Meta Data:
+import six
+
 from core.model.meta import *
-from swagger_server.models.base_model_ import Model
+from swagger_server.models.base_model_ import Model as SwaggerModel
+
+
+class Serializer:
+    @abstractmethod
+    def for_sql_insert(self) -> dict:
+        pass
+
+    @abstractmethod
+    def for_sql_update(self) -> dict:
+        pass
+
+    @abstractmethod
+    def for_api(self, include_nulls: Optional[bool]) -> dict:
+        pass
+
+
+_T = typing.TypeVar("_T")
+
+
+class _AbstractSerializer(Serializer, typing.Generic[_T], ABC):
+    _model: _T
+
+    def __init__(self, t: _T):
+        self._model = t
+
+
+class _DataclassSerializer(_AbstractSerializer[dataclass]):
+    def for_sql_insert(self):
+        sql_fields = _get_sql_fields(self._model)
+        sql_fields = list(filter(_should_insert, sql_fields))
+        sql_dict = _to_sql_dict(self._model, sql_fields)
+        return sql_dict
+
+    def for_sql_update(self):
+        sql_fields = _get_sql_fields(self._model)
+        sql_fields = list(filter(_should_update, sql_fields))
+        sql_dict = _to_sql_dict(self._model, sql_fields)
+        return sql_dict
+
+    def for_api(self, include_nulls=False):
+        return _to_json_api_dict(self._model, include_nulls)
+
+
+class _SwaggerModelSerializer(_AbstractSerializer[SwaggerModel]):
+    def for_sql_insert(self):
+        logging.warning(f"SQL serialization may not work correctly for {type(self._model)}")
+        return self.for_api()
+
+    def for_sql_update(self):
+        logging.warning(f"SQL serialization may not work correctly for {type(self._model)}")
+        return self.for_api()
+
+    def for_api(self, include_nulls=False):
+        o = self._model
+        dikt: dict = {}
+        for attr, _ in six.iteritems(o.swagger_types):
+            value = getattr(o, attr)
+            if value is None and not include_nulls:
+                continue
+            attr = o.attribute_map[attr]
+            dikt[attr] = value
+        return dikt
+
+
+class _Dict(_AbstractSerializer[dict]):
+    def for_sql_insert(self):
+        return self.for_api(True)
+
+    def for_sql_update(self):
+        return self.for_api(True)
+
+    def for_api(self, include_nulls=False):
+        return self._model
+
+
+Serializable = typing.Union[dataclass, SwaggerModel, dict]
+
+
+def serialize(o: Serializable) -> Serializer:
+    if is_dataclass(o):
+        logging.info("Serialization strategy: dataclass")
+        return _DataclassSerializer(o)
+    if isinstance(o, dict):
+        logging.info("Serialization strategy: dict")
+        return _Dict(o)
+    if isinstance(o, SwaggerModel):
+        logging.info("Serialization strategy: swagger-model")
+        return _SwaggerModelSerializer(o)
+    raise Exception(f"Unable to serialize object of type: {type(o)}")
 
 
 def is_optional(t: type) -> bool:
@@ -38,7 +128,7 @@ def _is_sql_column(f: Field) -> bool:
         return False
     if SQL_COLUMN in f.metadata and f.metadata[SQL_COLUMN] is False:
         return False
-    if issubclass(t, Model):
+    if issubclass(t, SwaggerModel):
         return False
     return True
 
@@ -84,7 +174,7 @@ def _get_sql_name(f: Field) -> typing.Tuple[str, typing.Callable]:
         return f.metadata[FK], lambda v: "TODO"
 
     sub_field: Field = list(filter(_is_pk, list(fields(t))))[0]
-    return f"{f.name}_{sub_field.name}", lambda v:  v[f.name][sub_field.name]
+    return f"{f.name}_{sub_field.name}", lambda v: v[f.name][sub_field.name]
 
 
 def _get_sql_entry(value: typing.Any, f: Field) -> typing.Tuple[str, typing.Any]:
@@ -109,105 +199,36 @@ def _get_sql_entry(value: typing.Any, f: Field) -> typing.Tuple[str, typing.Any]
 
 def _to_sql_dict(model: dataclass, dataclass_fields: List[Field]) -> dict:
     keys = list(map(_get_sql_name, dataclass_fields))
-    result = asdict(model, dict_factory=_get_sql_asdict_factory(dataclass_fields))
+    result = asdict(model, dict_factory=_get_asdict_factory(True))
     return {key: get(result) for key, get in keys}
 
 
-def _to_json_api_dict(model: dataclass) -> dict:
-    return asdict(model, dict_factory=_get_sql_asdict_factory(list()))
+def _to_json_api_dict(model: dataclass, include_nulls: bool) -> dict:
+    return asdict(model, dict_factory=_get_asdict_factory(include_nulls))
 
 
-def _get_sql_asdict_factory(dataclass_fields: List[Field]):
+def _get_asdict_factory(include_nulls: bool):
     def factory(data):
-        def convert_value(obj, f: Optional[Field]):
+        def convert_value(obj):
             if obj is None:
                 return obj
             if is_dataclass(obj):
-                return serialize(obj).for_api()
+                return serialize(obj).for_api(include_nulls)
             if isinstance(obj, Enum):
                 return obj.name
             if isinstance(obj, date):
                 return obj.isoformat()  # f"{obj.year}-{obj.month}-{obj.day}"
-            if isinstance(obj, Model):
+            if isinstance(obj, SwaggerModel):
                 return obj.to_dict()
             return obj
 
         res = dict()
         for k, v in data:
-            # this_field = _get_field(dataclass_fields, k)
-            # k, v = _get_sql_entry(v, this_field)
-            res[k] = convert_value(v, None)
+            v = convert_value(v)
+            if v is None and not include_nulls:
+                continue
+            res[k] = convert_value(v)
 
         return res
-        # return dict((k, convert_value(v, _get_field(dataclass_fields, k))) for k, v in data)
 
     return factory
-
-
-class _Serializer:
-    _model: dataclass
-
-    def __init__(self, model: dataclass):
-        self._model = model
-
-    def for_sql_insert(self):
-        sql_fields = _get_sql_fields(self._model)
-        sql_fields = list(filter(_should_insert, sql_fields))
-        sql_dict = _to_sql_dict(self._model, sql_fields)
-        return sql_dict
-
-    def for_sql_update(self):
-        sql_fields = _get_sql_fields(self._model)
-        sql_fields = list(filter(_should_update, sql_fields))
-        sql_dict = _to_sql_dict(self._model, sql_fields)
-        return sql_dict
-
-    def for_api(self):
-        return _to_json_api_dict(self._model)
-
-
-class _SwaggerModelSerializer(_Serializer):
-    _model: Model
-
-    def __init__(self, model: Model):
-        super().__init__(model)
-
-    def for_sql_insert(self):
-        logging.warning(f"SQL serialization may not work for {type(self._model)}")
-        return self.for_api()
-
-    def for_sql_update(self):
-        logging.warning(f"SQL serialization may not work for {type(self._model)}")
-        return self.for_api()
-
-    def for_api(self):
-        logging.warning(f"SQL serialization may not work for {type(self._model)}")
-        from swagger_server import encoder
-        o = encoder.JSONEncoder().default(self._model)
-        return o
-
-
-class _Dict(_Serializer):
-    _model: Model
-
-    def __init__(self, model: Model):
-        super().__init__(model)
-
-    def for_sql_insert(self):
-        return self.for_api()
-
-    def for_sql_update(self):
-        return self.for_api()
-
-    def for_api(self):
-        return self._model
-
-
-def serialize(o: dataclass) -> _Serializer:
-    if isinstance(o, dict):
-        logging.warning("Serialize used for dict")
-        return _Dict(o)
-    if isinstance(o, Model):
-        logging.warning("Serialize used for swagger model")
-        return _SwaggerModelSerializer(o)
-    return _Serializer(o)
