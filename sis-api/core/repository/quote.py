@@ -14,7 +14,7 @@ from core.model.vehicle_details import VehicleDetails
 from core.model.vehicle_quote_sections import VehicleQuoteSections
 from core.model.vehicle_usage import VehicleUsage
 from core.repository import mysql
-from core.repository.mysql import _Session
+from core.repository.mysql import DbSession
 from core.repository.user_profile import UserProfileRepository
 from core.utils.deserialization import deserialize
 
@@ -118,7 +118,7 @@ class QuoteRepository:
             s.commit()
 
     @staticmethod
-    def get_personal_details(s: _Session, personal_details_id: int) -> Optional[dict]:
+    def get_personal_details(s: DbSession, personal_details_id: int) -> Optional[dict]:
         personal_details = s.on_table("personal_details").find_by(personal_details_id).fetchone()
         if personal_details is None:
             return None

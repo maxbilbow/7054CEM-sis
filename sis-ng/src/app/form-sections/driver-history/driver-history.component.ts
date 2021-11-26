@@ -38,7 +38,7 @@ export class DriverHistoryComponent implements DoCheck {
   save(): void {
     console.log(this.form)
     const driverHistory = {...this.form.value}
-    driverHistory.licenceSince = (driverHistory.licenceSince as Date).toISOString().split("T")[0] // FIXME Why is date one day out?
+    driverHistory.licenceSince = (driverHistory.licenceSince as Date)?.toISOString?.().split("T")[0] // FIXME Why is date one day out?
     const address = driverHistory.previousClaims
     delete driverHistory.previousClaims
     Object.assign(this.driverHistory.previousClaims, address)

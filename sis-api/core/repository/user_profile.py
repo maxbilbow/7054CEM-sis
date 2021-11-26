@@ -3,7 +3,7 @@ from typing import Optional
 from core.model.driver_history import DriverHistory
 from core.model.profile import Profile
 from core.repository import mysql
-from core.repository.mysql import _Session
+from core.repository.mysql import DbSession
 from core.utils.deserialization import deserialize
 
 
@@ -37,7 +37,7 @@ class UserProfileRepository:
             return deserialize(profile, to_class=Profile)
 
     @staticmethod
-    def _update_claims(s: _Session, driver_history: DriverHistory):
+    def _update_claims(s: DbSession, driver_history: DriverHistory):
         s.on_table("previous_claim").delete(["driver_history_id", driver_history.id])
         for claim in driver_history.previous_claims:
             claim.driver_history_id = driver_history.id
@@ -83,11 +83,11 @@ class UserProfileRepository:
             s.commit()
 
     @staticmethod
-    def find_personal_details(s: _Session, personal_details_id: Optional[int]) -> Optional[dict]:
+    def find_personal_details(s: DbSession, personal_details_id: Optional[int]) -> Optional[dict]:
         if personal_details_id is None:
             return None
 
-        personal_details = s.on_table("personal_details").find_by(["id", personal_details_id]).fetchone()
+        personal_details = s.on_table("personal_details").find_by(("id", personal_details_id)).fetchone()
         if personal_details is None:
             return None
 
@@ -98,7 +98,7 @@ class UserProfileRepository:
         return personal_details
 
     @staticmethod
-    def _find_driver_history(s: _Session, profile: dict) -> Optional[dict]:
+    def _find_driver_history(s: DbSession, profile: dict) -> Optional[dict]:
         if profile["driver_history_id"] is None:
             return None
 

@@ -1,0 +1,36 @@
+# PynSource Version 1.2
+{'type':'meta', 'info1':'Lorem ipsum dolor sit amet, consectetur adipiscing elit is latin. Comments are saved.'}
+{'type':'umlshape', 'id':'_Table', 'x':42, 'y':368, 'width':82, 'height':134, 'attrs': '_cur|_table_name', 'meths': '__init__|delete|find_by|insert|update|update_value'}
+{'type':'umlshape', 'id':'_Session', 'x':71, 'y':756, 'width':77, 'height':124, 'attrs': 'connection|cursor', 'meths': '__enter__|__exit__|close|commit|on_table'}
+{'type':'umlshape', 'id':'dataclasses.dataclass', 'x':46, 'y':288, 'width':186, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'MySQLCursor', 'x':23, 'y':618, 'width':102, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'MySQLConnection', 'x':146, 'y':573, 'width':136, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'QuoteRepository', 'x':543, 'y':354, 'width':136, 'height':114, 'attrs': '', 'meths': 'delete|find_by_id|find_by_userid|get_personal_details|new_home_quote|new_motor_quote|update'}
+{'type':'umlshape', 'id':'HomeQuoteSections', 'x':442, 'y':254, 'width':153, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'Quote', 'x':798, 'y':481, 'width':52, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'VehicleQuoteSections', 'x':681, 'y':261, 'width':178, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'Profile', 'x':579, 'y':599, 'width':69, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'UserProfileRepository', 'x':526, 'y':750, 'width':186, 'height':114, 'attrs': '', 'meths': '_find_driver_history|_update_claims|delete|find_by_user_id|find_personal_details|insert|update'}
+{'type':'umlshape', 'id':'DriverHistory', 'x':704, 'y':638, 'width':119, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'UserRepository', 'x':633, 'y':56, 'width':128, 'height':94, 'attrs': '', 'meths': 'delete|find_by_email|find_by_id|insert_user|update'}
+{'type':'umlshape', 'id':'ProfileService', 'x':963, 'y':747, 'width':128, 'height':114, 'attrs': '__profile', 'meths': '__init__|delete_profile|get_profile|insert_profile|update_profile'}
+{'type':'umlshape', 'id':'QuoteService', 'x':946, 'y':341, 'width':111, 'height':124, 'attrs': '__repo', 'meths': '__init__|delete_quote|find_for_user|get_quote|new_quote|update_quote'}
+{'type':'umlshape', 'id':'UserService', 'x':953, 'y':44, 'width':112, 'height':134, 'attrs': 'repository', 'meths': '__init__|check_credentials|delete_user|find_by_email|get_user|register|update_user'}
+{'type':'umlshape', 'id':'Serializer', 'x':139, 'y':141, 'width':102, 'height':104, 'attrs': '_model', 'meths': '__init__|for_api|for_sql_insert|for_sql_update'}
+{'type':'umlshape', 'id':'dataclass', 'x':146, 'y':37, 'width':86, 'height':24, 'attrs': '', 'meths': ''}
+{'type':'edge', 'id':'dataclasses.dataclass_to__Table', 'source':'dataclasses.dataclass', 'target':'_Table', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'MySQLCursor_to__Table', 'source':'MySQLCursor', 'target':'_Table', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'MySQLConnection_to__Session', 'source':'MySQLConnection', 'target':'_Session', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'MySQLCursor_to__Session', 'source':'MySQLCursor', 'target':'_Session', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'HomeQuoteSections_to_QuoteRepository', 'source':'HomeQuoteSections', 'target':'QuoteRepository', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'Quote_to_QuoteRepository', 'source':'Quote', 'target':'QuoteRepository', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'VehicleQuoteSections_to_QuoteRepository', 'source':'VehicleQuoteSections', 'target':'QuoteRepository', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'Profile_to_QuoteRepository', 'source':'Profile', 'target':'QuoteRepository', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'_Session_to_QuoteRepository', 'source':'_Session', 'target':'QuoteRepository', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'DriverHistory_to_UserProfileRepository', 'source':'DriverHistory', 'target':'UserProfileRepository', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'Profile_to_UserProfileRepository', 'source':'Profile', 'target':'UserProfileRepository', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'_Session_to_UserProfileRepository', 'source':'_Session', 'target':'UserProfileRepository', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'UserProfileRepository_to_ProfileService', 'source':'UserProfileRepository', 'target':'ProfileService', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'QuoteRepository_to_QuoteService', 'source':'QuoteRepository', 'target':'QuoteService', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'UserRepository_to_UserService', 'source':'UserRepository', 'target':'UserService', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'dataclass_to__Serializer', 'source':'dataclass', 'target':'Serializer', 'uml_edge_type': 'composition'}

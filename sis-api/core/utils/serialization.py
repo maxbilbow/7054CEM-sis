@@ -13,16 +13,37 @@ from swagger_server.models.base_model_ import Model as SwaggerModel
 
 
 class Serializer:
+    """
+    Object serialization interface
+    Returned bu serialize method
+    """
+
     @abstractmethod
     def for_sql_insert(self) -> dict:
+        """
+        :return: A dictionary stripped of any properties
+                 that cannot be inserted into an SQL table
+                 Foreign keys are mapped according to dataclass annotations
+                 if present
+        """
         pass
 
     @abstractmethod
     def for_sql_update(self) -> dict:
+        """
+        :return: A dictionary stripped of any properties
+                 that cannot be updated on an SQL table
+                 Foreign keys are mapped according to dataclass annotations
+                 if present
+        """
         pass
 
     @abstractmethod
     def for_api(self, include_nulls: Optional[bool]) -> dict:
+        """
+        :param include_nulls: if False, null properties will not be included in the resulting dict
+        :return: A dictionary ready to be converted to JSON and sent to the consuming client
+        """
         pass
 
 
@@ -49,7 +70,7 @@ class _DataclassSerializer(_AbstractSerializer[dataclass]):
         sql_dict = _to_sql_dict(self._model, sql_fields)
         return sql_dict
 
-    def for_api(self, include_nulls=False):
+    def for_api(self, include_nulls=True):
         return _to_json_api_dict(self._model, include_nulls)
 
 
@@ -62,7 +83,7 @@ class _SwaggerModelSerializer(_AbstractSerializer[SwaggerModel]):
         logging.warning(f"SQL serialization may not work correctly for {type(self._model)}")
         return self.for_api()
 
-    def for_api(self, include_nulls=False):
+    def for_api(self, include_nulls=True):
         o = self._model
         dikt: dict = {}
         for attr, _ in six.iteritems(o.swagger_types):
@@ -81,7 +102,7 @@ class _Dict(_AbstractSerializer[dict]):
     def for_sql_update(self):
         return self.for_api(True)
 
-    def for_api(self, include_nulls=False):
+    def for_api(self, include_nulls=True):
         return self._model
 
 

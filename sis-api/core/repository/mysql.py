@@ -1,5 +1,6 @@
 import dataclasses
 import logging
+from abc import abstractmethod
 from typing import Any, Optional, List, Union, Tuple
 
 from deprecated import deprecated
@@ -8,17 +9,12 @@ from mysql.connector import MySQLConnection
 from mysql.connector.cursor import MySQLCursor
 
 from core import config
-# _db: connector.connection.MySQLConnection = None
 from core.model import meta
-from core.model.base_model import BaseModel
 from core.utils.serialization import serialize
 from swagger_server.models.base_model_ import Model
 
 
 def _init() -> connector.connection.MySQLConnection:
-    # global _db
-    # if _db:
-    #     return _db
     return connector.connect(
         host=config.get("db.host"),
         user=config.get("db.user"),
@@ -62,7 +58,7 @@ class _Table:
 
     def insert(self, dc: dataclasses.dataclass, keys: Optional[List[str]] = None,
                exclude_keys: Optional[List[str]] = None, replace: bool = False) -> int:
-        if replace and self.find_by(meta.get_pk(dc)).rowcount > 0: # TODO: better written as sql
+        if replace and self.find_by(meta.get_pk(dc)).rowcount > 0:  # TODO: better written as sql
             self.delete(meta.get_pk(dc))
 
         data = serialize(dc).for_sql_insert()
@@ -125,7 +121,25 @@ class _Table:
         return self._cur.execute(sql)
 
 
-class _Session:
+class DbSession:
+    @abstractmethod
+    def __enter__(self):
+        return self
+
+    @abstractmethod
+    def commit(self):
+        pass
+
+    @abstractmethod
+    def on_table(self, table_name) -> _Table:
+        pass
+
+    @abstractmethod
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+
+class _Session(DbSession):
     connection: MySQLConnection
     cursor: MySQLCursor
 
@@ -137,15 +151,12 @@ class _Session:
     def commit(self):
         self.connection.commit()
 
-    def close(self):
-        self.cursor.close()
-        self.connection.close()
-
     def on_table(self, table_name):
         return _Table(self.cursor, table_name)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
+        self.cursor.close()
+        self.connection.close()
 
 
 def session():

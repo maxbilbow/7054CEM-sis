@@ -1,0 +1,33 @@
+# PynSource Version 1.2
+{'type':'meta', 'info1':'Lorem ipsum dolor sit amet, consectetur adipiscing elit is latin. Comments are saved.'}
+{'type':'umlshape', 'id':'Address', 'x':1042, 'y':586, 'width':94, 'height':104, 'attrs': 'county|id|number_or_name|postcode|street|town', 'meths': ''}
+{'type':'umlshape', 'id':'DriverDetails', 'x':921, 'y':93, 'width':119, 'height':74, 'attrs': 'driver_history|personal_details|quote_id', 'meths': ''}
+{'type':'umlshape', 'id':'QuoteSection', 'x':1063, 'y':324, 'width':111, 'height':54, 'attrs': 'section_complete', 'meths': ''}
+{'type':'umlshape', 'id':'PersonalDetails', 'x':768, 'y':711, 'width':136, 'height':124, 'attrs': 'address|dependents|dob|employment_status|full_name|home_owner|id|relationship_status', 'meths': ''}
+{'type':'umlshape', 'id':'DriverHistory', 'x':722, 'y':212, 'width':136, 'height':94, 'attrs': 'id|licence_no|licence_type|license_since|previous_claims: List', 'meths': ''}
+{'type':'umlshape', 'id':'PreviousClaim', 'x':626, 'y':432, 'width':119, 'height':94, 'attrs': 'claim_type|date|driver_history_id|fault|id', 'meths': ''}
+{'type':'umlshape', 'id':'HomeDetails', 'x':1145, 'y':469, 'width':102, 'height':64, 'attrs': 'address|quote_id', 'meths': ''}
+{'type':'umlshape', 'id':'HomeQuoteSections', 'x':1375, 'y':705, 'width':153, 'height':84, 'attrs': 'home_details|personal_details|quote_id|quote_type', 'meths': ''}
+{'type':'umlshape', 'id':'QuoteSections', 'x':1387, 'y':333, 'width':124, 'height':74, 'attrs': 'quote_id: int|quote_type: Enum|[Key]: QuoteSection', 'meths': ''}
+{'type':'umlshape', 'id':'Quote', 'x':1564, 'y':310, 'width':76, 'height':124, 'attrs': 'created|id|is_complete|price|sections|type|updated|user_id', 'meths': ''}
+{'type':'umlshape', 'id':'VehicleDetails', 'x':1147, 'y':172, 'width':128, 'height':54, 'attrs': 'quote_id', 'meths': ''}
+{'type':'umlshape', 'id':'VehicleQuoteSections', 'x':1384, 'y':38, 'width':178, 'height':104, 'attrs': 'additional_drivers|driver_details|quote_id|quote_type|vehicle_details|vehicle_usage', 'meths': ''}
+{'type':'umlshape', 'id':'VehicleUsage', 'x':1282, 'y':267, 'width':111, 'height':54, 'attrs': 'quote_id', 'meths': ''}
+{'type':'edge', 'id':'DriverDetails_to_QuoteSection', 'source':'DriverDetails', 'target':'QuoteSection', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'PersonalDetails_to_DriverDetails', 'source':'PersonalDetails', 'target':'DriverDetails', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'DriverHistory_to_DriverDetails', 'source':'DriverHistory', 'target':'DriverDetails', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'PreviousClaim_to_DriverHistory', 'source':'PreviousClaim', 'target':'DriverHistory', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'HomeDetails_to_QuoteSection', 'source':'HomeDetails', 'target':'QuoteSection', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Address_to_HomeDetails', 'source':'Address', 'target':'HomeDetails', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'HomeQuoteSections_to_QuoteSections', 'source':'HomeQuoteSections', 'target':'QuoteSections', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'HomeDetails_to_HomeQuoteSections', 'source':'HomeDetails', 'target':'HomeQuoteSections', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'PersonalDetails_to_HomeQuoteSections', 'source':'PersonalDetails', 'target':'HomeQuoteSections', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'PersonalDetails_to_QuoteSection', 'source':'PersonalDetails', 'target':'QuoteSection', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Address_to_PersonalDetails', 'source':'Address', 'target':'PersonalDetails', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'QuoteSections_to_Quote', 'source':'QuoteSections', 'target':'Quote', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'VehicleDetails_to_QuoteSection', 'source':'VehicleDetails', 'target':'QuoteSection', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'VehicleQuoteSections_to_QuoteSections', 'source':'VehicleQuoteSections', 'target':'QuoteSections', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'VehicleUsage_to_VehicleQuoteSections', 'source':'VehicleUsage', 'target':'VehicleQuoteSections', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'VehicleDetails_to_VehicleQuoteSections', 'source':'VehicleDetails', 'target':'VehicleQuoteSections', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'DriverDetails_to_VehicleQuoteSections', 'source':'DriverDetails', 'target':'VehicleQuoteSections', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'VehicleUsage_to_QuoteSection', 'source':'VehicleUsage', 'target':'QuoteSection', 'uml_edge_type': 'generalisation'}
